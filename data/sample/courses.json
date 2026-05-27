@@ -1,0 +1,17 @@
+[
+  {"name": "高等数学A", "code": "MATH1001", "credits": 5.0, "hours": 80, "type": "必修", "semester": 1, "description": "极限、微积分、级数、常微分方程"},
+  {"name": "线性代数", "code": "MATH1002", "credits": 3.0, "hours": 48, "type": "必修", "semester": 1, "description": "矩阵理论、线性空间、特征值、二次型"},
+  {"name": "概率论与数理统计", "code": "MATH2001", "credits": 3.0, "hours": 48, "type": "必修", "semester": 3, "description": "概率空间、随机变量、参数估计、假设检验"},
+  {"name": "离散数学", "code": "CS1001", "credits": 3.0, "hours": 48, "type": "必修", "semester": 2, "description": "数理逻辑、集合论、图论、组合数学"},
+  {"name": "程序设计基础", "code": "CS1002", "credits": 3.0, "hours": 64, "type": "必修", "semester": 1, "description": "C/C++语言基础、控制结构、函数、数组、指针"},
+  {"name": "数据结构", "code": "CS2001", "credits": 4.0, "hours": 72, "type": "必修", "semester": 3, "description": "线性表、树、图、查找、排序算法"},
+  {"name": "算法设计与分析", "code": "CS2002", "credits": 3.0, "hours": 48, "type": "必修", "semester": 4, "description": "分治、动态规划、贪心、回溯、NP完全性"},
+  {"name": "计算机组成原理", "code": "CS2003", "credits": 3.0, "hours": 56, "type": "必修", "semester": 3, "description": "处理器、存储器、总线、I/O系统"},
+  {"name": "操作系统", "code": "CS3001", "credits": 3.0, "hours": 56, "type": "必修", "semester": 5, "description": "进程管理、内存管理、文件系统、并发控制"},
+  {"name": "计算机网络", "code": "CS3002", "credits": 3.0, "hours": 48, "type": "必修", "semester": 5, "description": "TCP/IP协议栈、路由、传输层、应用层协议"},
+  {"name": "数据库系统概论", "code": "CS3003", "credits": 3.0, "hours": 48, "type": "必修", "semester": 4, "description": "关系模型、SQL、事务处理、数据库设计"},
+  {"name": "人工智能导论", "code": "CS3004", "credits": 3.0, "hours": 48, "type": "必修", "semester": 5, "description": "搜索、知识表示、机器学习基础、神经网络"},
+  {"name": "机器学习", "code": "CS4001", "credits": 3.0, "hours": 56, "type": "选修", "semester": 6, "description": "监督学习、无监督学习、深度学习、强化学习入门"},
+  {"name": "编译原理", "code": "CS3005", "credits": 3.0, "hours": 56, "type": "必修", "semester": 5, "description": "词法分析、语法分析、语义分析、代码生成"},
+  {"name": "软件工程", "code": "CS3006", "credits": 2.0, "hours": 32, "type": "必修", "semester": 6, "description": "需求分析、软件设计、测试、项目管理"}
+]

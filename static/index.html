@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>知识图谱 3D 可视化 — 光束学习路径</title>
+<style>
+  /* ===== 终末地 UI 主题：CSS 变量 ===== */
+  :root {
+    --bg-deep: #060d1a;
+    --bg-panel: rgba(6, 18, 36, 0.88);
+    --cyan: #00e5ff;
+    --cyan-dim: rgba(0, 229, 255, 0.15);
+    --cyan-glow: 0 0 12px rgba(0, 229, 255, 0.4);
+    --blue: #2979ff;
+    --gold: #ffb74d;
+    --teal: #26c6da;
+    --text: #d0dae8;
+    --text-dim: #4a6a8a;
+    --text-bright: #e8f0ff;
+    --border: rgba(0, 229, 255, 0.18);
+    --border-glow: rgba(0, 229, 255, 0.35);
+    --font-mono: "SF Mono", "JetBrains Mono", "Consolas", "Menlo", monospace;
+    --font-ui: "Rajdhani", "SF Pro Display", -apple-system, sans-serif;
+    --clip-panel: polygon(
+      10px 0, calc(100% - 3px) 0,
+      100% 3px, 100% calc(100% - 10px),
+      calc(100% - 3px) 100%, 3px 100%,
+      0 calc(100% - 3px), 0 10px
+    );
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: var(--font-ui);
+    background: var(--bg-deep);
+    overflow: hidden;
+    color: var(--text);
+  }
+
+  /* 六边形背景网格 */
+  body::before {
+    content: "";
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='52'%3E%3Cpath d='M30 0l30 17.3v34.6L30 69.3 0 52V17.3z' fill='none' stroke='%2300e5ff' stroke-width='0.3' stroke-opacity='0.06'/%3E%3C/svg%3E");
+    background-size: 60px 52px;
+    opacity: 0.5;
+  }
+
+  #graph { width: 100vw; height: 100vh; position: relative; z-index: 1; }
+
+  /* ===== 切角面板通用样式 ===== */
+  .panel-chamfer {
+    background: var(--bg-panel);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    clip-path: var(--clip-panel);
+    border: 1px solid var(--border);
+    position: relative;
+  }
+  /* 面板发光边框覆盖（模拟发光 bracket） */
+  .panel-chamfer::before {
+    content: "";
+    position: absolute; inset: -1px; z-index: -1;
+    clip-path: var(--clip-panel);
+    background: transparent;
+    box-shadow: inset 0 0 1px var(--border-glow), 0 0 8px var(--cyan-dim);
+    pointer-events: none;
+  }
+  /* 扫描线 */
+  .panel-chamfer::after {
+    content: "";
+    position: absolute; inset: 0; z-index: 99; pointer-events: none;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 229, 255, 0.015) 2px,
+      rgba(0, 229, 255, 0.015) 4px
+    );
+    animation: scanlines 8s linear infinite;
+  }
+  @keyframes scanlines {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(4px); }
+  }
+
+  /* ===== 工具栏 ===== */
+  #toolbar {
+    position: fixed; top: 16px; left: 16px; right: 16px; z-index: 10;
+    display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+  }
+  #search-box {
+    flex: 1; min-width: 200px; max-width: 400px;
+    padding: 10px 16px; border: 1px solid var(--border);
+    background: var(--bg-panel); color: var(--text-bright);
+    font-size: 13px; font-family: var(--font-mono);
+    backdrop-filter: blur(10px); outline: none;
+    clip-path: polygon(6px 0, calc(100% - 2px) 0, 100% 2px, 100% calc(100% - 6px), calc(100% - 2px) 100%, 2px 100%, 0 calc(100% - 2px), 0 6px);
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+  #search-box:focus {
+    border-color: var(--cyan);
+    box-shadow: var(--cyan-glow);
+  }
+  #search-box::placeholder { color: var(--text-dim); font-family: var(--font-ui); }
+
+  .tool-btn {
+    padding: 9px 16px; border: 1px solid var(--border); cursor: pointer;
+    background: var(--bg-panel); color: var(--text-dim);
+    font-size: 12px; font-family: var(--font-mono); letter-spacing: 0.5px;
+    backdrop-filter: blur(10px);
+    clip-path: polygon(5px 0, calc(100% - 2px) 0, 100% 2px, 100% calc(100% - 5px), calc(100% - 2px) 100%, 2px 100%, 0 calc(100% - 2px), 0 5px);
+    transition: color 0.25s, border-color 0.25s, box-shadow 0.25s;
+  }
+  .tool-btn:hover {
+    color: var(--cyan);
+    border-color: var(--cyan);
+    box-shadow: var(--cyan-glow);
+  }
+  .tool-btn.active {
+    background: rgba(0, 229, 255, 0.12);
+    color: var(--cyan);
+    border-color: var(--cyan);
+  }
+
+  /* ===== 搜索下拉 ===== */
+  #search-results {
+    position: fixed; top: 56px; left: 16px; z-index: 11;
+    max-width: 400px; width: 100%; max-height: 300px; overflow-y: auto;
+    display: none;
+  }
+  #search-results.panel-chamfer { clip-path: var(--clip-panel); }
+  #search-results.show { display: block; }
+  .search-item {
+    padding: 10px 16px; cursor: pointer;
+    border-bottom: 1px solid rgba(0,229,255,0.06);
+    display: flex; align-items: center; gap: 8px;
+    color: var(--text-dim); font-size: 12px; font-family: var(--font-mono);
+    transition: background 0.2s, color 0.2s;
+  }
+  .search-item:hover { background: rgba(0,229,255,0.06); color: var(--cyan); }
+  .search-item:last-child { border-bottom: none; }
+  .search-dot {
+    width: 8px; height: 8px;
+    clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+    flex-shrink: 0;
+  }
+  .search-label {
+    font-size: 9px; color: var(--text-dim); margin-left: auto;
+    text-transform: uppercase; letter-spacing: 1px;
+  }
+
+  /* ===== 详情面板 ===== */
+  #detail {
+    position: fixed; top: 16px; right: 16px; z-index: 10;
+    width: 340px; max-height: calc(100vh - 32px); overflow-y: auto;
+    padding: 28px 24px 20px; color: var(--text);
+    display: none;
+  }
+  #detail.show { display: block; }
+  #detail h2 {
+    font-size: 18px; margin-bottom: 4px;
+    color: var(--text-bright); font-family: var(--font-mono);
+    letter-spacing: 1px; text-transform: uppercase;
+  }
+  #detail .label-tag {
+    display: inline-block; padding: 3px 12px;
+    font-size: 10px; margin-bottom: 16px; font-weight: 600;
+    font-family: var(--font-mono); letter-spacing: 1.5px;
+    clip-path: polygon(4px 0, calc(100% - 2px) 0, 100% 2px, 100% calc(100% - 4px), calc(100% - 2px) 100%, 2px 100%, 0 calc(100% - 2px), 0 4px);
+  }
+  #detail .prop-row {
+    display: flex; justify-content: space-between; padding: 7px 0;
+    border-bottom: 1px solid rgba(0,229,255,0.05); font-size: 12px;
+    font-family: var(--font-mono);
+  }
+  #detail .prop-key { color: var(--text-dim); }
+  #detail .prop-val { color: var(--text-bright); text-align: right; }
+  #detail .btn-row { display: flex; gap: 8px; margin-top: 18px; }
+  #detail .action-btn {
+    flex: 1; padding: 9px 0; border: 1px solid var(--border); cursor: pointer;
+    font-size: 11px; font-family: var(--font-mono); letter-spacing: 1px;
+    background: transparent; color: var(--text-dim);
+    clip-path: polygon(4px 0, calc(100% - 2px) 0, 100% 2px, 100% calc(100% - 4px), calc(100% - 2px) 100%, 2px 100%, 0 calc(100% - 2px), 0 4px);
+    transition: color 0.25s, border-color 0.25s, box-shadow 0.25s;
+  }
+  #detail .action-btn:hover {
+    color: var(--cyan);
+    border-color: var(--cyan);
+    box-shadow: var(--cyan-glow);
+  }
+  .btn-expand { border-color: var(--teal) !important; color: var(--teal) !important; }
+  .btn-expand:hover { box-shadow: 0 0 12px rgba(38,198,218,0.4) !important; }
+  .btn-path { border-color: var(--gold) !important; color: var(--gold) !important; }
+  .btn-path:hover { box-shadow: 0 0 12px rgba(255,183,77,0.4) !important; }
+  .btn-close {
+    position: absolute; top: 12px; right: 18px;
+    background: none; border: none; color: var(--text-dim); font-size: 18px;
+    cursor: pointer; transition: color 0.2s; font-family: var(--font-mono);
+  }
+  .btn-close:hover { color: var(--cyan); }
+
+  /* ===== 光束路径控制栏 ===== */
+  #path-controls {
+    position: fixed; bottom: 60px; left: 50%; transform: translateX(-50%); z-index: 10;
+    display: none; gap: 10px; align-items: center;
+    background: var(--bg-panel); backdrop-filter: blur(12px);
+    padding: 10px 20px;
+    clip-path: var(--clip-panel);
+    border: 1px solid var(--border);
+  }
+  #path-controls.show { display: flex; }
+  #path-controls::after {
+    content: "";
+    position: absolute; inset: 0; z-index: 99; pointer-events: none;
+    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,229,255,0.02) 2px, rgba(0,229,255,0.02) 4px);
+    animation: scanlines 8s linear infinite;
+  }
+  #path-controls button {
+    background: none; border: none; color: var(--text-dim); cursor: pointer;
+    font-size: 16px; padding: 4px 8px; transition: color 0.2s;
+  }
+  #path-controls button:hover { color: var(--cyan); }
+  #path-progress {
+    color: var(--text-dim); font-size: 11px; min-width: 80px;
+    text-align: center; font-family: var(--font-mono);
+  }
+  #speed-slider { width: 80px; accent-color: var(--cyan); }
+
+  /* ===== 图例 ===== */
+  #legend {
+    position: fixed; bottom: 20px; left: 20px; z-index: 10;
+    display: flex; gap: 18px; font-size: 10px;
+  }
+  .legend-item {
+    display: flex; align-items: center; gap: 6px;
+    color: var(--text-dim); font-family: var(--font-mono);
+    letter-spacing: 0.5px;
+  }
+  .legend-dot {
+    width: 10px; height: 10px;
+    clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+  }
+
+  /* ===== 加载 + 统计 ===== */
+  #loading {
+    position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%);
+    color: var(--cyan); font-size: 14px; z-index: 20; pointer-events: none;
+    font-family: var(--font-mono); letter-spacing: 2px;
+    animation: pulse-cyan 1.5s ease-in-out infinite;
+  }
+  @keyframes pulse-cyan {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; }
+  }
+
+  #stats {
+    position: fixed; bottom: 20px; right: 20px; z-index: 10;
+    color: var(--text-dim); font-size: 10px; font-family: var(--font-mono);
+  }
+
+  #toast {
+    position: fixed; bottom: 120px; left: 50%; transform: translateX(-50%); z-index: 20;
+    background: rgba(0,229,255,0.12); color: var(--cyan);
+    padding: 8px 24px; font-size: 12px; font-family: var(--font-mono);
+    clip-path: polygon(4px 0, calc(100% - 2px) 0, 100% 2px, 100% calc(100% - 4px), calc(100% - 2px) 100%, 2px 100%, 0 calc(100% - 2px), 0 4px);
+    border: 1px solid var(--border);
+    display: none; transition: 0.3s;
+  }
+</style>
+</head>
+<body>
+
+<div id="loading">加载知识图谱...</div>
+<div id="graph"></div>
+
+<div id="toolbar">
+  <input type="text" id="search-box" placeholder="搜索专业、课程、知识点..." autocomplete="off">
+  <button class="tool-btn" id="btn-reset">⟳ 重置</button>
+  <button class="tool-btn" id="btn-full">全图</button>
+  <button class="tool-btn" id="btn-major">专业</button>
+</div>
+
+<div id="search-results"></div>
+
+<div id="detail">
+  <button class="btn-close" onclick="closeDetail()">&times;</button>
+  <h2 id="detail-name"></h2>
+  <span class="label-tag" id="detail-label"></span>
+  <div id="detail-props"></div>
+  <div class="btn-row">
+    <button class="action-btn btn-expand" id="btn-expand">查看关联</button>
+    <button class="action-btn btn-path" id="btn-path">光束路径</button>
+  </div>
+</div>
+
+<div id="path-controls">
+  <button id="btn-prev" title="上一阶段">⏮</button>
+  <button id="btn-play" title="播放/暂停">▶</button>
+  <button id="btn-next" title="下一阶段">⏭</button>
+  <span id="path-progress">0/0</span>
+  <span style="color:#888;font-size:11px">速度</span>
+  <input type="range" id="speed-slider" min="1" max="20" value="8">
+</div>
+
+<div id="toast"></div>
+
+<div id="legend">
+  <div class="legend-item"><span class="legend-dot" style="background:#ff6b6b"></span> 专业</div>
+  <div class="legend-item"><span class="legend-dot" style="background:#4ecdc4"></span> 课程</div>
+  <div class="legend-item"><span class="legend-dot" style="background:#ffe66d"></span> 知识点</div>
+  <div class="legend-item" style="margin-left:8px"><span style="color:#00e5ff">━</span> 光束路径</div>
+</div>
+
+<div id="stats"></div>
+
+<script src="https://unpkg.com/three@0.158.0/build/three.min.js"></script>
+<script src="https://unpkg.com/three@0.158.0/examples/js/controls/OrbitControls.js"></script>
+<script src="https://unpkg.com/3d-force-graph@1.73.5/dist/3d-force-graph.min.js"></script>
+
+<script>
+const API = 'http://localhost:8000';
+
+	// 移动端检测
+	const isMobile = /iPhone|iPad|Android/i.test(navigator.userAgent);
+
+	// WebGL 支持检测
+	const canvas = document.createElement('canvas');
+	const hasWebGL = !!(canvas.getContext('webgl') || canvas.getContext('experimental-webgl'));
+	if (!hasWebGL) {
+	  document.getElementById('graph').innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100vh;color:#ff6b6b;font-size:18px;text-align:center;padding:40px;">你的浏览器不支持 WebGL<br><small style="color:#5a7a9a">请使用 Chrome / Firefox / Edge 等现代浏览器</small></div>';
+	  document.getElementById('loading').style.display = 'none';
+	  throw new Error('WebGL not supported');
+	}
+
+// ── Three.js 场景准备 ──
+const Graph = ForceGraph3D({
+	  controlType: 'orbit',
+	  rendererConfig: {
+	    antialias: !isMobile,
+	    powerPreference: 'high-performance',
+	  },
+	})(document.getElementById('graph'))
+  .graphData({ nodes: [], links: [] })
+  .nodeLabel(node => node.name)
+  .nodeColor(node => node.isOnPath ? '#00e5ff' : node.color)
+  .nodeVal(node => node.isOnPath ? node.size * 1.8 : node.size)
+  .nodeResolution(isMobile ? 8 : 14)
+  .linkColor(link => link.isOnPath ? '#00e5ff' : (link.color || '#555'))
+  .linkWidth(link => link.isOnPath ? 3.5 : (link.type === 'PREREQUISITE_OF' ? 1.2 : 0.6))
+  .linkDirectionalParticles(link => link.isOnPath ? (isMobile ? 3 : 6) : 0)
+  .linkDirectionalParticleWidth(link => link.isOnPath ? (isMobile ? 1.2 : 2) : 0)
+  .linkDirectionalParticleSpeed(link => link.isOnPath ? 0.02 : 0)
+  .linkOpacity(0.55)
+  .backgroundColor('#060d1a')
+  .showNavInfo(false)
+  .onNodeClick(onNodeClick)
+  .onNodeHover(onNodeHover)
+  .onNodeDragEnd(node => {
+    node.fx = node.x; node.fy = node.y; node.fz = node.z;
+  });
+
+Graph.cameraPosition({ x: 200, y: 200, z: 300 });
+
+	// 限制移动端 DPR
+	try {
+	  const renderer = Graph.renderer();
+	  if (renderer) renderer.setPixelRatio(isMobile ? 1 : Math.min(window.devicePixelRatio, 2));
+	} catch(e) {}
+
+// ── 光束动画状态 ──
+let beamGroup = null;          // Three.js group holding all beam objects
+let photon = null;             // the glowing sphere
+let photonLight = null;        // point light attached to photon
+let pathSegments = [];         // [{startNodeId, endNodeId, mesh, startPos, endPos}]
+let pathNodeIds = [];          // ordered list of node IDs on the path
+let currentSegment = 0;        // which segment the photon is on
+let segmentProgress = 0;       // 0..1 within current segment
+let beamSpeed = 0.3;           // progress per second
+let beamPlaying = true;
+let beamAnimId = null;
+let lastFrameTime = null;
+
+// ── 工具函数：两点之间创建发光圆柱 ──
+function createGlowCylinder(start, end, radius, color) {
+  const dir = new THREE.Vector3().subVectors(end, start);
+  const len = dir.length();
+  if (len < 0.01) return null;
+  const mid = new THREE.Vector3().addVectors(start, end).multiplyScalar(0.5);
+  const geom = new THREE.CylinderGeometry(radius, radius, len, 6, 1, true);
+  const mat = new THREE.MeshPhongMaterial({
+    color: color,
+    emissive: color,
+    emissiveIntensity: 0.4,
+    transparent: true,
+    opacity: 0.7,
+    side: THREE.DoubleSide,
+  });
+  const mesh = new THREE.Mesh(geom, mat);
+  mesh.position.copy(mid);
+  const axis = new THREE.Vector3(0, 1, 0);
+  const quat = new THREE.Quaternion().setFromUnitVectors(axis, dir.normalize());
+  mesh.setRotationFromQuaternion(quat);
+  return mesh;
+}
+
+// ── 从图中读取节点位置 ──
+function getNodePosition(nodeId) {
+  const data = Graph.graphData();
+  const node = data.nodes.find(n => n.id === nodeId);
+  if (!node) return new THREE.Vector3(0, 0, 0);
+  // 读取力模拟中的实际位置
+  return new THREE.Vector3(
+    node.hasOwnProperty('x') ? node.x : 0,
+    node.hasOwnProperty('y') ? node.y : 0,
+    node.hasOwnProperty('z') ? node.z : 0
+  );
+}
+
+// ── 构建光束路径 ──
+function buildBeamPath() {
+  clearBeam();
+
+  const data = Graph.graphData();
+  const nodes = data.nodes;
+  const links = data.links;
+
+  if (!nodes.length) return;
+
+  // 找出路径上的节点（按 stage 排序）
+  const pathNodes = nodes
+    .filter(n => n.label === 'KnowledgePoint' && n.stage)
+    .sort((a, b) => a.stage - b.stage);
+
+  if (pathNodes.length < 2) return;
+
+  // 收集 path 上的节点 ID 和有向边
+  const pathIds = new Set(pathNodes.map(n => n.id));
+  const pathEdges = []; // [{srcId, dstId}]
+
+  // 按 stage 顺序，找到连接相邻阶段的 PREREQUISITE_OF 边
+  const kpLinks = links.filter(l => l.type === 'PREREQUISITE_OF' && pathIds.has(l.source) && pathIds.has(l.target));
+
+  // 从第一个节点开始，BFS/DFS 通过这些边，遵循 stage 顺序
+  const orderedIds = pathNodes.map(n => n.id);
+
+  // 为每对相邻 stage 的节点找到最短边连接
+  for (let i = 0; i < orderedIds.length - 1; i++) {
+    const srcId = orderedIds[i];
+    const dstId = orderedIds[i + 1];
+    const edge = kpLinks.find(l =>
+      (l.source === srcId && l.target === dstId) ||
+      (typeof l.source === 'object' && l.source.id === srcId && typeof l.target === 'object' && l.target.id === dstId) ||
+      (l.source === srcId && (typeof l.target === 'object' ? l.target.id : l.target) === dstId)
+    );
+    if (edge) {
+      const src = typeof edge.source === 'object' ? edge.source.id : edge.source;
+      const tgt = typeof edge.target === 'object' ? edge.target.id : edge.target;
+      pathEdges.push({ srcId: src, dstId: tgt });
+    }
+  }
+
+  if (pathEdges.length === 0) return;
+
+  // 构建唯一的节点序列: start → ... → end
+  pathNodeIds = [];
+  const edgeMap = new Map();
+  for (const e of pathEdges) {
+    if (!edgeMap.has(e.srcId)) edgeMap.set(e.srcId, []);
+    edgeMap.get(e.srcId).push(e.dstId);
+  }
+
+  // 找到起始节点（没有边指向它的）
+  const targets = new Set(pathEdges.map(e => e.dstId));
+  const startId = pathEdges.find(e => !targets.has(e.srcId))?.srcId || pathEdges[0].srcId;
+
+  // 从 startId 遍历得到顺序
+  const visited2 = new Set();
+  let cur = startId;
+  while (cur && !visited2.has(cur)) {
+    visited2.add(cur);
+    pathNodeIds.push(cur);
+    const nexts = edgeMap.get(cur) || [];
+    cur = nexts.find(n => !visited2.has(n)) || null;
+  }
+
+  if (pathNodeIds.length < 2) return;
+
+  // 标记节点在路径上
+  nodes.forEach(n => {
+    n.isOnPath = pathNodeIds.includes(n.id);
+  });
+
+  // 固定的节点头上不再解开
+  // 标记边在路径上
+  const edgeKeySet = new Set(pathEdges.map(e => `${e.srcId}->${e.dstId}`));
+  links.forEach(l => {
+    const src = typeof l.source === 'object' ? l.source.id : l.source;
+    const tgt = typeof l.target === 'object' ? l.target.id : l.target;
+    l.isOnPath = edgeKeySet.has(`${src}->${tgt}`);
+  });
+
+  // 刷新图以应用新颜色
+  Graph.graphData({ nodes: [...nodes], links: [...links] });
+
+  // 等待力模拟稳定后创建光束（轮询直到所有路径节点有位置，最多等 8 秒）
+  let stabilityChecks = 0;
+  function checkStability() {
+    const graphNodes = Graph.graphData().nodes;
+    const allPlaced = pathNodeIds.every(id => {
+      const nd = graphNodes.find(n => n.id === id);
+      return nd && nd.x !== undefined && nd.y !== undefined && nd.z !== undefined;
+    });
+    if (allPlaced || stabilityChecks >= 32) {
+      createBeamObjects();
+    } else {
+      stabilityChecks++;
+      setTimeout(checkStability, 250);
+    }
+  }
+  setTimeout(checkStability, 300);
+
+  document.getElementById('path-controls').classList.add('show');
+  showToast(`光束路径: ${pathNodeIds.length} 个阶段`);
+}
+
+// ── 创建光束 Three.js 对象 ──
+function createBeamObjects() {
+  const scene = Graph.scene();
+  beamGroup = new THREE.Group();
+  beamGroup.name = 'BeamGroup';
+  scene.add(beamGroup);
+
+  pathSegments = [];
+
+  for (let i = 0; i < pathNodeIds.length - 1; i++) {
+    const startPos = getNodePosition(pathNodeIds[i]);
+    const endPos = getNodePosition(pathNodeIds[i + 1]);
+    const mesh = createGlowCylinder(startPos, endPos, 1.2, 0x00e5ff);
+    if (mesh) {
+      mesh.material.emissiveIntensity = 0.15; // 初始暗淡
+      beamGroup.add(mesh);
+      pathSegments.push({
+        startNodeId: pathNodeIds[i],
+        endNodeId: pathNodeIds[i + 1],
+        mesh: mesh,
+        startPos: startPos.clone(),
+        endPos: endPos.clone(),
+      });
+    }
+  }
+
+  // 光子球
+  if (pathSegments.length > 0) {
+    const photonGeom = new THREE.SphereGeometry(2.5, 16, 16);
+    const photonMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+    photon = new THREE.Mesh(photonGeom, photonMat);
+    beamGroup.add(photon);
+
+    // 光环（稍大的半透明球）
+    const haloGeom = new THREE.SphereGeometry(4, 16, 16);
+    const haloMat = new THREE.MeshBasicMaterial({
+      color: 0x00e5ff,
+      transparent: true,
+      opacity: 0.35,
+    });
+    const halo = new THREE.Mesh(haloGeom, haloMat);
+    photon.add(halo);
+
+    // 点光源
+    photonLight = new THREE.PointLight(0x00e5ff, 50, 80);
+    photon.add(photonLight);
+
+    // 初始位置
+    photon.position.copy(pathSegments[0].startPos);
+  }
+
+  // 环境光 + 方向光（确保管道可见）
+  const ambient = new THREE.AmbientLight(0x0a1628);
+  ambient.name = 'BeamAmbient';
+  beamGroup.add(ambient);
+
+  currentSegment = 0;
+  segmentProgress = 0;
+  beamPlaying = true;
+  lastFrameTime = performance.now();
+  updatePathProgress();
+  animateBeam();
+}
+
+// ── 清除光束 ──
+function clearBeam() {
+  if (beamAnimId) {
+    cancelAnimationFrame(beamAnimId);
+    beamAnimId = null;
+  }
+  const scene = Graph.scene();
+  if (beamGroup) {
+    scene.remove(beamGroup);
+    // 清理
+    beamGroup.traverse(child => {
+      if (child.geometry) child.geometry.dispose();
+      if (child.material) {
+        if (Array.isArray(child.material)) {
+          child.material.forEach(m => m.dispose());
+        } else {
+          child.material.dispose();
+        }
+      }
+    });
+    beamGroup = null;
+  }
+  photon = null;
+  photonLight = null;
+  pathSegments = [];
+  pathNodeIds = [];
+
+  // 清除节点和边的路径标记
+  const data = Graph.graphData();
+  data.nodes.forEach(n => { n.isOnPath = false; });
+  data.links.forEach(l => { l.isOnPath = false; });
+  Graph.graphData(data);
+
+  document.getElementById('path-controls').classList.remove('show');
+}
+
+// ── 光束动画循环 ──
+function animateBeam(timestamp) {
+  if (!beamPlaying || !photon || pathSegments.length === 0) {
+    beamAnimId = requestAnimationFrame(animateBeam);
+    return;
+  }
+
+  if (!timestamp) timestamp = performance.now();
+  if (!lastFrameTime) lastFrameTime = timestamp;
+  let dt = (timestamp - lastFrameTime) / 1000;
+  lastFrameTime = timestamp;
+
+  // 限制最大 dt 避免跳帧时跳跃
+  if (dt > 0.1) dt = 0.1;
+
+  // 推进光子
+  segmentProgress += beamSpeed * dt;
+
+  while (segmentProgress >= 1.0 && currentSegment < pathSegments.length - 1) {
+    segmentProgress -= 1.0;
+    currentSegment++;
+  }
+
+  // 到头后循环
+  if (currentSegment >= pathSegments.length - 1 && segmentProgress >= 1.0) {
+    currentSegment = 0;
+    segmentProgress = 0;
+    // 重置所有管道的发光
+    pathSegments.forEach(s => {
+      s.mesh.material.emissiveIntensity = 0.15;
+    });
+  }
+
+  // 更新管道位置（节点可能在力模拟中移动）
+  const seg = pathSegments[currentSegment];
+  if (seg) {
+    const newStart = getNodePosition(seg.startNodeId);
+    const newEnd = getNodePosition(seg.endNodeId);
+    seg.startPos.copy(newStart);
+    seg.endPos.copy(newEnd);
+
+    // 更新管道 mesh 位置
+    const dir = new THREE.Vector3().subVectors(newEnd, newStart);
+    const len = dir.length();
+    const mid = new THREE.Vector3().addVectors(newStart, newEnd).multiplyScalar(0.5);
+    seg.mesh.position.copy(mid);
+    seg.mesh.scale.y = len / (seg.mesh.geometry.parameters?.height || len);
+    const axis = new THREE.Vector3(0, 1, 0);
+    const quat = new THREE.Quaternion().setFromUnitVectors(axis, dir.normalize());
+    seg.mesh.setRotationFromQuaternion(quat);
+
+    // 计算光子位置
+    const photonPos = new THREE.Vector3().lerpVectors(newStart, newEnd, segmentProgress);
+    photon.position.copy(photonPos);
+
+    // 点亮光子经过的管道
+    for (let i = 0; i < currentSegment; i++) {
+      pathSegments[i].mesh.material.emissiveIntensity = 1.0;
+    }
+    // 当前段：随进度逐渐变亮
+    seg.mesh.material.emissiveIntensity = 0.15 + 0.85 * segmentProgress;
+
+    // 未到达的段：保持暗淡
+    for (let i = currentSegment + 1; i < pathSegments.length; i++) {
+      pathSegments[i].mesh.material.emissiveIntensity = 0.15;
+    }
+  }
+
+  updatePathProgress();
+  beamAnimId = requestAnimationFrame(animateBeam);
+}
+
+function updatePathProgress() {
+  const el = document.getElementById('path-progress');
+  if (el && pathNodeIds.length > 0) {
+    const stage = currentSegment + (segmentProgress >= 0.5 ? 1 : 0);
+    el.textContent = `${Math.min(stage + 1, pathNodeIds.length)}/${pathNodeIds.length}`;
+  }
+}
+
+// ── 控件事件 ──
+document.getElementById('btn-play').addEventListener('click', () => {
+  beamPlaying = !beamPlaying;
+  document.getElementById('btn-play').textContent = beamPlaying ? '⏸' : '▶';
+  if (beamPlaying) lastFrameTime = null;
+});
+
+document.getElementById('btn-prev').addEventListener('click', () => {
+  if (pathSegments.length === 0) return;
+  currentSegment = Math.max(0, currentSegment - 1);
+  segmentProgress = 0;
+  if (photon && pathSegments[currentSegment]) {
+    photon.position.copy(pathSegments[currentSegment].startPos);
+  }
+  // 重置高亮
+  pathSegments.forEach((s, i) => {
+    s.mesh.material.emissiveIntensity = i < currentSegment ? 1.0 : 0.15;
+  });
+  updatePathProgress();
+});
+
+document.getElementById('btn-next').addEventListener('click', () => {
+  if (pathSegments.length === 0) return;
+  currentSegment = Math.min(pathSegments.length - 1, currentSegment + 1);
+  segmentProgress = 0;
+  if (photon && pathSegments[currentSegment]) {
+    photon.position.copy(pathSegments[currentSegment].startPos);
+  }
+  pathSegments.forEach((s, i) => {
+    s.mesh.material.emissiveIntensity = i < currentSegment ? 1.0 : 0.15;
+  });
+  updatePathProgress();
+});
+
+document.getElementById('speed-slider').addEventListener('input', function() {
+  beamSpeed = this.value * 0.1;
+});
+
+// ── 提示 ──
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.display = 'block';
+  setTimeout(() => { t.style.display = 'none'; }, 2500);
+}
+
+// ── 加载全图 ──
+async function loadFullGraph() {
+  clearBeam();
+  document.getElementById('loading').style.display = 'block';
+  try {
+    const res = await fetch(`${API}/api/graph?limit=300`);
+    const data = await res.json();
+    data.nodes.forEach(n => { n.isOnPath = false; });
+    data.links.forEach(l => { l.isOnPath = false; });
+    Graph.graphData(data);
+    updateStats();
+    setTimeout(() => {
+      Graph.d3Force('link')?.distance(80);
+      Graph.d3Force('charge')?.strength(-200);
+    }, 800);
+  } catch(e) {
+    console.error(e);
+    document.getElementById('loading').textContent = '加载失败';
+  }
+  document.getElementById('loading').style.display = 'none';
+}
+
+// ── 加载邻居 ──
+async function loadNeighbors(label, name) {
+  clearBeam();
+  document.getElementById('loading').style.display = 'block';
+  try {
+    const res = await fetch(`${API}/api/graph/neighbors/${label}/${encodeURIComponent(name)}?depth=1`);
+    const data = await res.json();
+    data.nodes.forEach(n => { n.isOnPath = false; });
+    data.links.forEach(l => { l.isOnPath = false; });
+    Graph.graphData(data);
+    updateStats();
+  } catch(e) { console.error(e); }
+  document.getElementById('loading').style.display = 'none';
+}
+
+// ── 加载前驱链 + 触发光束 ──
+async function loadPrerequisites(kpName) {
+  clearBeam();
+  document.getElementById('loading').style.display = 'block';
+  try {
+    const res = await fetch(`${API}/api/graph/prerequisites/${encodeURIComponent(kpName)}`);
+    const data = await res.json();
+    if (data.error) {
+      alert(data.error);
+      document.getElementById('loading').style.display = 'none';
+      return;
+    }
+    data.nodes.forEach(n => { n.isOnPath = false; });
+    data.links.forEach(l => { l.isOnPath = false; });
+    Graph.graphData(data);
+    // 拉大力模拟参数让节点分散
+    setTimeout(() => {
+      Graph.d3Force('link')?.distance(140);
+      Graph.d3Force('charge')?.strength(-500);
+      Graph.d3Force('center')?.strength(0.3);
+    }, 500);
+    updateStats();
+    // 等力模拟稳定后构建光束
+    setTimeout(() => buildBeamPath(), 1500);
+  } catch(e) { console.error(e); }
+  document.getElementById('loading').style.display = 'none';
+}
+
+// ── 搜索 ──
+let searchTimeout;
+document.getElementById('search-box').addEventListener('input', function() {
+  clearTimeout(searchTimeout);
+  const q = this.value.trim();
+  if (!q) { document.getElementById('search-results').classList.remove('show'); return; }
+  searchTimeout = setTimeout(() => searchNodes(q), 300);
+});
+
+async function searchNodes(q) {
+  const res = await fetch(`${API}/api/search?q=${encodeURIComponent(q)}`);
+  const nodes = await res.json();
+  const box = document.getElementById('search-results');
+  box.innerHTML = nodes.map(n => `
+    <div class="search-item" onclick="focusNode('${n.id}','${n.label}','${n.name.replace(/'/g,"&#39;")}')">
+      <span class="search-dot" style="background:${n.color}"></span>
+      <span>${n.name}</span>
+      <span class="search-label">${n.label}</span>
+    </div>
+  `).join('');
+  box.classList.toggle('show', nodes.length > 0);
+}
+
+function focusNode(id, label, name) {
+  document.getElementById('search-results').classList.remove('show');
+  document.getElementById('search-box').value = '';
+  loadNeighbors(label, name);
+}
+
+function onNodeClick(node) { showDetail(node); }
+function onNodeHover(node) {
+  document.getElementById('graph').style.cursor = node ? 'pointer' : 'default';
+}
+
+function showDetail(node) {
+  const panel = document.getElementById('detail');
+  document.getElementById('detail-name').textContent = node.name;
+  const tag = document.getElementById('detail-label');
+  tag.textContent = node.label;
+  tag.style.background = (node.color || '#888') + '33';
+  tag.style.color = node.color || '#fff';
+  const props = node.properties || {};
+  document.getElementById('detail-props').innerHTML = Object.entries(props)
+    .filter(([k]) => k !== 'name')
+    .map(([k, v]) => `<div class="prop-row"><span class="prop-key">${k}</span><span class="prop-val">${v}</span></div>`)
+    .join('') || '<div style="color:#888;font-size:13px">无额外属性</div>';
+  document.getElementById('btn-expand').onclick = () => loadNeighbors(node.label, node.name);
+  document.getElementById('btn-path').style.display = node.label === 'KnowledgePoint' ? 'block' : 'none';
+  document.getElementById('btn-path').onclick = () => {
+    if (node.label === 'KnowledgePoint') loadPrerequisites(node.name);
+  };
+  panel.classList.add('show');
+}
+
+function closeDetail() { document.getElementById('detail').classList.remove('show'); }
+
+function updateStats() {
+  const d = Graph.graphData();
+  document.getElementById('stats').textContent = `节点: ${d.nodes.length} | 关系: ${d.links.length}`;
+}
+
+// ── 工具栏 ──
+document.getElementById('btn-reset').onclick = () => {
+  Graph.cameraPosition({ x: 200, y: 200, z: 300 }, { x: 0, y: 0, z: 0 }, 1000);
+  Graph.zoomToFit(400, 100);
+};
+document.getElementById('btn-full').onclick = () => loadFullGraph();
+document.getElementById('btn-major').onclick = async () => {
+  clearBeam();
+  document.getElementById('loading').style.display = 'block';
+  const res = await fetch(`${API}/api/graph?limit=300`);
+  const data = await res.json();
+  const majorIds = new Set(data.nodes.filter(n => n.label === 'Major').map(n => n.id));
+  const courseIds = new Set();
+  const keepLinks = [];
+  for (const l of data.links) {
+    const src = typeof l.source === 'object' ? l.source.id : l.source;
+    if (majorIds.has(src)) {
+      const tgt = typeof l.target === 'object' ? l.target.id : l.target;
+      courseIds.add(tgt); keepLinks.push(l);
+    }
+  }
+  const keepIds = new Set([...majorIds, ...courseIds]);
+  data.nodes.forEach(n => { n.isOnPath = false; });
+  data.links.forEach(l => { l.isOnPath = false; });
+  Graph.graphData({ nodes: data.nodes.filter(n => keepIds.has(n.id)), links: keepLinks });
+  updateStats();
+  document.getElementById('loading').style.display = 'none';
+};
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDetail(); });
+document.addEventListener('click', e => {
+  if (!e.target.closest('#search-box') && !e.target.closest('#search-results')) {
+    document.getElementById('search-results').classList.remove('show');
+  }
+});
+
+// ── 启动 ──
+loadFullGraph();
+</script>
+</body>
+</html>
