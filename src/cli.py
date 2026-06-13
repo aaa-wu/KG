@@ -33,9 +33,20 @@ def cmd_import(data_dir: str):
     """导入数据目录中的所有文件到 Neo4j"""
     print(f"解析数据目录: {data_dir}")
     data = parse_data_dir(data_dir)
-    print(f"  专业: {len(data.get('majors', []))}")
-    print(f"  课程: {len(data.get('courses', []))}")
-    print(f"  知识点: {len(data.get('knowledge', []))}")
+    if data.get("format") == "entity_relation_csv":
+        labels = {}
+        for row in data.get("entities", []):
+            labels[row["label"]] = labels.get(row["label"], 0) + 1
+        rels = {}
+        for row in data.get("relations", []):
+            rels[row["type"]] = rels.get(row["type"], 0) + 1
+        print(f"  实体: {len(data.get('entities', []))} {labels}")
+        print(f"  关系: {len(data.get('relations', []))} {rels}")
+        print(f"  审计记录: {len(data.get('knowledge_concept_audit', []))}")
+    else:
+        print(f"  专业: {len(data.get('majors', []))}")
+        print(f"  课程: {len(data.get('courses', []))}")
+        print(f"  知识点: {len(data.get('knowledge', []))}")
 
     driver = get_neo4j_driver()
     with driver.session() as session:
@@ -49,6 +60,7 @@ def cmd_import(data_dir: str):
     print(f"  专业-课程关系: {counts['major_course_rels']}")
     print(f"  课程-知识点关系: {counts['course_knowledge_rels']}")
     print(f"  前驱关系: {counts['knowledge_prereq_rels']}")
+    print(f"  课程前驱关系: {counts['course_prereq_rels']}")
     driver.close()
 
 
@@ -226,7 +238,7 @@ def main():
     elif cmd == "init":
         cmd_init()
     elif cmd == "import":
-        data_dir = "data/sample"
+        data_dir = "data"
         for i, a in enumerate(args):
             if a == "--dir" and i + 1 < len(args):
                 data_dir = args[i + 1]

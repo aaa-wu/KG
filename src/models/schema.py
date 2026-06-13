@@ -3,13 +3,14 @@
 # 节点标签
 LABEL_MAJOR = "Major"
 LABEL_COURSE = "Course"
-LABEL_KNOWLEDGE_POINT = "KnowledgePoint"
+LABEL_KNOWLEDGE_POINT = "KnowledgeConcept"
 
 # 关系类型
-REL_BELONGS_TO = "BELONGS_TO"          # Major → Course
-REL_COVERS = "COVERS"                   # Course → KnowledgePoint
-REL_PREREQUISITE_OF = "PREREQUISITE_OF" # KnowledgePoint → KnowledgePoint
-REL_RELATED_TO = "RELATED_TO"           # KnowledgePoint ↔ KnowledgePoint
+REL_BELONGS_TO = "HAS_COURSE"          # Major → Course
+REL_COVERS = "COVERS_KNOWLEDGE"        # Course → KnowledgeConcept
+REL_PREREQUISITE_OF = "CONCEPT_PREREQUISITE_FOR" # KnowledgeConcept → KnowledgeConcept
+REL_PREREQUISITE_FOR = "PREREQUISITE_FOR" # Course → Course
+REL_RELATED_TO = "RELATED_TO"           # KnowledgeConcept ↔ KnowledgeConcept
 
 # 创建约束和索引的 Cypher 语句
 CREATE_CONSTRAINTS = [
@@ -19,7 +20,7 @@ CREATE_CONSTRAINTS = [
     FOR (m:{LABEL_MAJOR})
     REQUIRE (m.name, m.university) IS UNIQUE
     """,
-    # KnowledgePoint 的 name 唯一约束
+    # KnowledgeConcept 的 name 唯一约束
     f"""
     CREATE CONSTRAINT knowledge_unique IF NOT EXISTS
     FOR (k:{LABEL_KNOWLEDGE_POINT})

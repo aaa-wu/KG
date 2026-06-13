@@ -1,6 +1,9 @@
 """学习路径推荐：前驱链查询 + 拓扑排序 + 下一批推荐"""
 from collections import deque
-from src.models.schema import LABEL_KNOWLEDGE_POINT, LABEL_COURSE, LABEL_MAJOR
+from src.models.schema import (
+    LABEL_KNOWLEDGE_POINT, LABEL_COURSE, LABEL_MAJOR,
+    REL_BELONGS_TO, REL_COVERS, REL_PREREQUISITE_OF,
+)
 
 
 def _topological_sort(nodes: set[str], edges: list[tuple[str, str]]) -> list[list[str]]:
@@ -46,7 +49,7 @@ def find_prerequisites(session, target_name: str) -> dict:
     # 获取所有前驱节点
     result = session.run(
         f"""
-        MATCH path = (prereq:{LABEL_KNOWLEDGE_POINT})-[:PREREQUISITE_OF*1..10]->
+        MATCH path = (prereq:{LABEL_KNOWLEDGE_POINT})-[:{REL_PREREQUISITE_OF}*1..10]->
                      (target:{LABEL_KNOWLEDGE_POINT} {{name: $name}})
         RETURN DISTINCT prereq.name AS name, prereq.difficulty AS difficulty,
                prereq.category AS category, length(path) AS distance
@@ -73,7 +76,7 @@ def find_prerequisites(session, target_name: str) -> dict:
     # 获取这些节点之间的 PREREQUISITE_OF 边
     edge_result = session.run(
         f"""
-        MATCH (a:{LABEL_KNOWLEDGE_POINT})-[r:PREREQUISITE_OF]->(b:{LABEL_KNOWLEDGE_POINT})
+        MATCH (a:{LABEL_KNOWLEDGE_POINT})-[r:{REL_PREREQUISITE_OF}]->(b:{LABEL_KNOWLEDGE_POINT})
         WHERE a.name IN $names AND b.name IN $names
         RETURN a.name AS src, b.name AS dst
         """,
@@ -88,7 +91,7 @@ def find_prerequisites(session, target_name: str) -> dict:
     kp_courses = {}
     course_result = session.run(
         f"""
-        MATCH (c:{LABEL_COURSE})-[r:COVERS]->(k:{LABEL_KNOWLEDGE_POINT})
+        MATCH (c:{LABEL_COURSE})-[r:{REL_COVERS}]->(k:{LABEL_KNOWLEDGE_POINT})
         WHERE k.name IN $names
         RETURN k.name AS kp, c.name AS course
         """,
@@ -122,7 +125,7 @@ def recommend_next(session, known_kp_names: list[str]) -> dict:
             f"""
             MATCH (k:{LABEL_KNOWLEDGE_POINT})
             WHERE NOT EXISTS {{
-                MATCH (other:{LABEL_KNOWLEDGE_POINT})-[:PREREQUISITE_OF]->(k)
+                MATCH (other:{LABEL_KNOWLEDGE_POINT})-[:{REL_PREREQUISITE_OF}]->(k)
             }}
             RETURN k.name AS name, k.category AS category, k.difficulty AS difficulty
             ORDER BY k.difficulty, k.name
@@ -138,11 +141,11 @@ def recommend_next(session, known_kp_names: list[str]) -> dict:
     # 查找：已知集合的所有后继（即 known → next）
     result = session.run(
         f"""
-        MATCH (known:{LABEL_KNOWLEDGE_POINT})-[:PREREQUISITE_OF]->(next:{LABEL_KNOWLEDGE_POINT})
+        MATCH (known:{LABEL_KNOWLEDGE_POINT})-[:{REL_PREREQUISITE_OF}]->(next:{LABEL_KNOWLEDGE_POINT})
         WHERE known.name IN $known_names AND NOT next.name IN $known_names
         WITH next, collect(known.name) AS prereqs_satisfied
         // 检查 next 的所有前驱是否都在已知集合中
-        OPTIONAL MATCH (prereq:{LABEL_KNOWLEDGE_POINT})-[:PREREQUISITE_OF]->(next)
+        OPTIONAL MATCH (prereq:{LABEL_KNOWLEDGE_POINT})-[:{REL_PREREQUISITE_OF}]->(next)
         WHERE NOT prereq.name IN $known_names
         WITH next, prereqs_satisfied, count(prereq) AS missing_count
         WHERE missing_count = 0
@@ -203,8 +206,8 @@ def get_major_structure(session, major_name: str, university: str = None) -> dic
         result = session.run(
             f"""
             MATCH (m:{LABEL_MAJOR} {{name: $major, university: $uni}})
-            -[:BELONGS_TO]->(c:{LABEL_COURSE})
-            OPTIONAL MATCH (c)-[:COVERS]->(k:{LABEL_KNOWLEDGE_POINT})
+            -[:{REL_BELONGS_TO}]->(c:{LABEL_COURSE})
+            OPTIONAL MATCH (c)-[:{REL_COVERS}]->(k:{LABEL_KNOWLEDGE_POINT})
             RETURN m.name AS major, m.university AS university, m.description AS desc,
                    c.name AS course, c.type AS type, c.semester AS semester,
                    c.credits AS credits,
@@ -217,8 +220,8 @@ def get_major_structure(session, major_name: str, university: str = None) -> dic
         result = session.run(
             f"""
             MATCH (m:{LABEL_MAJOR} {{name: $major}})
-            -[:BELONGS_TO]->(c:{LABEL_COURSE})
-            OPTIONAL MATCH (c)-[:COVERS]->(k:{LABEL_KNOWLEDGE_POINT})
+            -[:{REL_BELONGS_TO}]->(c:{LABEL_COURSE})
+            OPTIONAL MATCH (c)-[:{REL_COVERS}]->(k:{LABEL_KNOWLEDGE_POINT})
             RETURN m.name AS major, m.university AS university, m.description AS desc,
                    c.name AS course, c.type AS type, c.semester AS semester,
                    c.credits AS credits,

@@ -3,699 +3,4857 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>知识图谱 3D 可视化 — 光束学习路径</title>
+<link rel="icon" href="data:,">
+<title>KG Studio — 知识图谱学习路径</title>
 <style>
-  /* ===== 终末地 UI 主题：CSS 变量 ===== */
   :root {
-    --bg-deep: #060d1a;
-    --bg-panel: rgba(6, 18, 36, 0.88);
-    --cyan: #00e5ff;
-    --cyan-dim: rgba(0, 229, 255, 0.15);
-    --cyan-glow: 0 0 12px rgba(0, 229, 255, 0.4);
-    --blue: #2979ff;
-    --gold: #ffb74d;
-    --teal: #26c6da;
-    --text: #d0dae8;
-    --text-dim: #4a6a8a;
-    --text-bright: #e8f0ff;
-    --border: rgba(0, 229, 255, 0.18);
-    --border-glow: rgba(0, 229, 255, 0.35);
-    --font-mono: "SF Mono", "JetBrains Mono", "Consolas", "Menlo", monospace;
-    --font-ui: "Rajdhani", "SF Pro Display", -apple-system, sans-serif;
-    --clip-panel: polygon(
-      10px 0, calc(100% - 3px) 0,
-      100% 3px, 100% calc(100% - 10px),
-      calc(100% - 3px) 100%, 3px 100%,
-      0 calc(100% - 3px), 0 10px
-    );
+    --bg: #07090d;
+    --bg-deep: #030407;
+    --panel: rgba(18, 22, 30, 0.72);
+    --panel-solid: rgba(22, 27, 36, 0.92);
+    --panel-soft: rgba(255, 255, 255, 0.045);
+    --line: rgba(221, 230, 236, 0.13);
+    --line-strong: rgba(230, 238, 244, 0.24);
+    --text: #eef3f4;
+    --text-muted: #8c98a4;
+    --text-faint: #59636f;
+    --teal: #52d1c7;
+    --cyan: #9be7ff;
+    --amber: #f6bf73;
+    --coral: #ff756f;
+    --ink-shadow: 0 22px 80px rgba(0, 0, 0, 0.48);
+    --panel-shadow: 0 18px 50px rgba(0, 0, 0, 0.36), inset 0 1px 0 rgba(255,255,255,0.08);
+    --radius: 8px;
+    --font-ui: Inter, "SF Pro Display", "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-mono: "SF Mono", "JetBrains Mono", "Cascadia Code", Menlo, monospace;
+  }
+
+  /* ===== Tactical terminal v2 polish ===== */
+  :root {
+    --tactical-yellow: #ffd51d;
+    --tactical-amber: #ffad22;
+    --tactical-orange: #f06423;
+    --tactical-red: #ff4a3d;
+    --tactical-black: #050504;
+    --tactical-panel: #e7e3d7;
+    --tactical-panel-2: #c9c4b8;
+    --tactical-text: #201d18;
+    --tactical-muted: #6f695e;
+    --tactical-line: rgba(255, 213, 29, 0.34);
+    --metal-edge: rgba(255, 255, 255, 0.16);
+  }
+
+  body {
+    min-height: 100dvh;
+    background:
+      linear-gradient(90deg, rgba(0,0,0,0.42), transparent 20%, transparent 80%, rgba(0,0,0,0.48)),
+      radial-gradient(circle at 50% 50%, rgba(255,213,29,0.11), transparent 30%),
+      linear-gradient(135deg, #171410 0%, #050504 48%, #18140e 100%);
+  }
+
+  body::before {
+    background-image:
+      linear-gradient(rgba(255,255,255,0.028) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.022) 1px, transparent 1px),
+      repeating-linear-gradient(115deg, rgba(255,213,29,0.018) 0 1px, transparent 1px 18px);
+    background-size: 42px 42px, 42px 42px, 100% 100%;
+    opacity: 0.7;
+    mask-image: radial-gradient(circle at 50% 50%, #000 0 62%, transparent 86%);
+  }
+
+  body::after {
+    background:
+      radial-gradient(circle at 50% 50%, transparent 0 27%, rgba(255,213,29,0.05) 28%, transparent 29%, transparent 40%, rgba(255,255,255,0.08) 41%, transparent 42%, transparent 53%, rgba(255,213,29,0.12) 54%, transparent 55%),
+      linear-gradient(90deg, rgba(5,5,4,0.9), transparent 24%, transparent 76%, rgba(5,5,4,0.9)),
+      linear-gradient(0deg, rgba(5,5,4,0.82), transparent 22%, transparent 80%, rgba(5,5,4,0.72));
+  }
+
+  #graph {
+    left: 50%;
+    top: 50%;
+    width: min(68vw, 1040px);
+    height: min(68vw, 780px);
+    min-width: 620px;
+    min-height: 620px;
+    border: 20px solid rgba(18, 16, 12, 0.95);
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 50% 50%, rgba(255,213,29,0.20), transparent 7%),
+      repeating-radial-gradient(circle at center, transparent 0 25px, rgba(255,213,29,0.055) 26px 27px),
+      radial-gradient(circle at center, rgba(4,4,3,0.10) 0 50%, rgba(0,0,0,0.48) 71%, rgba(255,213,29,0.18) 100%),
+      #070604;
+    box-shadow:
+      0 0 0 1px rgba(255,255,255,0.34),
+      0 0 0 12px rgba(255,255,255,0.05),
+      0 0 0 24px rgba(0,0,0,0.28),
+      inset 0 0 84px rgba(255,213,29,0.16),
+      0 38px 120px rgba(0,0,0,0.66);
+  }
+
+  #graph::before {
+    inset: 18px;
+    background:
+      conic-gradient(from -2deg, rgba(255,213,29,0.95) 0 0.8deg, transparent 0.8deg 6deg, rgba(255,255,255,0.75) 6deg 6.6deg, transparent 6.6deg 12deg),
+      radial-gradient(circle at center, transparent 0 61%, rgba(255,255,255,0.20) 62%, transparent 63%, transparent 73%, rgba(255,213,29,0.34) 74%, transparent 75%);
+    mask-image: radial-gradient(circle at center, transparent 0 56%, #000 57% 82%, transparent 83%);
+  }
+
+  #graph::after {
+    background:
+      linear-gradient(18deg, transparent 48%, rgba(255,213,29,0.12) 49%, transparent 50%),
+      linear-gradient(108deg, transparent 47%, rgba(255,255,255,0.09) 48%, transparent 49%),
+      radial-gradient(circle at center, transparent 0 52%, rgba(0,0,0,0.20) 66%, rgba(0,0,0,0.76) 100%);
+  }
+
+  #brand,
+  #toolbar,
+  #side-meta,
+  #detail,
+  #timeline-panel,
+  #path-controls,
+  #legend,
+  #stats {
+    z-index: 20;
+  }
+
+  #brand {
+    top: 28px;
+    left: 18px;
+    width: 288px;
+    min-width: 0;
+    padding: 18px 18px 16px;
+    border-radius: 0 0 18px 0;
+    clip-path: polygon(0 0, 100% 0, 94% 100%, 0 100%);
+    background:
+      linear-gradient(90deg, rgba(255,213,29,0.18), transparent 34%),
+      linear-gradient(145deg, rgba(28,25,20,0.98), rgba(8,8,7,0.94));
+    border: 1px solid var(--metal-edge);
+    box-shadow: 0 18px 44px rgba(0,0,0,0.46), inset 0 -2px 0 rgba(255,213,29,0.34);
+    transform: none;
+  }
+
+  #brand > * {
+    transform: none;
+  }
+
+  .brand-mark {
+    width: 42px;
+    height: 42px;
+    border-radius: 2px;
+    border-color: rgba(255,213,29,0.58);
+    background:
+      linear-gradient(45deg, transparent 36%, var(--tactical-yellow) 37% 63%, transparent 64%),
+      linear-gradient(-45deg, transparent 36%, rgba(255,213,29,0.70) 37% 63%, transparent 64%),
+      rgba(255,213,29,0.10);
+    box-shadow: 0 0 28px rgba(255,213,29,0.16);
+    transform: skewX(-10deg);
+  }
+
+  .brand-mark::before,
+  .brand-mark::after {
+    display: none;
+  }
+
+  .brand-copy strong {
+    color: #f5f1e4;
+    font-size: 18px;
+    font-weight: 780;
+  }
+
+  .brand-copy span,
+  .brand-copy span::before {
+    color: var(--tactical-yellow);
+    font-size: 11px;
+  }
+
+  #toolbar {
+    top: 28px;
+    left: 336px;
+    right: 356px;
+    width: auto;
+    max-width: none;
+    min-width: 440px;
+    grid-template-columns: minmax(220px, 1fr) 72px 72px 72px;
+    gap: 10px;
+    padding: 10px 14px;
+    border-radius: 0;
+    clip-path: polygon(18px 0, 100% 0, calc(100% - 18px) 100%, 0 100%);
+    transform: none;
+    background: linear-gradient(180deg, rgba(29,26,21,0.98), rgba(8,8,7,0.92));
+    border: 1px solid var(--metal-edge);
+    box-shadow: 0 18px 46px rgba(0,0,0,0.44), inset 0 -2px 0 rgba(255,213,29,0.22);
+  }
+
+  #search-box {
+    height: 44px;
+    border-radius: 2px;
+    border-color: rgba(255,213,29,0.24);
+    background-color: rgba(0,0,0,0.38);
+    color: #f7f1dd;
+    outline: 2px solid transparent;
+    font-size: 14px;
+  }
+
+  #search-box:focus-visible,
+  .tool-btn:focus-visible,
+  .action-btn:focus-visible,
+  #path-controls button:focus-visible,
+  .mode-card:focus-visible,
+  .search-item:focus-visible {
+    outline: 2px solid var(--tactical-yellow);
+    outline-offset: 3px;
+  }
+
+  #search-box::placeholder {
+    color: rgba(247,241,221,0.48);
+  }
+
+  .tool-btn {
+    min-width: 0;
+    height: 44px;
+    border-radius: 2px;
+    background: rgba(255,255,255,0.07);
+    border-color: rgba(255,255,255,0.14);
+    color: rgba(247,241,221,0.76);
+    font-family: var(--font-mono);
+    font-size: 14px;
+    transform: none;
+  }
+
+  .tool-btn:hover,
+  .tool-btn.active {
+    color: #17120b;
+    background: var(--tactical-yellow);
+    border-color: var(--tactical-yellow);
+    transform: none;
+  }
+
+  #side-meta {
+    top: 132px;
+    left: 22px;
+    width: 268px;
+    bottom: 126px;
+    padding: 18px;
+    overflow-y: auto;
+    clip-path: polygon(0 0, 96% 0, 100% 18px, 100% calc(100% - 18px), 92% 100%, 0 100%);
+    background: linear-gradient(145deg, rgba(236,232,219,0.95), rgba(190,185,171,0.86));
+    border: 1px solid rgba(255,255,255,0.56);
+    box-shadow: 0 22px 58px rgba(0,0,0,0.42), inset 0 1px 0 rgba(255,255,255,0.85);
+  }
+
+  .side-title,
+  .timeline-title {
+    color: var(--tactical-text);
+    font-size: 13px;
+    letter-spacing: 0;
+  }
+
+  .side-title span,
+  .timeline-title span {
+    color: var(--tactical-muted);
+  }
+
+  .mode-card,
+  .filter-card {
+    position: relative;
+    min-height: 72px;
+    border-radius: 2px;
+    clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+    background: linear-gradient(145deg, rgba(255,255,255,0.50), rgba(218,213,199,0.72));
+    border: 1px solid rgba(32,29,24,0.18);
+    color: var(--tactical-muted);
+    box-shadow: inset 4px 0 0 rgba(32,29,24,0.18);
+    transform: none;
+  }
+
+  .mode-card > *,
+  .filter-card > * {
+    transform: none;
+  }
+
+  .mode-card strong,
+  .filter-card strong {
+    color: var(--tactical-text);
+    font-family: var(--font-mono);
+    font-size: 14px;
+    letter-spacing: 0;
+  }
+
+  .mode-card.active {
+    background: linear-gradient(145deg, rgba(255,226,74,0.96), rgba(255,173,34,0.82));
+    box-shadow: inset 4px 0 0 #15110a, 0 0 28px rgba(255,213,29,0.22);
+  }
+
+  .filter-stack {
+    display: grid;
+  }
+
+  #detail {
+    top: 112px;
+    right: 22px;
+    bottom: 126px;
+    width: 336px;
+    padding: 16px;
+    overflow-y: auto;
+    clip-path: polygon(18px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 22px) 100%, 0 100%, 0 18px);
+    background: linear-gradient(145deg, rgba(236,232,219,0.96), rgba(196,190,176,0.88));
+    border: 1px solid rgba(255,255,255,0.58);
+    box-shadow: 0 22px 60px rgba(0,0,0,0.46), inset 0 1px 0 rgba(255,255,255,0.88);
+  }
+
+  #detail h2,
+  #detail .label-tag,
+  #detail-props {
+    display: block;
+  }
+
+  #detail h2 {
+    color: var(--tactical-text);
+    padding-right: 34px;
+    font-size: 24px;
+    line-height: 1.18;
+    margin: 0 0 12px;
+    text-wrap: balance;
+  }
+
+  #detail .label-tag {
+    width: fit-content;
+    border-radius: 2px;
+    color: #17120b !important;
+    background: var(--tactical-yellow) !important;
+    border-color: rgba(32,29,24,0.28);
+  }
+
+  #detail .prop-row {
+    grid-template-columns: 88px 1fr;
+    border-bottom-color: rgba(32,29,24,0.16);
+    color: var(--tactical-text);
+  }
+
+  #detail .prop-key {
+    color: var(--tactical-muted);
+  }
+
+  #detail .prop-val {
+    color: var(--tactical-text);
+    font-weight: 700;
+  }
+
+  .btn-close {
+    display: block;
+    color: var(--tactical-text);
+    background: rgba(0,0,0,0.06);
+    border-color: rgba(32,29,24,0.16);
+  }
+
+  #detail .btn-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 16px;
+  }
+
+  #detail .action-btn {
+    min-height: 48px;
+    padding: 0 12px;
+    border-radius: 2px;
+    transform: none;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0;
+    color: #17120b !important;
+    background: linear-gradient(145deg, rgba(255,226,74,0.96), rgba(255,173,34,0.84));
+    border-color: rgba(32,29,24,0.24) !important;
+    box-shadow: none;
+  }
+
+  #detail .action-btn:hover {
+    background: #17120b !important;
+    color: var(--tactical-yellow) !important;
+    transform: none;
+  }
+
+  #timeline-panel {
+    left: 312px;
+    right: 382px;
+    bottom: 18px;
+    width: auto;
+    min-height: 92px;
+    padding: 16px 20px;
+    transform: none;
+    border-radius: 0;
+    clip-path: polygon(16px 0, 100% 0, calc(100% - 16px) 100%, 0 100%);
+    background:
+      linear-gradient(90deg, rgba(255,213,29,0.94) 0 57%, rgba(16,14,10,0.96) 57% 100%);
+    border: 1px solid rgba(255,255,255,0.20);
+    box-shadow: 0 16px 52px rgba(0,0,0,0.48), inset 0 2px 0 rgba(255,255,255,0.18);
+  }
+
+  #timeline-panel .timeline-title {
+    color: #17120b;
+  }
+
+  #timeline-panel .timeline-title span {
+    color: rgba(255,255,255,0.74);
+  }
+
+  #stage-list {
+    margin-top: 12px;
+    gap: 8px;
+  }
+
+  .stage-card {
+    min-height: 48px;
+    border-radius: 2px;
+    background: rgba(12,10,7,0.86);
+    border-color: rgba(255,255,255,0.18);
+  }
+
+  .stage-card.active {
+    background: rgba(255,255,255,0.20);
+    border-color: #fff1a3;
+  }
+
+  .stage-card strong {
+    color: var(--tactical-yellow);
+  }
+
+  #path-controls {
+    bottom: 128px;
+    left: 50%;
+    border-radius: 2px;
+    background: rgba(8,7,5,0.88);
+    border-color: rgba(255,213,29,0.36);
+  }
+
+  #path-controls button {
+    border-radius: 2px;
+    color: #f7f1dd;
+  }
+
+  #legend {
+    left: 22px;
+    bottom: 18px;
+    width: 268px;
+    border-radius: 2px;
+    background: rgba(8,7,5,0.88);
+    border-color: rgba(255,213,29,0.30);
+  }
+
+  #stats {
+    right: 22px;
+    bottom: 18px;
+    width: 336px;
+    border-radius: 2px;
+    color: #17120b;
+    background: linear-gradient(145deg, rgba(255,226,74,0.96), rgba(255,173,34,0.86));
+    border-color: rgba(255,255,255,0.34);
+    font-weight: 800;
+  }
+
+  #search-results {
+    top: 86px;
+    left: 336px;
+    width: min(520px, calc(100vw - 720px));
+    transform: none;
+    border-radius: 2px;
+    background: rgba(13,11,8,0.96);
+    border-color: rgba(255,213,29,0.30);
+  }
+
+  .search-item {
+    width: 100%;
+    border: 0;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    background: transparent;
+    text-align: left;
+    font: inherit;
+  }
+
+  .search-item:hover {
+    background: rgba(255,213,29,0.10);
+  }
+
+  #toast {
+    background: rgba(12,10,7,0.94);
+    color: var(--tactical-yellow);
+    border-color: rgba(255,213,29,0.38);
+    border-radius: 2px;
+    transition: opacity 0.24s ease, transform 0.24s ease;
+  }
+
+  @media (max-width: 1100px) {
+    #graph {
+      top: 44%;
+      width: 104vw;
+      height: 104vw;
+      min-width: 0;
+      min-height: 0;
+      border-width: 12px;
+    }
+
+    #brand {
+      top: 12px;
+      left: 12px;
+      width: calc(100vw - 24px);
+      clip-path: polygon(0 0, 100% 0, 96% 100%, 0 100%);
+    }
+
+    #toolbar {
+      top: 86px;
+      left: 12px;
+      right: 12px;
+      min-width: 0;
+      grid-template-columns: repeat(3, 1fr);
+      clip-path: none;
+    }
+
+    #search-box {
+      grid-column: 1 / -1;
+    }
+
+    #side-meta {
+      display: none;
+    }
+
+    #detail {
+      left: 12px;
+      right: 12px;
+      top: auto;
+      bottom: 188px;
+      width: auto;
+      max-height: 29vh;
+      clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%, 0 12px);
+    }
+
+    #timeline-panel {
+      left: 12px;
+      right: 12px;
+      bottom: 70px;
+      clip-path: none;
+    }
+
+    #stage-list {
+      grid-template-columns: repeat(5, 142px);
+      overflow-x: auto;
+    }
+
+    #path-controls {
+      bottom: 188px;
+      max-width: calc(100vw - 24px);
+    }
+
+    #legend {
+      left: 12px;
+      bottom: 12px;
+      width: calc(100vw - 166px);
+      overflow-x: auto;
+    }
+
+    #stats {
+      right: 12px;
+      bottom: 12px;
+      width: 140px;
+      font-size: 10px;
+    }
+
+    #search-results {
+      top: 178px;
+      left: 24px;
+      width: calc(100vw - 48px);
+    }
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  *::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: rgba(255,255,255,0.035);
+    border-radius: 999px;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background: rgba(155,231,255,0.22);
+    border-radius: 999px;
+  }
+
+  *::-webkit-scrollbar-thumb:hover {
+    background: rgba(155,231,255,0.34);
+  }
+
   body {
     font-family: var(--font-ui);
-    background: var(--bg-deep);
+    background: var(--bg);
     overflow: hidden;
+    color: var(--text);
+    letter-spacing: 0;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(120deg, rgba(82,209,199,0.09), transparent 34%),
+      linear-gradient(250deg, rgba(246,191,115,0.08), transparent 30%),
+      radial-gradient(circle at 52% 46%, rgba(155,231,255,0.10), transparent 26%),
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.022) 1px, transparent 1px);
+    background-size: 100% 100%, 100% 100%, 100% 100%, 44px 44px, 44px 44px;
+    mask-image: radial-gradient(circle at center, #000 0, #000 52%, transparent 82%);
+  }
+
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    background:
+      linear-gradient(90deg, rgba(3,4,7,0.82), transparent 18%, transparent 74%, rgba(3,4,7,0.78)),
+      linear-gradient(0deg, rgba(3,4,7,0.70), transparent 22%, transparent 78%, rgba(3,4,7,0.54));
+  }
+
+  #graph {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    z-index: 1;
+  }
+
+  #graph::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(circle at center, transparent 0 44%, rgba(7,9,13,0.20) 72%, rgba(7,9,13,0.56) 100%);
+  }
+
+  .glass {
+    background: linear-gradient(145deg, rgba(26, 31, 41, 0.78), rgba(12, 15, 22, 0.64));
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--panel-shadow);
+    backdrop-filter: blur(18px) saturate(1.12);
+    -webkit-backdrop-filter: blur(18px) saturate(1.12);
+  }
+
+  #brand {
+    position: fixed;
+    top: 22px;
+    left: 24px;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 180px;
+    pointer-events: none;
+  }
+
+  .brand-mark {
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+    border: 1px solid rgba(155,231,255,0.35);
+    background:
+      linear-gradient(135deg, rgba(82,209,199,0.32), rgba(246,191,115,0.14)),
+      rgba(255,255,255,0.05);
+    box-shadow: 0 10px 30px rgba(82,209,199,0.14), inset 0 1px 0 rgba(255,255,255,0.22);
+    position: relative;
+  }
+
+  .brand-mark::before,
+  .brand-mark::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    background: var(--cyan);
+    box-shadow: 0 0 14px rgba(155,231,255,0.62);
+  }
+
+  .brand-mark::before { width: 6px; height: 6px; left: 9px; top: 10px; }
+  .brand-mark::after { width: 8px; height: 8px; right: 8px; bottom: 8px; background: var(--amber); }
+
+  .brand-copy strong {
+    display: block;
+    font-size: 13px;
+    line-height: 1;
+    font-weight: 700;
     color: var(--text);
   }
 
-  /* 六边形背景网格 */
-  body::before {
-    content: "";
-    position: fixed; inset: 0; z-index: 0; pointer-events: none;
-    background-image:
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='52'%3E%3Cpath d='M30 0l30 17.3v34.6L30 69.3 0 52V17.3z' fill='none' stroke='%2300e5ff' stroke-width='0.3' stroke-opacity='0.06'/%3E%3C/svg%3E");
-    background-size: 60px 52px;
-    opacity: 0.5;
+  .brand-copy span {
+    display: block;
+    margin-top: 5px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-faint);
   }
 
-  #graph { width: 100vw; height: 100vh; position: relative; z-index: 1; }
-
-  /* ===== 切角面板通用样式 ===== */
-  .panel-chamfer {
-    background: var(--bg-panel);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    clip-path: var(--clip-panel);
-    border: 1px solid var(--border);
-    position: relative;
-  }
-  /* 面板发光边框覆盖（模拟发光 bracket） */
-  .panel-chamfer::before {
-    content: "";
-    position: absolute; inset: -1px; z-index: -1;
-    clip-path: var(--clip-panel);
-    background: transparent;
-    box-shadow: inset 0 0 1px var(--border-glow), 0 0 8px var(--cyan-dim);
-    pointer-events: none;
-  }
-  /* 扫描线 */
-  .panel-chamfer::after {
-    content: "";
-    position: absolute; inset: 0; z-index: 99; pointer-events: none;
-    background: repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 2px,
-      rgba(0, 229, 255, 0.015) 2px,
-      rgba(0, 229, 255, 0.015) 4px
-    );
-    animation: scanlines 8s linear infinite;
-  }
-  @keyframes scanlines {
-    0% { transform: translateY(0); }
-    100% { transform: translateY(4px); }
-  }
-
-  /* ===== 工具栏 ===== */
   #toolbar {
-    position: fixed; top: 16px; left: 16px; right: 16px; z-index: 10;
-    display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+    position: fixed;
+    top: 18px;
+    left: 236px;
+    right: 396px;
+    z-index: 10;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    padding: 7px;
+    max-width: 720px;
+    min-width: 360px;
+    background: linear-gradient(145deg, rgba(24, 29, 38, 0.78), rgba(10, 13, 18, 0.64));
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    box-shadow: var(--panel-shadow);
+    backdrop-filter: blur(18px) saturate(1.12);
+    -webkit-backdrop-filter: blur(18px) saturate(1.12);
   }
+
   #search-box {
-    flex: 1; min-width: 200px; max-width: 400px;
-    padding: 10px 16px; border: 1px solid var(--border);
-    background: var(--bg-panel); color: var(--text-bright);
-    font-size: 13px; font-family: var(--font-mono);
-    backdrop-filter: blur(10px); outline: none;
-    clip-path: polygon(6px 0, calc(100% - 2px) 0, 100% 2px, 100% calc(100% - 6px), calc(100% - 2px) 100%, 2px 100%, 0 calc(100% - 2px), 0 6px);
-    transition: border-color 0.3s, box-shadow 0.3s;
+    flex: 1;
+    min-width: 220px;
+    height: 40px;
+    padding: 0 16px 0 38px;
+    border: 1px solid transparent;
+    border-radius: 7px;
+    background:
+      url("data:image/svg+xml,%3Csvg width='18' height='18' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='11' cy='11' r='7' stroke='%238c98a4' stroke-width='1.7'/%3E%3Cpath d='M16.5 16.5L21 21' stroke='%238c98a4' stroke-width='1.7' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat 13px center / 17px,
+      rgba(255,255,255,0.055);
+    color: var(--text);
+    font-size: 13px;
+    font-family: var(--font-ui);
+    outline: 2px solid transparent;
+    transition: border-color 0.2s, background-color 0.2s, box-shadow 0.2s;
   }
+
   #search-box:focus {
-    border-color: var(--cyan);
-    box-shadow: var(--cyan-glow);
+    border-color: rgba(155,231,255,0.34);
+    background-color: rgba(255,255,255,0.08);
+    box-shadow: 0 0 0 3px rgba(155,231,255,0.07);
   }
-  #search-box::placeholder { color: var(--text-dim); font-family: var(--font-ui); }
+
+  #search-box::placeholder { color: var(--text-faint); }
 
   .tool-btn {
-    padding: 9px 16px; border: 1px solid var(--border); cursor: pointer;
-    background: var(--bg-panel); color: var(--text-dim);
-    font-size: 12px; font-family: var(--font-mono); letter-spacing: 0.5px;
-    backdrop-filter: blur(10px);
-    clip-path: polygon(5px 0, calc(100% - 2px) 0, 100% 2px, 100% calc(100% - 5px), calc(100% - 2px) 100%, 2px 100%, 0 calc(100% - 2px), 0 5px);
-    transition: color 0.25s, border-color 0.25s, box-shadow 0.25s;
+    height: 40px;
+    padding: 0 13px;
+    border: 1px solid rgba(255,255,255,0.09);
+    border-radius: 7px;
+    cursor: pointer;
+    background: rgba(255,255,255,0.045);
+    color: var(--text-muted);
+    font-size: 12px;
+    font-family: var(--font-ui);
+    font-weight: 600;
+    transition: color 0.2s, border-color 0.2s, background 0.2s, transform 0.2s;
   }
+
   .tool-btn:hover {
-    color: var(--cyan);
-    border-color: var(--cyan);
-    box-shadow: var(--cyan-glow);
+    color: var(--text);
+    border-color: rgba(155,231,255,0.28);
+    background: rgba(155,231,255,0.08);
+    transform: translateY(-1px);
   }
+
   .tool-btn.active {
-    background: rgba(0, 229, 255, 0.12);
+    background: rgba(155,231,255,0.14);
     color: var(--cyan);
-    border-color: var(--cyan);
+    border-color: rgba(155,231,255,0.34);
   }
 
-  /* ===== 搜索下拉 ===== */
   #search-results {
-    position: fixed; top: 56px; left: 16px; z-index: 11;
-    max-width: 400px; width: 100%; max-height: 300px; overflow-y: auto;
+    position: fixed;
+    top: 74px;
+    left: 243px;
+    z-index: 11;
+    width: min(430px, calc(100vw - 48px));
+    max-height: 340px;
+    overflow-y: auto;
     display: none;
-  }
-  #search-results.panel-chamfer { clip-path: var(--clip-panel); }
-  #search-results.show { display: block; }
-  .search-item {
-    padding: 10px 16px; cursor: pointer;
-    border-bottom: 1px solid rgba(0,229,255,0.06);
-    display: flex; align-items: center; gap: 8px;
-    color: var(--text-dim); font-size: 12px; font-family: var(--font-mono);
-    transition: background 0.2s, color 0.2s;
-  }
-  .search-item:hover { background: rgba(0,229,255,0.06); color: var(--cyan); }
-  .search-item:last-child { border-bottom: none; }
-  .search-dot {
-    width: 8px; height: 8px;
-    clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
-    flex-shrink: 0;
-  }
-  .search-label {
-    font-size: 9px; color: var(--text-dim); margin-left: auto;
-    text-transform: uppercase; letter-spacing: 1px;
+    border-radius: 9px;
+    background: var(--panel-solid);
+    border: 1px solid var(--line);
+    box-shadow: var(--ink-shadow);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
   }
 
-  /* ===== 详情面板 ===== */
-  #detail {
-    position: fixed; top: 16px; right: 16px; z-index: 10;
-    width: 340px; max-height: calc(100vh - 32px); overflow-y: auto;
-    padding: 28px 24px 20px; color: var(--text);
-    display: none;
+  #search-results.show { display: block; }
+
+  .search-item {
+    padding: 13px 15px;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(255,255,255,0.055);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text-muted);
+    font-size: 13px;
+    transition: background 0.18s, color 0.18s;
   }
-  #detail.show { display: block; }
-  #detail h2 {
-    font-size: 18px; margin-bottom: 4px;
-    color: var(--text-bright); font-family: var(--font-mono);
-    letter-spacing: 1px; text-transform: uppercase;
+
+  .search-item:hover { background: rgba(155,231,255,0.075); color: var(--text); }
+  .search-item:last-child { border-bottom: none; }
+
+  .search-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    box-shadow: 0 0 16px currentColor;
   }
-  #detail .label-tag {
-    display: inline-block; padding: 3px 12px;
-    font-size: 10px; margin-bottom: 16px; font-weight: 600;
-    font-family: var(--font-mono); letter-spacing: 1.5px;
-    clip-path: polygon(4px 0, calc(100% - 2px) 0, 100% 2px, 100% calc(100% - 4px), calc(100% - 2px) 100%, 2px 100%, 0 calc(100% - 2px), 0 4px);
-  }
-  #detail .prop-row {
-    display: flex; justify-content: space-between; padding: 7px 0;
-    border-bottom: 1px solid rgba(0,229,255,0.05); font-size: 12px;
+
+  .search-label {
+    font-size: 10px;
+    color: var(--text-faint);
+    margin-left: auto;
+    text-transform: uppercase;
     font-family: var(--font-mono);
   }
-  #detail .prop-key { color: var(--text-dim); }
-  #detail .prop-val { color: var(--text-bright); text-align: right; }
-  #detail .btn-row { display: flex; gap: 8px; margin-top: 18px; }
+
+  #detail {
+    position: fixed;
+    top: 18px;
+    right: 22px;
+    z-index: 10;
+    width: 348px;
+    max-height: calc(100vh - 40px);
+    overflow-y: auto;
+    padding: 24px;
+    color: var(--text);
+    display: none;
+    background: linear-gradient(150deg, rgba(27, 32, 42, 0.88), rgba(10, 13, 18, 0.78));
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    box-shadow: var(--panel-shadow);
+    backdrop-filter: blur(22px) saturate(1.12);
+    -webkit-backdrop-filter: blur(22px) saturate(1.12);
+  }
+
+  #detail.show { display: block; }
+
+  #detail h2 {
+    padding-right: 34px;
+    font-size: 21px;
+    line-height: 1.28;
+    margin-bottom: 10px;
+    color: var(--text);
+    font-weight: 720;
+  }
+
+  #detail .label-tag {
+    display: inline-flex;
+    align-items: center;
+    min-height: 24px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 10px;
+    margin-bottom: 18px;
+    font-weight: 700;
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    border: 1px solid currentColor;
+  }
+
+  #detail .prop-row {
+    display: grid;
+    grid-template-columns: 96px 1fr;
+    gap: 14px;
+    align-items: start;
+    padding: 11px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.065);
+    font-size: 12px;
+  }
+
+  #detail .prop-key {
+    color: var(--text-faint);
+    font-family: var(--font-mono);
+  }
+
+  #detail .prop-val {
+    color: #dce5e7;
+    text-align: right;
+    overflow-wrap: anywhere;
+  }
+
+  #detail .btn-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+  }
+
   #detail .action-btn {
-    flex: 1; padding: 9px 0; border: 1px solid var(--border); cursor: pointer;
-    font-size: 11px; font-family: var(--font-mono); letter-spacing: 1px;
-    background: transparent; color: var(--text-dim);
-    clip-path: polygon(4px 0, calc(100% - 2px) 0, 100% 2px, 100% calc(100% - 4px), calc(100% - 2px) 100%, 2px 100%, 0 calc(100% - 2px), 0 4px);
-    transition: color 0.25s, border-color 0.25s, box-shadow 0.25s;
+    flex: 1;
+    min-height: 38px;
+    padding: 0 12px;
+    border: 1px solid var(--line);
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 700;
+    background: rgba(255,255,255,0.055);
+    color: var(--text-muted);
+    transition: color 0.2s, border-color 0.2s, background 0.2s, transform 0.2s;
   }
+
   #detail .action-btn:hover {
-    color: var(--cyan);
-    border-color: var(--cyan);
-    box-shadow: var(--cyan-glow);
+    color: var(--text);
+    transform: translateY(-1px);
   }
-  .btn-expand { border-color: var(--teal) !important; color: var(--teal) !important; }
-  .btn-expand:hover { box-shadow: 0 0 12px rgba(38,198,218,0.4) !important; }
-  .btn-path { border-color: var(--gold) !important; color: var(--gold) !important; }
-  .btn-path:hover { box-shadow: 0 0 12px rgba(255,183,77,0.4) !important; }
+
+  .btn-expand { border-color: rgba(82,209,199,0.30) !important; color: var(--teal) !important; }
+  .btn-expand:hover { background: rgba(82,209,199,0.10) !important; }
+  .btn-path { border-color: rgba(246,191,115,0.36) !important; color: var(--amber) !important; }
+  .btn-path:hover { background: rgba(246,191,115,0.11) !important; }
+
   .btn-close {
-    position: absolute; top: 12px; right: 18px;
-    background: none; border: none; color: var(--text-dim); font-size: 18px;
-    cursor: pointer; transition: color 0.2s; font-family: var(--font-mono);
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 30px;
+    height: 30px;
+    border-radius: 7px;
+    background: rgba(255,255,255,0.045);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: var(--text-muted);
+    font-size: 18px;
+    cursor: pointer;
+    transition: color 0.2s, background 0.2s;
   }
-  .btn-close:hover { color: var(--cyan); }
 
-  /* ===== 光束路径控制栏 ===== */
+  .btn-close:hover { color: var(--text); background: rgba(255,255,255,0.08); }
+
   #path-controls {
-    position: fixed; bottom: 60px; left: 50%; transform: translateX(-50%); z-index: 10;
-    display: none; gap: 10px; align-items: center;
-    background: var(--bg-panel); backdrop-filter: blur(12px);
-    padding: 10px 20px;
-    clip-path: var(--clip-panel);
-    border: 1px solid var(--border);
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    display: none;
+    gap: 9px;
+    align-items: center;
+    padding: 9px 12px;
+    background: linear-gradient(145deg, rgba(24, 29, 38, 0.82), rgba(10, 13, 18, 0.72));
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    box-shadow: var(--panel-shadow);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
   }
+
   #path-controls.show { display: flex; }
-  #path-controls::after {
-    content: "";
-    position: absolute; inset: 0; z-index: 99; pointer-events: none;
-    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,229,255,0.02) 2px, rgba(0,229,255,0.02) 4px);
-    animation: scanlines 8s linear infinite;
-  }
+
   #path-controls button {
-    background: none; border: none; color: var(--text-dim); cursor: pointer;
-    font-size: 16px; padding: 4px 8px; transition: color 0.2s;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.055);
+    border: 1px solid rgba(255,255,255,0.09);
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 13px;
+    transition: color 0.2s, background 0.2s, transform 0.2s;
   }
-  #path-controls button:hover { color: var(--cyan); }
+
+  #path-controls button:hover { color: var(--text); background: rgba(155,231,255,0.10); transform: translateY(-1px); }
+
   #path-progress {
-    color: var(--text-dim); font-size: 11px; min-width: 80px;
-    text-align: center; font-family: var(--font-mono);
+    color: var(--text-muted);
+    font-size: 11px;
+    min-width: 66px;
+    text-align: center;
+    font-family: var(--font-mono);
   }
-  #speed-slider { width: 80px; accent-color: var(--cyan); }
 
-  /* ===== 图例 ===== */
+  .speed-label {
+    color: var(--text-faint);
+    font-size: 11px;
+  }
+
+  #speed-slider { width: 82px; accent-color: var(--amber); }
+
   #legend {
-    position: fixed; bottom: 20px; left: 20px; z-index: 10;
-    display: flex; gap: 18px; font-size: 10px;
-  }
-  .legend-item {
-    display: flex; align-items: center; gap: 6px;
-    color: var(--text-dim); font-family: var(--font-mono);
-    letter-spacing: 0.5px;
-  }
-  .legend-dot {
-    width: 10px; height: 10px;
-    clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+    position: fixed;
+    bottom: 24px;
+    left: 24px;
+    z-index: 10;
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    padding: 10px 12px;
+    border-radius: 999px;
+    background: rgba(12, 15, 22, 0.58);
+    border: 1px solid rgba(255,255,255,0.08);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
   }
 
-  /* ===== 加载 + 统计 ===== */
-  #loading {
-    position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%);
-    color: var(--cyan); font-size: 14px; z-index: 20; pointer-events: none;
-    font-family: var(--font-mono); letter-spacing: 2px;
-    animation: pulse-cyan 1.5s ease-in-out infinite;
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: var(--text-muted);
+    font-family: var(--font-ui);
+    font-size: 11px;
+    font-weight: 600;
   }
-  @keyframes pulse-cyan {
-    0%, 100% { opacity: 0.4; }
+
+  .legend-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    box-shadow: 0 0 14px currentColor;
+  }
+
+  #loading {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    color: var(--text);
+    font-size: 13px;
+    z-index: 20;
+    pointer-events: none;
+    font-family: var(--font-mono);
+    padding: 12px 16px;
+    border-radius: 999px;
+    background: rgba(12,15,22,0.74);
+    border: 1px solid var(--line);
+    box-shadow: var(--panel-shadow);
+    animation: pulse-soft 1.6s ease-in-out infinite;
+  }
+
+  @keyframes pulse-soft {
+    0%, 100% { opacity: 0.54; }
     50% { opacity: 1; }
   }
 
   #stats {
-    position: fixed; bottom: 20px; right: 20px; z-index: 10;
-    color: var(--text-dim); font-size: 10px; font-family: var(--font-mono);
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 10;
+    color: var(--text-muted);
+    font-size: 11px;
+    font-family: var(--font-mono);
+    padding: 10px 12px;
+    border-radius: 999px;
+    background: rgba(12, 15, 22, 0.58);
+    border: 1px solid rgba(255,255,255,0.08);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
   }
 
   #toast {
-    position: fixed; bottom: 120px; left: 50%; transform: translateX(-50%); z-index: 20;
-    background: rgba(0,229,255,0.12); color: var(--cyan);
-    padding: 8px 24px; font-size: 12px; font-family: var(--font-mono);
-    clip-path: polygon(4px 0, calc(100% - 2px) 0, 100% 2px, 100% calc(100% - 4px), calc(100% - 2px) 100%, 2px 100%, 0 calc(100% - 2px), 0 4px);
-    border: 1px solid var(--border);
-    display: none; transition: 0.3s;
+    position: fixed;
+    bottom: 96px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 20;
+    background: rgba(246,191,115,0.12);
+    color: var(--amber);
+    padding: 10px 18px;
+    font-size: 12px;
+    font-weight: 700;
+    border-radius: 999px;
+    border: 1px solid rgba(246,191,115,0.28);
+    display: none;
+    transition: 0.3s;
+    box-shadow: var(--panel-shadow);
+  }
+
+  .scene-tooltip {
+    display: none !important;
+  }
+
+  @media (max-width: 900px) {
+    #brand {
+      top: 14px;
+      left: 14px;
+    }
+
+    .brand-copy span { display: none; }
+
+    #toolbar {
+      top: 62px;
+      left: 14px;
+      right: 14px;
+      min-width: 0;
+      max-width: none;
+      flex-wrap: wrap;
+    }
+
+    #search-box {
+      min-width: 100%;
+    }
+
+    #search-results {
+      top: 152px;
+      left: 14px;
+      right: 14px;
+      width: auto;
+    }
+
+    #detail {
+      left: 14px;
+      right: 14px;
+      top: auto;
+      bottom: 126px;
+      width: auto;
+      max-height: 42vh;
+      padding: 20px;
+    }
+
+    #legend {
+      left: 14px;
+      bottom: 14px;
+      max-width: calc(100vw - 28px);
+      overflow-x: auto;
+    }
+
+    #stats {
+      right: 14px;
+      bottom: 60px;
+    }
+
+    #path-controls {
+      bottom: 116px;
+      width: calc(100vw - 28px);
+      justify-content: center;
+      border-radius: 10px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* ===== Workstation redesign overrides ===== */
+  :root {
+    --side-w: 312px;
+    --detail-w: 392px;
+    --bottom-h: 148px;
+  }
+
+  body::before {
+    background-image:
+      radial-gradient(circle at 42% 42%, rgba(82,209,199,0.12), transparent 30%),
+      radial-gradient(circle at 76% 28%, rgba(246,191,115,0.08), transparent 22%),
+      linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.016) 1px, transparent 1px);
+    background-size: 100% 100%, 100% 100%, 56px 56px, 56px 56px;
+  }
+
+  body::after {
+    background:
+      linear-gradient(90deg, rgba(3,4,7,0.92), transparent 22%, transparent 73%, rgba(3,4,7,0.86)),
+      linear-gradient(0deg, rgba(3,4,7,0.82), transparent 26%, transparent 82%, rgba(3,4,7,0.58));
+  }
+
+  #brand,
+  #toolbar,
+  #side-meta,
+  #detail,
+  #timeline-panel,
+  #path-controls,
+  #legend,
+  #stats {
+    z-index: 12;
+  }
+
+  #brand {
+    top: 22px;
+    left: 22px;
+    width: calc(var(--side-w) - 44px);
+    min-width: 0;
+    padding: 18px 18px 16px;
+    border-radius: 14px 14px 0 0;
+    background: linear-gradient(160deg, rgba(27,32,42,0.86), rgba(12,15,22,0.78));
+    border: 1px solid var(--line);
+    border-bottom: 0;
+    box-shadow: var(--panel-shadow);
+    pointer-events: auto;
+  }
+
+  .brand-copy strong {
+    font-size: 16px;
+  }
+
+  .brand-copy span::before {
+    content: "知识图谱工作台";
+    display: block;
+    margin-bottom: 4px;
+    color: #d9e1e3;
+    font-family: var(--font-ui);
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  #toolbar {
+    top: 90px;
+    left: 22px;
+    right: auto;
+    width: calc(var(--side-w) - 44px);
+    min-width: 0;
+    max-width: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    padding: 16px;
+    border-radius: 0;
+    border-bottom: 0;
+    box-shadow: none;
+  }
+
+  #search-box {
+    grid-column: 1 / -1;
+    min-width: 0;
+    width: 100%;
+    height: 46px;
+  }
+
+  .tool-btn {
+    width: 100%;
+    height: 38px;
+  }
+
+  #side-meta {
+    position: fixed;
+    top: 198px;
+    left: 22px;
+    bottom: 168px;
+    width: calc(var(--side-w) - 44px);
+    padding: 16px;
+    border-radius: 0 0 14px 14px;
+    background: linear-gradient(160deg, rgba(24,29,38,0.82), rgba(10,13,18,0.72));
+    border: 1px solid var(--line);
+    border-top: 0;
+    box-shadow: var(--panel-shadow);
+    backdrop-filter: blur(20px) saturate(1.1);
+    -webkit-backdrop-filter: blur(20px) saturate(1.1);
+    overflow-y: auto;
+    scrollbar-width: thin;
+  }
+
+  .side-title,
+  .timeline-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: var(--text);
+    font-size: 13px;
+    font-weight: 800;
+  }
+
+  .side-title span,
+  .timeline-title span {
+    color: var(--text-faint);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+  }
+
+  .mode-stack,
+  .filter-stack {
+    display: grid;
+    gap: 9px;
+    margin-top: 14px;
+  }
+
+  .mode-card,
+  .filter-card {
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    background: rgba(255,255,255,0.045);
+    padding: 12px;
+    color: var(--text-muted);
+    font-size: 12px;
+    font-family: var(--font-ui);
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .mode-card strong,
+  .filter-card strong {
+    display: block;
+    color: var(--text);
+    font-size: 13px;
+    margin-bottom: 5px;
+  }
+
+  .mode-card.active {
+    border-color: rgba(155,231,255,0.34);
+    background: rgba(155,231,255,0.075);
+  }
+
+  .filter-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .filter-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    box-shadow: 0 0 16px currentColor;
+  }
+
+  #detail {
+    top: 22px;
+    right: 22px;
+    bottom: 168px;
+    width: calc(var(--detail-w) - 44px);
+    max-height: none;
+    border-radius: 14px;
+  }
+
+  #detail h2 {
+    font-size: 24px;
+  }
+
+  #timeline-panel {
+    position: fixed;
+    left: var(--side-w);
+    right: var(--detail-w);
+    bottom: 22px;
+    min-height: 126px;
+    padding: 18px 18px 16px;
+    border-radius: 14px;
+    background: linear-gradient(160deg, rgba(24,29,38,0.82), rgba(10,13,18,0.74));
+    border: 1px solid var(--line);
+    box-shadow: var(--panel-shadow);
+    backdrop-filter: blur(20px) saturate(1.1);
+    -webkit-backdrop-filter: blur(20px) saturate(1.1);
+  }
+
+  #stage-list {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: 16px;
+  }
+
+  .stage-card {
+    min-height: 54px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.045);
+    padding: 10px;
+    overflow: hidden;
+  }
+
+  .stage-card.active {
+    border-color: rgba(246,191,115,0.42);
+    background: rgba(246,191,115,0.08);
+  }
+
+  .stage-card strong {
+    display: block;
+    color: var(--amber);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    margin-bottom: 6px;
+  }
+
+  .stage-card span {
+    display: block;
+    color: var(--text);
+    font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  #path-controls {
+    bottom: 170px;
+    left: calc(var(--side-w) + 50%);
+    transform: translateX(-50%);
+    padding: 8px 10px;
+  }
+
+  #legend {
+    left: 22px;
+    bottom: 22px;
+    width: calc(var(--side-w) - 44px);
+    justify-content: space-between;
+    border-radius: 12px;
+  }
+
+  #stats {
+    right: 22px;
+    bottom: 22px;
+    width: calc(var(--detail-w) - 44px);
+    text-align: center;
+    border-radius: 12px;
+  }
+
+  #search-results {
+    top: 152px;
+    left: 38px;
+    width: calc(var(--side-w) - 76px);
+    z-index: 40;
+  }
+
+  @media (max-width: 980px) {
+    :root {
+      --side-w: 100vw;
+      --detail-w: 100vw;
+    }
+
+    #brand {
+      top: 14px;
+      left: 14px;
+      width: calc(100vw - 28px);
+      padding: 12px 14px;
+      border-radius: 12px 12px 0 0;
+    }
+
+    #toolbar {
+      top: 80px;
+      left: 14px;
+      width: calc(100vw - 28px);
+      grid-template-columns: repeat(3, 1fr);
+      padding: 12px;
+    }
+
+    #side-meta {
+      display: none;
+    }
+
+    #search-results {
+      top: 174px;
+      left: 26px;
+      width: calc(100vw - 52px);
+    }
+
+    #detail {
+      left: 14px;
+      right: 14px;
+      top: auto;
+      bottom: 224px;
+      width: auto;
+      max-height: 30vh;
+      border-radius: 14px;
+    }
+
+    #timeline-panel {
+      left: 14px;
+      right: 14px;
+      bottom: 80px;
+      min-height: 86px;
+      padding: 12px;
+    }
+
+    #stage-list {
+      grid-template-columns: repeat(5, 140px);
+      overflow-x: auto;
+      gap: 8px;
+      margin-top: 10px;
+      padding-bottom: 2px;
+    }
+
+    #path-controls {
+      left: 50%;
+      bottom: 224px;
+      max-width: calc(100vw - 42px);
+      overflow: hidden;
+    }
+
+    #legend {
+      left: 14px;
+      bottom: 14px;
+      width: auto;
+      max-width: calc(100vw - 162px);
+      overflow-x: auto;
+    }
+
+    #stats {
+      right: 14px;
+      bottom: 14px;
+      width: 132px;
+      white-space: nowrap;
+    }
+  }
+
+  /* ===== Endfield tactical-map direction ===== */
+  :root {
+    --end-yellow: #ffd91a;
+    --end-amber: #ff9f1c;
+    --end-orange: #f05f1b;
+    --end-ink: #080705;
+    --end-smoke: rgba(232, 232, 224, 0.86);
+    --end-glass: rgba(238, 238, 232, 0.72);
+    --end-panel-text: #3f3d39;
+  }
+
+  body {
+    background:
+      radial-gradient(circle at 50% 48%, rgba(255,217,26,0.10), transparent 28%),
+      linear-gradient(115deg, #17130f 0%, #070604 48%, #15120f 100%);
+  }
+
+  body::before {
+    background-image:
+      radial-gradient(circle at 50% 48%, rgba(255,217,26,0.15), transparent 34%),
+      linear-gradient(110deg, rgba(255,255,255,0.08), transparent 28%, transparent 72%, rgba(255,217,26,0.06)),
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.022) 1px, transparent 1px);
+    background-size: 100% 100%, 100% 100%, 42px 42px, 42px 42px;
+    mask-image: none;
+  }
+
+  body::after {
+    background:
+      radial-gradient(circle at 50% 48%, transparent 0 29%, rgba(255,217,26,0.05) 30%, transparent 31%, transparent 39%, rgba(255,255,255,0.07) 40%, transparent 41%, transparent 48%, rgba(255,217,26,0.10) 49%, transparent 50%),
+      linear-gradient(90deg, rgba(7,6,4,0.88), transparent 22%, transparent 78%, rgba(7,6,4,0.88)),
+      linear-gradient(0deg, rgba(7,6,4,0.78), transparent 20%, transparent 82%, rgba(7,6,4,0.70));
+  }
+
+  #graph {
+    position: fixed;
+    left: 50%;
+    top: 49%;
+    width: min(72vw, 1080px);
+    height: min(72vw, 760px);
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at center, rgba(255,217,26,0.13), transparent 9%),
+      repeating-radial-gradient(circle at center, transparent 0 22px, rgba(255,217,26,0.055) 23px 24px),
+      radial-gradient(circle at center, rgba(0,0,0,0.20) 0 55%, rgba(0,0,0,0.72) 78%, rgba(255,217,26,0.20) 100%),
+      #090805;
+    border: 18px solid rgba(20,18,14,0.86);
+    box-shadow:
+      0 0 0 2px rgba(255,255,255,0.16),
+      0 0 0 22px rgba(255,255,255,0.05),
+      inset 0 0 70px rgba(255,217,26,0.14),
+      0 38px 110px rgba(0,0,0,0.58);
+  }
+
+  #graph::before {
+    content: "";
+    position: absolute;
+    inset: 24px;
+    border-radius: 50%;
+    z-index: 3;
+    pointer-events: none;
+    background:
+      conic-gradient(from 0deg, transparent 0 8deg, rgba(255,255,255,0.9) 8deg 10deg, transparent 10deg 36deg, rgba(255,217,26,0.8) 36deg 38deg, transparent 38deg 68deg, rgba(255,255,255,0.75) 68deg 70deg, transparent 70deg 360deg),
+      radial-gradient(circle at center, transparent 0 61%, rgba(255,255,255,0.18) 62%, transparent 63%, transparent 72%, rgba(255,217,26,0.32) 73%, transparent 74%);
+    mask-image: radial-gradient(circle at center, transparent 0 57%, #000 58% 79%, transparent 80%);
+  }
+
+  #graph::after {
+    z-index: 2;
+    background:
+      radial-gradient(circle at center, transparent 0 50%, rgba(0,0,0,0.18) 65%, rgba(0,0,0,0.72) 100%),
+      linear-gradient(25deg, transparent 45%, rgba(255,217,26,0.09) 46%, transparent 47%),
+      linear-gradient(155deg, transparent 42%, rgba(255,255,255,0.08) 43%, transparent 44%);
+  }
+
+  #brand {
+    top: 132px;
+    left: 7vw;
+    width: 210px;
+    padding: 26px 22px 24px;
+    border-radius: 18px 6px 18px 6px;
+    background: linear-gradient(135deg, rgba(245,245,241,0.92), rgba(205,205,199,0.78));
+    color: var(--end-panel-text);
+    border: 2px solid rgba(255,255,255,0.62);
+    box-shadow: 0 18px 38px rgba(0,0,0,0.34), inset 0 1px 0 rgba(255,255,255,0.85);
+    transform: skewX(-7deg);
+    pointer-events: auto;
+  }
+
+  #brand > * {
+    transform: skewX(7deg);
+  }
+
+  .brand-mark {
+    border-color: rgba(0,0,0,0.16);
+    background: rgba(50,48,45,0.16);
+    box-shadow: none;
+  }
+
+  .brand-copy strong {
+    color: #2f2d2a;
+    font-size: 16px;
+  }
+
+  .brand-copy span,
+  .brand-copy span::before {
+    color: #6c6861;
+  }
+
+  #toolbar {
+    top: 34px;
+    left: 50%;
+    right: auto;
+    width: min(520px, 42vw);
+    transform: translateX(-50%);
+    grid-template-columns: 1fr auto auto auto;
+    border-radius: 0 0 28px 28px;
+    padding: 10px 16px 14px;
+    background: linear-gradient(180deg, rgba(28,24,18,0.92), rgba(10,9,7,0.86));
+    border-color: rgba(255,255,255,0.13);
+    border-top: 0;
+  }
+
+  #search-box {
+    grid-column: auto;
+    height: 38px;
+    background-color: rgba(255,255,255,0.08);
+    border-color: rgba(255,217,26,0.18);
+  }
+
+  .tool-btn {
+    min-width: 58px;
+    background: rgba(255,255,255,0.07);
+    border-color: rgba(255,255,255,0.14);
+    color: rgba(245,245,240,0.82);
+  }
+
+  .tool-btn:hover,
+  .tool-btn.active {
+    color: #17130f;
+    background: var(--end-yellow);
+    border-color: var(--end-yellow);
+  }
+
+  #side-meta {
+    top: 360px;
+    left: 7vw;
+    bottom: auto;
+    width: 230px;
+    max-height: none;
+    padding: 0;
+    overflow: visible;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .side-title {
+    display: none;
+  }
+
+  .mode-stack,
+  .filter-stack {
+    gap: 14px;
+  }
+
+  .mode-card,
+  .filter-card {
+    min-height: 72px;
+    padding: 18px 20px;
+    border-radius: 10px 4px 10px 4px;
+    background: linear-gradient(135deg, rgba(245,245,241,0.88), rgba(205,205,199,0.70));
+    border: 2px solid rgba(255,255,255,0.52);
+    color: #77736b;
+    box-shadow: 0 16px 34px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.82);
+    transform: skewX(-6deg);
+  }
+
+  .mode-card > *,
+  .filter-card > * {
+    transform: skewX(6deg);
+  }
+
+  .mode-card strong,
+  .filter-card strong {
+    color: #34312c;
+    font-size: 15px;
+    letter-spacing: 0.08em;
+  }
+
+  .mode-card.active {
+    background: linear-gradient(135deg, rgba(255,247,178,0.94), rgba(255,217,26,0.78));
+    border-color: rgba(255,255,255,0.78);
+    color: #5d4a08;
+  }
+
+  .filter-stack {
+    display: none;
+  }
+
+  #detail {
+    top: 116px;
+    right: 7vw;
+    bottom: auto;
+    width: 234px;
+    max-height: none;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    overflow: visible;
+  }
+
+  #detail h2,
+  #detail .label-tag,
+  #detail-props {
+    display: none;
+  }
+
+  .btn-close {
+    display: none;
+  }
+
+  #detail .btn-row {
+    display: grid;
+    gap: 14px;
+    margin: 0;
+  }
+
+  #detail .action-btn {
+    min-height: 74px;
+    padding: 0 22px;
+    border-radius: 10px 4px 10px 4px;
+    background: linear-gradient(135deg, rgba(245,245,241,0.88), rgba(205,205,199,0.70));
+    border: 2px solid rgba(255,255,255,0.52);
+    color: #38342d !important;
+    font-size: 15px;
+    letter-spacing: 0.08em;
+    box-shadow: 0 16px 34px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.82);
+    transform: skewX(6deg);
+  }
+
+  #detail .action-btn:hover {
+    background: linear-gradient(135deg, rgba(255,247,178,0.94), rgba(255,217,26,0.78)) !important;
+    color: #17130f !important;
+  }
+
+  #timeline-panel {
+    left: 50%;
+    right: auto;
+    bottom: 32px;
+    width: min(620px, 48vw);
+    min-height: 104px;
+    transform: translateX(-50%);
+    padding: 18px 26px 16px;
+    border-radius: 0 0 28px 28px;
+    background: linear-gradient(90deg, rgba(255,217,26,0.94), rgba(255,194,26,0.84) 64%, rgba(14,12,8,0.92) 65%);
+    color: #17130f;
+    border: 2px solid rgba(255,255,255,0.22);
+    box-shadow: 0 -12px 46px rgba(255,217,26,0.14), 0 20px 56px rgba(0,0,0,0.38);
+  }
+
+  .timeline-title {
+    color: #17130f;
+  }
+
+  .timeline-title span {
+    color: rgba(255,255,255,0.72);
+  }
+
+  #stage-list {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .stage-card {
+    background: rgba(13,11,8,0.84);
+    border-color: rgba(255,255,255,0.18);
+  }
+
+  .stage-card.active {
+    border-color: #fff;
+    background: rgba(255,255,255,0.18);
+  }
+
+  #path-controls {
+    bottom: 136px;
+    background: rgba(12,10,7,0.78);
+    border-color: rgba(255,217,26,0.30);
+  }
+
+  #legend {
+    left: 7vw;
+    bottom: 64px;
+    width: 260px;
+    border-radius: 10px 4px 10px 4px;
+    background: rgba(10,8,5,0.84);
+    border-color: rgba(255,217,26,0.28);
+  }
+
+  #stats {
+    right: 7vw;
+    bottom: 66px;
+    width: 300px;
+    border-radius: 10px 4px 10px 4px;
+    color: #17130f;
+    background: linear-gradient(135deg, rgba(255,230,47,0.92), rgba(255,159,28,0.82));
+    border-color: rgba(255,255,255,0.32);
+  }
+
+  #search-results {
+    top: 92px;
+    left: 50%;
+    width: min(440px, 40vw);
+    transform: translateX(-50%);
+    background: rgba(18,15,10,0.94);
+    border-color: rgba(255,217,26,0.28);
+  }
+
+  @media (max-width: 980px) {
+    #graph {
+      top: 44%;
+      width: 112vw;
+      height: 112vw;
+      border-width: 12px;
+    }
+
+    #brand,
+    #toolbar {
+      transform: none;
+    }
+
+    #toolbar {
+      width: calc(100vw - 28px);
+      grid-template-columns: repeat(3, 1fr);
+      border-radius: 0 0 16px 16px;
+    }
+
+    #search-box {
+      grid-column: 1 / -1;
+    }
+
+    #detail {
+      right: 14px;
+      left: auto;
+      top: auto;
+      bottom: 202px;
+      width: 150px;
+    }
+
+    #detail .action-btn {
+      min-height: 48px;
+      font-size: 12px;
+      padding: 0 12px;
+    }
+
+    #timeline-panel {
+      width: calc(100vw - 28px);
+      bottom: 78px;
+      border-radius: 14px;
+    }
+
+    #legend {
+      left: 14px;
+      bottom: 14px;
+      width: 210px;
+    }
+
+    #stats {
+      right: 14px;
+      bottom: 14px;
+      width: 144px;
+      font-size: 10px;
+    }
+  }
+
+  /* ===== Final tactical terminal layer ===== */
+  body {
+    min-height: 100dvh;
+    background:
+      linear-gradient(90deg, rgba(0,0,0,0.42), transparent 20%, transparent 80%, rgba(0,0,0,0.48)),
+      radial-gradient(circle at 50% 50%, rgba(255,213,29,0.11), transparent 30%),
+      linear-gradient(135deg, #171410 0%, #050504 48%, #18140e 100%);
+  }
+
+  body::before {
+    background-image:
+      linear-gradient(rgba(255,255,255,0.028) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.022) 1px, transparent 1px),
+      repeating-linear-gradient(115deg, rgba(255,213,29,0.018) 0 1px, transparent 1px 18px);
+    background-size: 42px 42px, 42px 42px, 100% 100%;
+    opacity: 0.7;
+    mask-image: radial-gradient(circle at 50% 50%, #000 0 62%, transparent 86%);
+  }
+
+  body::after {
+    background:
+      radial-gradient(circle at 50% 50%, transparent 0 27%, rgba(255,213,29,0.05) 28%, transparent 29%, transparent 40%, rgba(255,255,255,0.08) 41%, transparent 42%, transparent 53%, rgba(255,213,29,0.12) 54%, transparent 55%),
+      linear-gradient(90deg, rgba(5,5,4,0.9), transparent 24%, transparent 76%, rgba(5,5,4,0.9)),
+      linear-gradient(0deg, rgba(5,5,4,0.82), transparent 22%, transparent 80%, rgba(5,5,4,0.72));
+  }
+
+  #graph {
+    left: 50%;
+    top: 50%;
+    width: min(68vw, 1040px);
+    height: min(68vw, 780px);
+    min-width: 620px;
+    min-height: 620px;
+    border: 20px solid rgba(18, 16, 12, 0.95);
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 50% 50%, rgba(255,213,29,0.20), transparent 7%),
+      repeating-radial-gradient(circle at center, transparent 0 25px, rgba(255,213,29,0.055) 26px 27px),
+      radial-gradient(circle at center, rgba(4,4,3,0.10) 0 50%, rgba(0,0,0,0.48) 71%, rgba(255,213,29,0.18) 100%),
+      #070604;
+    box-shadow:
+      0 0 0 1px rgba(255,255,255,0.34),
+      0 0 0 12px rgba(255,255,255,0.05),
+      0 0 0 24px rgba(0,0,0,0.28),
+      inset 0 0 84px rgba(255,213,29,0.16),
+      0 38px 120px rgba(0,0,0,0.66);
+  }
+
+  #graph::before {
+    inset: 18px;
+    background:
+      conic-gradient(from -2deg, rgba(255,213,29,0.95) 0 0.8deg, transparent 0.8deg 6deg, rgba(255,255,255,0.75) 6deg 6.6deg, transparent 6.6deg 12deg),
+      radial-gradient(circle at center, transparent 0 61%, rgba(255,255,255,0.20) 62%, transparent 63%, transparent 73%, rgba(255,213,29,0.34) 74%, transparent 75%);
+    mask-image: radial-gradient(circle at center, transparent 0 56%, #000 57% 82%, transparent 83%);
+  }
+
+  #brand {
+    top: 28px;
+    left: 18px;
+    width: 288px;
+    min-width: 0;
+    padding: 18px 18px 16px;
+    border-radius: 0 0 18px 0;
+    clip-path: polygon(0 0, 100% 0, 94% 100%, 0 100%);
+    background:
+      linear-gradient(90deg, rgba(255,213,29,0.18), transparent 34%),
+      linear-gradient(145deg, rgba(28,25,20,0.98), rgba(8,8,7,0.94));
+    border: 1px solid rgba(255,255,255,0.16);
+    box-shadow: 0 18px 44px rgba(0,0,0,0.46), inset 0 -2px 0 rgba(255,213,29,0.34);
+    transform: none;
+  }
+
+  #brand > * {
+    transform: none;
+  }
+
+  .brand-mark {
+    width: 42px;
+    height: 42px;
+    border-radius: 2px;
+    border-color: rgba(255,213,29,0.58);
+    background:
+      linear-gradient(45deg, transparent 36%, #ffd51d 37% 63%, transparent 64%),
+      linear-gradient(-45deg, transparent 36%, rgba(255,213,29,0.70) 37% 63%, transparent 64%),
+      rgba(255,213,29,0.10);
+    box-shadow: 0 0 28px rgba(255,213,29,0.16);
+    transform: skewX(-10deg);
+  }
+
+  .brand-mark::before,
+  .brand-mark::after {
+    display: none;
+  }
+
+  .brand-copy strong {
+    color: #f5f1e4;
+    font-size: 18px;
+    font-weight: 780;
+  }
+
+  .brand-copy span,
+  .brand-copy span::before {
+    color: #ffd51d;
+    font-size: 11px;
+  }
+
+  #toolbar {
+    top: 28px;
+    left: 336px;
+    right: 356px;
+    width: auto;
+    max-width: none;
+    min-width: 440px;
+    grid-template-columns: minmax(220px, 1fr) 72px 72px 72px;
+    gap: 10px;
+    padding: 10px 14px;
+    border-radius: 0;
+    clip-path: polygon(18px 0, 100% 0, calc(100% - 18px) 100%, 0 100%);
+    transform: none;
+    background: linear-gradient(180deg, rgba(29,26,21,0.98), rgba(8,8,7,0.92));
+    border: 1px solid rgba(255,255,255,0.16);
+    box-shadow: 0 18px 46px rgba(0,0,0,0.44), inset 0 -2px 0 rgba(255,213,29,0.22);
+  }
+
+  #search-box {
+    height: 44px;
+    border-radius: 2px;
+    border-color: rgba(255,213,29,0.24);
+    background-color: rgba(0,0,0,0.38);
+    color: #f7f1dd;
+    outline: 2px solid transparent;
+    font-size: 14px;
+  }
+
+  #search-box:focus-visible,
+  .tool-btn:focus-visible,
+  .action-btn:focus-visible,
+  #path-controls button:focus-visible,
+  .mode-card:focus-visible,
+  .search-item:focus-visible {
+    outline: 2px solid #ffd51d;
+    outline-offset: 3px;
+  }
+
+  #search-box::placeholder {
+    color: rgba(247,241,221,0.48);
+  }
+
+  .tool-btn {
+    min-width: 0;
+    height: 44px;
+    border-radius: 2px;
+    background: rgba(255,255,255,0.07);
+    border-color: rgba(255,255,255,0.14);
+    color: rgba(247,241,221,0.76);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    transform: none;
+  }
+
+  .tool-btn:hover,
+  .tool-btn.active {
+    color: #17120b;
+    background: #ffd51d;
+    border-color: #ffd51d;
+    transform: none;
+  }
+
+  #side-meta {
+    top: 132px;
+    left: 22px;
+    width: 268px;
+    bottom: 126px;
+    padding: 18px;
+    overflow-y: auto;
+    clip-path: polygon(0 0, 96% 0, 100% 18px, 100% calc(100% - 18px), 92% 100%, 0 100%);
+    background: linear-gradient(145deg, rgba(236,232,219,0.95), rgba(190,185,171,0.86));
+    border: 1px solid rgba(255,255,255,0.56);
+    box-shadow: 0 22px 58px rgba(0,0,0,0.42), inset 0 1px 0 rgba(255,255,255,0.85);
+  }
+
+  .side-title {
+    display: flex;
+    color: #201d18;
+  }
+
+  .side-title span,
+  .timeline-title span {
+    color: #6f695e;
+  }
+
+  .mode-card,
+  .filter-card {
+    position: relative;
+    min-height: 72px;
+    border-radius: 2px;
+    clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+    background: linear-gradient(145deg, rgba(255,255,255,0.50), rgba(218,213,199,0.72));
+    border: 1px solid rgba(32,29,24,0.18);
+    color: #6f695e;
+    box-shadow: inset 4px 0 0 rgba(32,29,24,0.18);
+    transform: none;
+  }
+
+  .mode-card > *,
+  .filter-card > * {
+    transform: none;
+  }
+
+  .mode-card strong,
+  .filter-card strong {
+    color: #201d18;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    letter-spacing: 0;
+  }
+
+  .mode-card.active {
+    background: linear-gradient(145deg, rgba(255,226,74,0.96), rgba(255,173,34,0.82));
+    box-shadow: inset 4px 0 0 #15110a, 0 0 28px rgba(255,213,29,0.22);
+  }
+
+  .filter-stack {
+    display: grid;
+  }
+
+  #detail {
+    top: 112px;
+    right: 22px;
+    bottom: 126px;
+    width: 336px;
+    padding: 16px;
+    overflow-y: auto;
+    clip-path: polygon(18px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 22px) 100%, 0 100%, 0 18px);
+    background: linear-gradient(145deg, rgba(236,232,219,0.96), rgba(196,190,176,0.88));
+    border: 1px solid rgba(255,255,255,0.58);
+    box-shadow: 0 22px 60px rgba(0,0,0,0.46), inset 0 1px 0 rgba(255,255,255,0.88);
+  }
+
+  #detail h2,
+  #detail .label-tag,
+  #detail-props {
+    display: block;
+  }
+
+  #detail h2 {
+    color: #201d18;
+    padding-right: 34px;
+    font-size: 24px;
+    line-height: 1.18;
+    margin: 0 0 12px;
+    text-wrap: balance;
+  }
+
+  #detail .label-tag {
+    width: fit-content;
+    border-radius: 2px;
+    color: #17120b !important;
+    background: #ffd51d !important;
+    border-color: rgba(32,29,24,0.28);
+  }
+
+  #detail .prop-row {
+    grid-template-columns: 88px 1fr;
+    border-bottom-color: rgba(32,29,24,0.16);
+  }
+
+  #detail .prop-key {
+    color: #6f695e;
+  }
+
+  #detail .prop-val {
+    color: #201d18;
+    font-weight: 700;
+  }
+
+  .btn-close {
+    display: block;
+    color: #201d18;
+    background: rgba(0,0,0,0.06);
+    border-color: rgba(32,29,24,0.16);
+  }
+
+  #detail .btn-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 16px;
+  }
+
+  #detail .action-btn {
+    min-height: 48px;
+    padding: 0 12px;
+    border-radius: 2px;
+    transform: none;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0;
+    color: #17120b !important;
+    background: linear-gradient(145deg, rgba(255,226,74,0.96), rgba(255,173,34,0.84));
+    border-color: rgba(32,29,24,0.24) !important;
+    box-shadow: none;
+  }
+
+  #detail .action-btn:hover {
+    background: #17120b !important;
+    color: #ffd51d !important;
+    transform: none;
+  }
+
+  .detail-tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin: 2px 36px 14px 0;
+  }
+
+  .detail-tab {
+    height: 38px;
+    border-radius: 2px;
+    border: 1px solid rgba(32,29,24,0.20);
+    background: rgba(255,255,255,0.36);
+    color: #6f695e;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    cursor: pointer;
+  }
+
+  .detail-tab.active {
+    color: #17120b;
+    background: #ffd51d;
+  }
+
+  .qa-box {
+    display: grid;
+    gap: 12px;
+  }
+
+  #qa-input {
+    min-height: 96px;
+    resize: vertical;
+    border-radius: 2px;
+    border: 1px solid rgba(32,29,24,0.20);
+    background: rgba(255,255,255,0.46);
+    color: #201d18;
+    padding: 12px;
+    font: 700 15px/1.55 var(--font-ui);
+    outline: 2px solid transparent;
+  }
+
+  #qa-input:focus-visible {
+    outline: 2px solid #ffd51d;
+    outline-offset: 2px;
+  }
+
+  #qa-submit {
+    min-height: 42px;
+  }
+
+  #qa-answer {
+    min-height: 76px;
+    padding: 12px;
+    border: 1px solid rgba(32,29,24,0.16);
+    background: rgba(255,255,255,0.34);
+    color: #201d18;
+    font-size: 15px;
+    line-height: 1.55;
+    white-space: pre-wrap;
+  }
+
+  .qa-evidence-title {
+    color: #6f695e;
+    font: 700 13px var(--font-mono);
+  }
+
+  #qa-evidence,
+  #qa-suggestions {
+    display: grid;
+    gap: 8px;
+  }
+
+  .qa-chip {
+    min-height: 38px;
+    border-radius: 2px;
+    border: 1px solid rgba(32,29,24,0.18);
+    background: rgba(255,255,255,0.34);
+    color: #201d18;
+    font-size: 14px;
+    text-align: left;
+    padding: 7px 9px;
+    cursor: pointer;
+  }
+
+  .qa-chip:hover {
+    background: rgba(255,213,29,0.58);
+  }
+
+  .mode-status {
+    cursor: default;
+    pointer-events: none;
+  }
+
+  #side-meta {
+    display: none !important;
+  }
+
+  #timeline-panel {
+    display: none;
+  }
+
+  #timeline-panel.show {
+    display: block;
+  }
+
+  #timeline-panel {
+    left: 312px;
+    right: 382px;
+    bottom: 18px;
+    width: auto;
+    min-height: 92px;
+    padding: 16px 20px;
+    transform: none;
+    border-radius: 0;
+    clip-path: polygon(16px 0, 100% 0, calc(100% - 16px) 100%, 0 100%);
+    background: linear-gradient(90deg, rgba(255,213,29,0.94) 0 57%, rgba(16,14,10,0.96) 57% 100%);
+    border: 1px solid rgba(255,255,255,0.20);
+    box-shadow: 0 16px 52px rgba(0,0,0,0.48), inset 0 2px 0 rgba(255,255,255,0.18);
+  }
+
+  #timeline-panel .timeline-title {
+    color: #17120b;
+  }
+
+  #timeline-panel .timeline-title span {
+    color: rgba(255,255,255,0.74);
+  }
+
+  #stage-list {
+    margin-top: 12px;
+    gap: 8px;
+  }
+
+  .stage-card {
+    min-height: 48px;
+    border-radius: 2px;
+    background: rgba(12,10,7,0.86);
+    border-color: rgba(255,255,255,0.18);
+  }
+
+  .stage-card.active {
+    background: rgba(255,255,255,0.20);
+    border-color: #fff1a3;
+  }
+
+  .stage-card strong {
+    color: #ffd51d;
+  }
+
+  #path-controls {
+    bottom: 128px;
+    left: 50%;
+    border-radius: 2px;
+    background: rgba(8,7,5,0.88);
+    border-color: rgba(255,213,29,0.36);
+  }
+
+  #path-controls button {
+    border-radius: 2px;
+    color: #f7f1dd;
+  }
+
+  #legend {
+    left: 22px;
+    bottom: 18px;
+    width: 268px;
+    border-radius: 2px;
+    background: rgba(8,7,5,0.88);
+    border-color: rgba(255,213,29,0.30);
+  }
+
+  #stats {
+    right: 22px;
+    bottom: 18px;
+    width: 336px;
+    border-radius: 2px;
+    color: #17120b;
+    background: linear-gradient(145deg, rgba(255,226,74,0.96), rgba(255,173,34,0.86));
+    border-color: rgba(255,255,255,0.34);
+    font-weight: 800;
+  }
+
+  #search-results {
+    top: 86px;
+    left: 336px;
+    width: min(520px, calc(100vw - 720px));
+    transform: none;
+    border-radius: 2px;
+    background: rgba(13,11,8,0.96);
+    border-color: rgba(255,213,29,0.30);
+  }
+
+  .search-item {
+    width: 100%;
+    border: 0;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    background: transparent;
+    text-align: left;
+    font: inherit;
+  }
+
+  .search-item:hover {
+    background: rgba(255,213,29,0.10);
+  }
+
+  #toast {
+    background: rgba(12,10,7,0.94);
+    color: #ffd51d;
+    border-color: rgba(255,213,29,0.38);
+    border-radius: 2px;
+    transition: opacity 0.24s ease, transform 0.24s ease;
+  }
+
+  @media (max-width: 1100px) {
+    #graph {
+      top: 44%;
+      width: 104vw;
+      height: 104vw;
+      min-width: 0;
+      min-height: 0;
+      border-width: 12px;
+    }
+
+    #brand {
+      top: 12px;
+      left: 12px;
+      width: calc(100vw - 24px);
+      clip-path: polygon(0 0, 100% 0, 96% 100%, 0 100%);
+    }
+
+    #toolbar {
+      top: 86px;
+      left: 12px;
+      right: 12px;
+      min-width: 0;
+      grid-template-columns: repeat(3, 1fr);
+      clip-path: none;
+    }
+
+    #search-box {
+      grid-column: 1 / -1;
+    }
+
+    #side-meta {
+      display: none;
+    }
+
+    #detail {
+      left: 12px;
+      right: 12px;
+      top: auto;
+      bottom: 188px;
+      width: auto;
+      max-height: 29vh;
+      clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%, 0 12px);
+    }
+
+    #timeline-panel {
+      left: 12px;
+      right: 12px;
+      bottom: 70px;
+      clip-path: none;
+    }
+
+    #stage-list {
+      grid-template-columns: repeat(5, 142px);
+      overflow-x: auto;
+    }
+
+    #path-controls {
+      bottom: 188px;
+      max-width: calc(100vw - 24px);
+    }
+
+    #legend {
+      left: 12px;
+      bottom: 12px;
+      width: calc(100vw - 166px);
+      overflow-x: auto;
+    }
+
+    #stats {
+      right: 12px;
+      bottom: 12px;
+      width: 140px;
+      font-size: 10px;
+    }
+
+    #search-results {
+      top: 178px;
+      left: 24px;
+      width: calc(100vw - 48px);
+    }
+  }
+
+  @media (max-width: 560px) {
+    #detail {
+      bottom: 250px;
+      max-height: 25vh;
+      padding: 16px 18px;
+    }
+
+    #detail h2 {
+      font-size: 24px;
+      margin-bottom: 8px;
+    }
+
+    #detail-props {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    #detail .prop-row {
+      display: block;
+      padding: 9px;
+      border: 1px solid rgba(32,29,24,0.14);
+      background: rgba(255,255,255,0.22);
+    }
+
+    #detail .prop-row:nth-child(n+4),
+    #detail .btn-row {
+      display: none;
+    }
+
+    #detail .prop-key,
+    #detail .prop-val {
+      display: block;
+      text-align: left;
+    }
+
+    #detail .prop-val {
+      margin-top: 6px;
+      font-size: 18px;
+    }
+
+    #path-controls {
+      bottom: 250px;
+    }
+
+    #timeline-panel {
+      min-height: 165px;
+    }
+  }
+</style>
+<style>
+  :root {
+    --learn-bg: #0507d8;
+    --learn-bg-deep: #02031e;
+    --learn-ink: #f7f7ef;
+    --learn-muted: rgba(247, 247, 239, 0.68);
+    --learn-faint: rgba(247, 247, 239, 0.38);
+    --learn-blue: #87a5ff;
+    --learn-accent: #edff45;
+    --learn-rule: rgba(247, 247, 239, 0.24);
+    --learn-rule-soft: rgba(247, 247, 239, 0.12);
+    --learn-font-display: "SF Mono", "JetBrains Mono", "Cascadia Code", Menlo, monospace;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 92px;
+  }
+
+  body.learning-page {
+    min-height: 100dvh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    background:
+      linear-gradient(180deg, rgba(0,0,0,0.12), rgba(0,0,0,0.52)),
+      radial-gradient(circle at 74% 12%, rgba(237,255,69,0.12), transparent 26%),
+      linear-gradient(135deg, var(--learn-bg) 0%, #090a65 44%, var(--learn-bg-deep) 100%);
+    color: var(--learn-ink);
+    font-family: var(--learn-font-display);
+    text-transform: uppercase;
+  }
+
+  body.learning-page::before {
+    z-index: 0;
+    background-image:
+      linear-gradient(rgba(247,247,239,0.055) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(247,247,239,0.04) 1px, transparent 1px);
+    background-size: 24px 24px;
+    opacity: 0.5;
+    mask-image: none;
+  }
+
+  body.learning-page::after {
+    z-index: 0;
+    background:
+      repeating-linear-gradient(0deg, rgba(247,247,239,0.035) 0 1px, transparent 1px 9px),
+      linear-gradient(90deg, rgba(0,0,0,0.35), transparent 20%, transparent 80%, rgba(0,0,0,0.45));
+    opacity: 0.4;
+  }
+
+  .learning-nav,
+  .learning-shell,
+  .graph-lab {
+    position: relative;
+    z-index: 2;
+  }
+
+  .learning-nav {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 80;
+    display: grid;
+    grid-template-columns: minmax(220px, 1fr) auto;
+    align-items: center;
+    min-height: 72px;
+    padding: 0 clamp(18px, 4vw, 64px);
+    border-bottom: 1px solid var(--learn-rule-soft);
+    background: rgba(2, 3, 30, 0.72);
+    backdrop-filter: blur(14px);
+  }
+
+  .learning-wordmark {
+    color: var(--learn-ink);
+    text-decoration: none;
+    border: 0;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+  }
+
+  .learning-wordmark span {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    margin-right: 10px;
+    background: var(--learn-accent);
+    box-shadow: 16px 0 0 var(--learn-blue);
+  }
+
+  .learning-nav-links {
+    display: flex;
+    align-items: center;
+    gap: clamp(14px, 2.5vw, 32px);
+  }
+
+  .learning-nav-links a {
+    color: var(--learn-muted);
+    border: 0;
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    text-decoration: none;
+  }
+
+  .learning-nav-links a:hover {
+    color: var(--learn-accent);
+  }
+
+  .learning-shell {
+    padding: 112px clamp(18px, 5vw, 88px) 72px;
+  }
+
+  .learning-hero {
+    min-height: 62dvh;
+    display: grid;
+    align-content: center;
+    gap: 32px;
+    max-width: 1180px;
+  }
+
+  .learning-kicker,
+  .section-kicker,
+  .major-stat,
+  .roadmap-meta,
+  .knowledge-label {
+    color: var(--learn-muted);
+    font-size: 12px;
+    letter-spacing: 0.18em;
+  }
+
+  .learning-hero h1 {
+    max-width: 940px;
+    color: var(--learn-ink);
+    font-size: clamp(48px, 10vw, 144px);
+    line-height: 0.82;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  .learning-hero p {
+    max-width: 680px;
+    color: var(--learn-muted);
+    font: 16px/1.7 var(--font-ui);
+    text-transform: none;
+  }
+
+  .learning-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .line-action,
+  .text-action {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 18px;
+    border: 1px solid var(--learn-rule);
+    color: var(--learn-ink);
+    background: transparent;
+    font: 12px var(--learn-font-display);
+    letter-spacing: 0.14em;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .text-action {
+    border-color: transparent;
+    color: var(--learn-accent);
+    padding-left: 0;
+  }
+
+  .line-action:hover {
+    border-color: var(--learn-accent);
+    color: var(--learn-accent);
+  }
+
+  .line-action[hidden],
+  .text-action[hidden] {
+    display: none;
+  }
+
+  .learning-section {
+    max-width: 1240px;
+    min-height: 70dvh;
+    padding: 64px 0 96px;
+    border-top: 1px solid var(--learn-rule-soft);
+    scroll-margin-top: 88px;
+  }
+
+  .section-heading {
+    display: grid;
+    grid-template-columns: minmax(220px, 0.9fr) minmax(260px, 1.1fr);
+    gap: 28px;
+    align-items: end;
+    margin-bottom: 36px;
+  }
+
+  .section-heading h2 {
+    color: var(--learn-ink);
+    font-size: clamp(32px, 6vw, 76px);
+    line-height: 0.95;
+    letter-spacing: 0;
+  }
+
+  .section-heading p {
+    color: var(--learn-muted);
+    font: 15px/1.7 var(--font-ui);
+    text-transform: none;
+  }
+
+  .major-tools {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 26px;
+    border-top: 1px solid var(--learn-rule-soft);
+    border-bottom: 1px solid var(--learn-rule-soft);
+    padding: 16px 0;
+  }
+
+  #major-search {
+    width: min(520px, 100%);
+    min-height: 44px;
+    border: 0;
+    border-bottom: 1px solid var(--learn-rule);
+    background: transparent;
+    color: var(--learn-ink);
+    font: 14px var(--learn-font-display);
+    letter-spacing: 0.08em;
+    outline: 0;
+  }
+
+  #major-search::placeholder {
+    color: var(--learn-faint);
+  }
+
+  #major-search:focus {
+    border-bottom-color: var(--learn-accent);
+  }
+
+  .major-index {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: clamp(24px, 5vw, 72px);
+    row-gap: 18px;
+  }
+
+  .major-link {
+    display: grid;
+    grid-template-columns: 58px 1fr auto;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    min-height: 86px;
+    padding: 0;
+    border: 0;
+    border-bottom: 1px solid var(--learn-rule-soft);
+    background: transparent;
+    color: var(--learn-ink);
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .major-link:hover,
+  .major-link.is-active {
+    border-bottom-color: var(--learn-accent);
+  }
+
+  .major-link.is-active .major-arrow,
+  .major-link:hover .major-arrow {
+    color: var(--learn-accent);
+    transform: translateX(4px);
+  }
+
+  .major-icon {
+    width: 42px;
+    height: 42px;
+    color: var(--learn-blue);
+  }
+
+  .major-title {
+    display: block;
+    color: var(--learn-ink);
+    font-size: clamp(16px, 1.6vw, 22px);
+    letter-spacing: 0.04em;
+  }
+
+  .major-stat {
+    display: block;
+    margin-top: 5px;
+  }
+
+  .major-arrow {
+    color: var(--learn-faint);
+    transition: transform 0.18s ease, color 0.18s ease;
+  }
+
+  .roadmap-head {
+    display: grid;
+    grid-template-columns: minmax(260px, 0.8fr) minmax(260px, 1.2fr);
+    gap: 34px;
+    align-items: end;
+    margin-bottom: 28px;
+  }
+
+  .roadmap-title h2 {
+    color: var(--learn-ink);
+    font-size: clamp(34px, 6.6vw, 86px);
+    line-height: 0.9;
+  }
+
+  .roadmap-controls {
+    display: flex;
+    justify-content: flex-end;
+    gap: 14px;
+  }
+
+  .roadmap-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(320px, 360px);
+    gap: clamp(54px, 6vw, 86px);
+    align-items: start;
+  }
+
+  .roadmap-lanes {
+    display: grid;
+    gap: 34px;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .roadmap-lane {
+    display: grid;
+    grid-template-columns: 74px minmax(0, 1fr);
+    gap: 20px;
+    align-items: start;
+    min-height: 116px;
+  }
+
+  .lane-label {
+    position: sticky;
+    top: 94px;
+    color: var(--learn-accent);
+    font-size: 13px;
+    letter-spacing: 0.16em;
+    padding-top: 26px;
+  }
+
+  .lane-track {
+    position: relative;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(156px, 190px);
+    gap: 26px;
+    min-width: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 22px 36px 22px 4px;
+    border-top: 1px solid var(--learn-rule);
+    scrollbar-width: none;
+  }
+
+  .lane-track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .lane-track::before {
+    content: "";
+    position: absolute;
+    top: -4px;
+    left: 0;
+    width: 8px;
+    height: 8px;
+    background: var(--learn-accent);
+  }
+
+  .lane-track::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 80px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--learn-blue));
+    opacity: 0.45;
+  }
+
+  .course-node {
+    position: relative;
+    display: grid;
+    grid-template-columns: 34px minmax(0, 1fr);
+    gap: 12px;
+    align-items: start;
+    min-height: 78px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--learn-ink);
+    font: 12px/1.35 var(--learn-font-display);
+    letter-spacing: 0.04em;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .course-node::before {
+    content: "";
+    position: absolute;
+    left: 16px;
+    top: 17px;
+    width: calc(100% + 28px);
+    height: 1px;
+    background: var(--learn-rule);
+    opacity: 0.7;
+    pointer-events: none;
+  }
+
+  .course-node:last-child::before {
+    display: none;
+  }
+
+  .course-node::after {
+    content: "";
+    position: absolute;
+    left: 15px;
+    top: 13px;
+    width: 8px;
+    height: 8px;
+    border-top: 1px solid var(--learn-rule);
+    border-right: 1px solid var(--learn-rule);
+    transform: rotate(45deg);
+    opacity: 0.7;
+    pointer-events: none;
+  }
+
+  .course-node:last-child::after {
+    display: none;
+  }
+
+  .course-index {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border: 1px solid currentColor;
+    color: var(--learn-muted);
+    background: transparent;
+    font-size: 11px;
+  }
+
+  .course-copy {
+    min-width: 0;
+  }
+
+  .course-name {
+    display: block;
+    color: currentColor;
+    overflow-wrap: anywhere;
+  }
+
+  .course-meta {
+    display: block;
+    margin-top: 5px;
+    color: var(--learn-muted);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+  }
+
+  .course-edge-note {
+    display: block;
+    margin-top: 8px;
+    color: var(--learn-blue);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+  }
+
+  .course-node.has-real-link::before,
+  .course-node.has-real-link::after {
+    background: var(--learn-blue);
+    border-color: var(--learn-blue);
+    opacity: 0.95;
+  }
+
+  .course-node:hover,
+  .course-node.active {
+    color: var(--learn-accent);
+  }
+
+  .course-node.active .course-index {
+    border-color: var(--learn-accent);
+    background: var(--learn-accent);
+    color: var(--learn-bg-deep);
+    box-shadow: 0 0 0 4px rgba(237, 255, 69, 0.12);
+  }
+
+  .course-node.active .course-copy {
+    padding: 7px 10px 8px;
+    margin: -7px 0 0 -10px;
+    background: rgba(237, 255, 69, 0.10);
+    border-bottom: 1px solid var(--learn-accent);
+  }
+
+  .course-node.active .course-meta {
+    color: var(--learn-accent);
+  }
+
+  .course-node.path-related {
+    color: var(--learn-blue);
+  }
+
+  .course-node.active.path-related {
+    color: var(--learn-accent);
+  }
+
+  .knowledge-roadmap {
+    position: sticky;
+    top: 112px;
+    z-index: 3;
+    min-width: 0;
+    padding: 18px 0 18px 26px;
+    border-left: 1px solid var(--learn-rule);
+    background:
+      linear-gradient(90deg, rgba(4, 5, 43, 0.96), rgba(4, 5, 43, 0.72) 72%, rgba(4, 5, 43, 0));
+  }
+
+  .knowledge-roadmap h3 {
+    color: var(--learn-ink);
+    font-size: clamp(22px, 2.4vw, 30px);
+    line-height: 1;
+    margin: 0 0 14px;
+    overflow-wrap: anywhere;
+  }
+
+  .knowledge-course {
+    color: var(--learn-muted);
+    font: 14px/1.55 var(--font-ui);
+    text-transform: none;
+    margin-bottom: 22px;
+  }
+
+  .path-thread {
+    display: grid;
+    gap: 8px;
+    margin: 0 0 20px;
+    color: var(--learn-muted);
+    font: 12px/1.6 var(--font-ui);
+    text-transform: none;
+  }
+
+  .path-thread span {
+    display: block;
+    border-bottom: 1px solid var(--learn-rule-soft);
+    padding-bottom: 6px;
+  }
+
+  .knowledge-route {
+    display: grid;
+    gap: 0;
+    margin-top: 10px;
+  }
+
+  .knowledge-node {
+    position: relative;
+    display: grid;
+    grid-template-columns: 28px minmax(0, 1fr);
+    gap: 12px;
+    min-height: 48px;
+    padding-bottom: 16px;
+    color: var(--learn-ink);
+    font: 12px/1.45 var(--learn-font-display);
+  }
+
+  .knowledge-node::before {
+    content: "";
+    position: absolute;
+    left: 13px;
+    top: 28px;
+    bottom: 0;
+    width: 1px;
+    background: var(--learn-blue);
+    opacity: 0.5;
+  }
+
+  .knowledge-node:last-child::before {
+    display: none;
+  }
+
+  .knowledge-index {
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    border: 1px solid var(--learn-blue);
+    color: var(--learn-blue);
+    font-size: 10px;
+  }
+
+  .knowledge-name {
+    min-width: 0;
+    padding-top: 4px;
+    border-bottom: 1px solid var(--learn-rule-soft);
+    overflow-wrap: anywhere;
+  }
+
+  .knowledge-expand {
+    margin-top: 8px;
+    border-color: var(--learn-rule-soft);
+  }
+
+  .roadmap-empty,
+  .major-empty {
+    color: var(--learn-muted);
+    font: 15px/1.7 var(--font-ui);
+    text-transform: none;
+  }
+
+  .graph-lab {
+    display: none;
+  }
+
+  .graph-lab #graph {
+    position: absolute !important;
+    top: 145px !important;
+    left: 50% !important;
+    width: min(68vw, 980px) !important;
+    height: min(68vw, 720px) !important;
+    transform: translateX(-50%) !important;
+  }
+
+  .graph-lab #loading,
+  .graph-lab #brand,
+  .graph-lab #toolbar,
+  .graph-lab #detail,
+  .graph-lab #timeline-panel,
+  .graph-lab #path-controls,
+  .graph-lab #legend,
+  .graph-lab #stats,
+  .graph-lab #search-results,
+  .graph-lab #toast {
+    position: absolute !important;
+  }
+
+  .graph-lab #brand {
+    top: 28px !important;
+  }
+
+  .graph-lab #toolbar {
+    top: 28px !important;
+  }
+
+  .graph-lab #detail {
+    top: 112px !important;
+    bottom: 126px !important;
+  }
+
+  .graph-lab #timeline-panel,
+  .graph-lab #legend,
+  .graph-lab #stats {
+    bottom: 18px !important;
+  }
+
+  .graph-lab #path-controls {
+    bottom: 128px !important;
+  }
+
+  @media (max-width: 980px) {
+    .learning-nav {
+      grid-template-columns: 1fr;
+      gap: 12px;
+      padding-top: 14px;
+      padding-bottom: 14px;
+    }
+
+    .learning-shell {
+      padding-top: 148px;
+    }
+
+    .section-heading,
+    .roadmap-head,
+    .roadmap-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .roadmap-controls {
+      justify-content: flex-start;
+    }
+
+    .major-index {
+      grid-template-columns: 1fr;
+    }
+
+    .major-tools {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    .knowledge-roadmap {
+      position: static;
+      border-left: 0;
+      border-top: 1px solid var(--learn-rule);
+      padding: 24px 0 0;
+    }
+
+    .graph-lab {
+      min-height: 1180px;
+    }
+
+    .graph-lab #graph {
+      top: 170px !important;
+      width: 104vw !important;
+      height: 104vw !important;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .learning-nav-links {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+
+    .learning-nav-links a {
+      font-size: 10px;
+    }
+
+    .learning-hero {
+      min-height: 58dvh;
+    }
+
+    .major-link {
+      grid-template-columns: 46px 1fr auto;
+    }
+
+    .roadmap-lane {
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+
+    .lane-label {
+      position: static;
+      padding-top: 0;
+    }
+
+    .lane-track {
+      grid-auto-columns: minmax(150px, 72vw);
+      margin-right: -18px;
+      padding-right: 18px;
+    }
   }
 </style>
 </head>
-<body>
+<body class="learning-page">
 
-<div id="loading">加载知识图谱...</div>
-<div id="graph"></div>
+<header class="learning-nav" aria-label="学习路线导航">
+  <a class="learning-wordmark" href="#top"><span aria-hidden="true"></span>KG Studio / Learning Graph</a>
+  <nav class="learning-nav-links">
+    <a href="#majors">Majors</a>
+    <a href="#roadmap">Roadmap</a>
+  </nav>
+</header>
+
+<main class="learning-shell" id="top">
+  <section class="learning-hero" aria-labelledby="learning-title">
+    <div class="learning-kicker">Major Index / Course Roadmap / Knowledge Evidence</div>
+    <h1 id="learning-title">专业路线图</h1>
+    <p>选择一个专业，进入课程路径，再查看每门课程覆盖的知识点。页面保持纵向滚动目录结构，视觉采用 Hermes 式高对比线性技术风格。</p>
+    <div class="learning-actions">
+      <a class="line-action" href="#majors">选择专业</a>
+    </div>
+  </section>
+
+  <section class="learning-section" id="majors" aria-labelledby="majors-title">
+    <div class="section-heading">
+      <div>
+        <div class="section-kicker">01 / Major Directory</div>
+        <h2 id="majors-title">专业目录</h2>
+      </div>
+      <p>专业入口采用开放式索引，不用厚重卡片。每个专业显示线性徽章、课程数量和知识点覆盖量。</p>
+    </div>
+    <div class="major-tools">
+      <label class="sr-only" for="major-search">搜索专业</label>
+      <input id="major-search" type="search" placeholder="搜索专业..." autocomplete="off">
+      <div class="roadmap-meta" id="major-count">正在读取专业...</div>
+    </div>
+    <div class="major-index" id="major-directory"></div>
+  </section>
+
+  <section class="learning-section" id="roadmap" aria-labelledby="roadmap-title">
+    <div class="roadmap-head">
+      <div class="roadmap-title">
+        <div class="section-kicker">02 / Course Roadmap</div>
+        <h2 id="roadmap-title">Roadmap</h2>
+        <div class="roadmap-meta" id="roadmap-meta">选择专业后生成课程路径</div>
+      </div>
+      <div class="roadmap-controls">
+        <button class="line-action" id="btn-expand-roadmap" type="button">展开全部</button>
+        <button class="text-action" id="btn-back-majors" type="button">返回专业 ↑</button>
+      </div>
+    </div>
+    <div class="roadmap-layout">
+      <div class="roadmap-lanes" id="roadmap-lanes">
+        <div class="roadmap-empty">正在等待专业选择。</div>
+      </div>
+      <aside class="knowledge-roadmap" id="course-detail-panel" aria-label="课程知识点">
+        <div class="knowledge-label">Course Knowledge</div>
+        <h3>课程知识点</h3>
+        <div class="knowledge-course">点击左侧课程节点查看覆盖知识点。</div>
+        <div class="path-thread" id="path-thread"></div>
+        <div class="knowledge-route" id="knowledge-route"></div>
+      </aside>
+    </div>
+  </section>
+
+</main>
+
+<section id="graph-lab" class="graph-lab" aria-label="图谱实验室">
+
+<div id="loading" role="status" aria-live="polite">加载知识图谱…</div>
+<main id="graph" aria-label="知识图谱圆形战术沙盘"></main>
+
+<div id="brand">
+  <div class="brand-mark"></div>
+  <div class="brand-copy">
+    <strong>KG Studio</strong>
+    <span>Learning Graph</span>
+  </div>
+</div>
 
 <div id="toolbar">
-  <input type="text" id="search-box" placeholder="搜索专业、课程、知识点..." autocomplete="off">
-  <button class="tool-btn" id="btn-reset">⟳ 重置</button>
+  <label class="sr-only" for="search-box">搜索专业、课程、知识点</label>
+  <input type="search" id="search-box" name="kg-search" placeholder="搜索专业、课程、知识点…" autocomplete="off" aria-label="搜索专业、课程、知识点">
+  <button class="tool-btn" id="btn-reset">重置</button>
   <button class="tool-btn" id="btn-full">全图</button>
   <button class="tool-btn" id="btn-major">专业</button>
 </div>
 
 <div id="search-results"></div>
 
-<div id="detail">
-  <button class="btn-close" onclick="closeDetail()">&times;</button>
-  <h2 id="detail-name"></h2>
-  <span class="label-tag" id="detail-label"></span>
-  <div id="detail-props"></div>
-  <div class="btn-row">
-    <button class="action-btn btn-expand" id="btn-expand">查看关联</button>
-    <button class="action-btn btn-path" id="btn-path">光束路径</button>
+<div id="detail" class="show">
+  <button class="btn-close" id="btn-close-detail" aria-label="关闭详情">&times;</button>
+  <div class="detail-tabs" role="tablist" aria-label="详情和问答">
+    <button class="detail-tab active" id="tab-detail" type="button">详情</button>
+    <button class="detail-tab" id="tab-qa" type="button">问答</button>
+  </div>
+  <div id="detail-section">
+    <h2 id="detail-name">知识图谱</h2>
+    <span class="label-tag" id="detail-label">Overview</span>
+    <div id="detail-props">
+      <div class="prop-row"><span class="prop-key">专业</span><span class="prop-val">4</span></div>
+      <div class="prop-row"><span class="prop-key">课程</span><span class="prop-val">15</span></div>
+      <div class="prop-row"><span class="prop-key">知识点</span><span class="prop-val">48</span></div>
+      <div class="prop-row"><span class="prop-key">关系</span><span class="prop-val">148</span></div>
+    </div>
+    <div class="btn-row">
+      <button class="action-btn btn-expand" id="btn-expand">查看专业</button>
+      <button class="action-btn btn-path" id="btn-path">学习路径</button>
+    </div>
+  </div>
+  <div id="qa-section" hidden>
+    <h2>学习问答</h2>
+    <div class="qa-box">
+      <textarea id="qa-input" placeholder="可以写：我已经会线性代数，每周 6 小时，想学深度学习…">人工智能专业有哪些课程？</textarea>
+      <button class="action-btn" id="qa-submit" type="button">发送问题</button>
+      <div id="qa-answer">可以询问专业课程、课程覆盖知识点、知识点前置依赖，也可以描述已有基础、目标和每周学习时间。</div>
+      <div class="qa-evidence-title">图谱证据</div>
+      <div id="qa-evidence"></div>
+      <div class="qa-evidence-title">示例问题</div>
+      <div id="qa-suggestions">
+        <button class="qa-chip" type="button">人工智能专业有哪些课程？</button>
+        <button class="qa-chip" type="button">机器学习覆盖哪些知识点？</button>
+        <button class="qa-chip" type="button">线性代数属于哪些课程？</button>
+        <button class="qa-chip" type="button">深度学习需要先学什么？</button>
+        <button class="qa-chip" type="button">我已经会线性代数和概率统计，每周 6 小时，想学深度学习</button>
+      </div>
+    </div>
   </div>
 </div>
 
+<div id="timeline-panel">
+  <div class="timeline-title">前置路径 <span id="timeline-summary">OVERVIEW</span></div>
+  <div id="stage-list"></div>
+</div>
+
 <div id="path-controls">
-  <button id="btn-prev" title="上一阶段">⏮</button>
-  <button id="btn-play" title="播放/暂停">▶</button>
-  <button id="btn-next" title="下一阶段">⏭</button>
+  <button id="btn-prev" title="上一阶段" aria-label="上一阶段">‹</button>
+  <button id="btn-play" title="播放或暂停路径动画" aria-label="播放或暂停路径动画">▶</button>
+  <button id="btn-next" title="下一阶段" aria-label="下一阶段">›</button>
   <span id="path-progress">0/0</span>
-  <span style="color:#888;font-size:11px">速度</span>
+  <span class="speed-label">速度</span>
   <input type="range" id="speed-slider" min="1" max="20" value="8">
 </div>
 
-<div id="toast"></div>
+<div id="toast" role="status" aria-live="polite"></div>
 
 <div id="legend">
-  <div class="legend-item"><span class="legend-dot" style="background:#ff6b6b"></span> 专业</div>
-  <div class="legend-item"><span class="legend-dot" style="background:#4ecdc4"></span> 课程</div>
-  <div class="legend-item"><span class="legend-dot" style="background:#ffe66d"></span> 知识点</div>
-  <div class="legend-item" style="margin-left:8px"><span style="color:#00e5ff">━</span> 光束路径</div>
+  <div class="legend-item"><span class="legend-dot" style="background:#ff4a3d;color:#ff4a3d"></span> 专业</div>
+  <div class="legend-item"><span class="legend-dot" style="background:#ffd51d;color:#ffd51d"></span> 课程</div>
+  <div class="legend-item"><span class="legend-dot" style="background:#ffad22;color:#ffad22"></span> 知识点</div>
+  <div class="legend-item"><span style="color:#fff1a3">━</span> 学习路径</div>
 </div>
 
 <div id="stats"></div>
+</section>
 
 <script src="https://unpkg.com/three@0.158.0/build/three.min.js"></script>
 <script src="https://unpkg.com/three@0.158.0/examples/js/controls/OrbitControls.js"></script>
 <script src="https://unpkg.com/3d-force-graph@1.73.5/dist/3d-force-graph.min.js"></script>
 
 <script>
-const API = 'http://localhost:8000';
+const API = window.location.protocol === 'file:' ? 'http://127.0.0.1:8000' : window.location.origin;
+const graphEl = document.getElementById('graph');
+const isMobile = /iPhone|iPad|Android/i.test(navigator.userAgent);
+const enablePointerParallax = false;
 
-	// 移动端检测
-	const isMobile = /iPhone|iPad|Android/i.test(navigator.userAgent);
+const ROADMAP_STAGE_ORDER = ['foundation', 'core', 'advanced', 'practice'];
+const ROADMAP_STAGE_LABELS = {
+  foundation: '基础',
+  core: '核心',
+  advanced: '进阶',
+  practice: '实践'
+};
 
-	// WebGL 支持检测
-	const canvas = document.createElement('canvas');
-	const hasWebGL = !!(canvas.getContext('webgl') || canvas.getContext('experimental-webgl'));
-	if (!hasWebGL) {
-	  document.getElementById('graph').innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100vh;color:#ff6b6b;font-size:18px;text-align:center;padding:40px;">你的浏览器不支持 WebGL<br><small style="color:#5a7a9a">请使用 Chrome / Firefox / Edge 等现代浏览器</small></div>';
-	  document.getElementById('loading').style.display = 'none';
-	  throw new Error('WebGL not supported');
-	}
+let majorList = [];
+let activeMajorName = '';
+let activeRoadmap = null;
+let selectedCourseId = '';
+let roadmapIncludesAll = false;
+let knowledgeExpanded = false;
 
-// ── Three.js 场景准备 ──
-const Graph = ForceGraph3D({
-	  controlType: 'orbit',
-	  rendererConfig: {
-	    antialias: !isMobile,
-	    powerPreference: 'high-performance',
-	  },
-	})(document.getElementById('graph'))
-  .graphData({ nodes: [], links: [] })
-  .nodeLabel(node => node.name)
-  .nodeColor(node => node.isOnPath ? '#00e5ff' : node.color)
-  .nodeVal(node => node.isOnPath ? node.size * 1.8 : node.size)
-  .nodeResolution(isMobile ? 8 : 14)
-  .linkColor(link => link.isOnPath ? '#00e5ff' : (link.color || '#555'))
-  .linkWidth(link => link.isOnPath ? 3.5 : (link.type === 'PREREQUISITE_OF' ? 1.2 : 0.6))
-  .linkDirectionalParticles(link => link.isOnPath ? (isMobile ? 3 : 6) : 0)
-  .linkDirectionalParticleWidth(link => link.isOnPath ? (isMobile ? 1.2 : 2) : 0)
-  .linkDirectionalParticleSpeed(link => link.isOnPath ? 0.02 : 0)
-  .linkOpacity(0.55)
-  .backgroundColor('#060d1a')
-  .showNavInfo(false)
-  .onNodeClick(onNodeClick)
-  .onNodeHover(onNodeHover)
-  .onNodeDragEnd(node => {
-    node.fx = node.x; node.fy = node.y; node.fz = node.z;
+function majorIconSvg(iconKey) {
+  const common = 'viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true"';
+  const icons = {
+    compute: `<svg ${common}><path d="M10 12h28v20H10z"/><path d="M18 40h12"/><path d="M24 32v8"/><path d="M17 20h4m6 0h4M17 25h14"/></svg>`,
+    market: `<svg ${common}><path d="M9 35h30"/><path d="M13 31V20m8 11V14m8 17V18m8 13V10"/><path d="M11 16l8-5 8 5 10-8"/></svg>`,
+    science: `<svg ${common}><path d="M19 8h10"/><path d="M22 8v12L12 38h24L26 20V8"/><path d="M17 31h14"/></svg>`,
+    civic: `<svg ${common}><path d="M24 8l15 8H9z"/><path d="M13 20v14m7-14v14m8-14v14m7-14v14"/><path d="M10 38h28"/></svg>`,
+    humanities: `<svg ${common}><path d="M12 10h16a8 8 0 0 1 8 8v20H20a8 8 0 0 0-8-8z"/><path d="M20 16h10M20 22h12M20 28h8"/></svg>`,
+    society: `<svg ${common}><circle cx="17" cy="17" r="5"/><circle cx="31" cy="17" r="5"/><path d="M9 38c2-7 6-11 12-11s10 4 12 11"/><path d="M24 38c2-6 6-9 12-9"/></svg>`,
+    archive: `<svg ${common}><path d="M10 14h28v24H10z"/><path d="M14 10h20l4 4H10z"/><path d="M17 22h14M17 28h10"/></svg>`,
+    general: `<svg ${common}><path d="M24 8l16 9-16 9-16-9z"/><path d="M14 22v9c6 5 14 5 20 0v-9"/><path d="M40 17v13"/></svg>`
+  };
+  return icons[iconKey] || icons.general;
+}
+
+function formatCount(value, suffix) {
+  return `${Number(value || 0).toLocaleString('zh-CN')} ${suffix}`;
+}
+
+function setLearningStatus(message) {
+  const countEl = document.getElementById('major-count');
+  if (countEl) countEl.textContent = message;
+}
+
+function renderMajorDirectory(filter = '') {
+  const directory = document.getElementById('major-directory');
+  const q = filter.trim().toLowerCase();
+  const majors = q
+    ? majorList.filter(major => major.name.toLowerCase().includes(q))
+    : majorList;
+  document.getElementById('major-count').textContent = `${majors.length} / ${majorList.length} majors`;
+  if (!majors.length) {
+    directory.innerHTML = '<div class="major-empty">没有匹配的专业。</div>';
+    return;
+  }
+  directory.innerHTML = majors.map(major => `
+    <button class="major-link${major.name === activeMajorName ? ' is-active' : ''}" type="button" data-major="${escapeHtml(major.name)}">
+      <span class="major-icon">${majorIconSvg(major.icon_key)}</span>
+      <span>
+        <span class="major-title">${escapeHtml(major.name)}</span>
+        <span class="major-stat">${formatCount(major.course_count, 'courses')} / ${formatCount(major.knowledge_count, 'knowledge')}</span>
+      </span>
+      <span class="major-arrow">→</span>
+    </button>
+  `).join('');
+}
+
+function updateRoadmapUrl(majorName) {
+  const url = new URL(window.location.href);
+  url.searchParams.set('major', majorName);
+  url.hash = 'roadmap';
+  history.pushState({ major: majorName }, '', url);
+}
+
+function learningScrollTo(id) {
+  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function representativeCourse(courses = []) {
+  return courses.slice().sort((a, b) => (b.knowledge_count || 0) - (a.knowledge_count || 0))[0] || courses[0];
+}
+
+function formatIndex(index) {
+  return String(index + 1).padStart(2, '0');
+}
+
+function courseNameById(courseId) {
+  return activeRoadmap?.courses?.find(item => item.id === courseId)?.name || courseId;
+}
+
+function coursePath(courseId) {
+  const links = activeRoadmap?.links || [];
+  return {
+    before: links.filter(link => link.target === courseId).map(link => link.source),
+    after: links.filter(link => link.source === courseId).map(link => link.target)
+  };
+}
+
+function buildRoadmapEdges(data) {
+  const displayedIds = new Set((data.courses || []).map(course => course.id));
+  const realEdges = (data.links || [])
+    .filter(link => displayedIds.has(link.source) && displayedIds.has(link.target))
+    .map(link => ({ ...link, kind: 'real', id: `${link.source}__${link.target}__real` }));
+  const realPairKeys = new Set(realEdges.map(link => `${link.source}__${link.target}`));
+  const guideEdges = [];
+  (data.stages || []).forEach(stage => {
+    const courses = stage.courses || [];
+    courses.forEach((course, index) => {
+      const next = courses[index + 1];
+      if (!next) return;
+      const pairKey = `${course.id}__${next.id}`;
+      if (!realPairKeys.has(pairKey)) {
+        guideEdges.push({
+          id: `${course.id}__${next.id}__guide`,
+          source: course.id,
+          target: next.id,
+          kind: 'guide',
+          stage: stage.key
+        });
+      }
+    });
+  });
+  return [...realEdges, ...guideEdges];
+}
+
+function edgeMapBySource(edges) {
+  const map = new Map();
+  edges.forEach(edge => {
+    const entries = map.get(edge.source) || [];
+    entries.push(edge);
+    map.set(edge.source, entries);
+  });
+  return map;
+}
+
+function renderKnowledgeRoadmap(course) {
+  const panel = document.getElementById('course-detail-panel');
+  const route = document.getElementById('knowledge-route');
+  const pathThread = document.getElementById('path-thread');
+  if (!course) {
+    panel.querySelector('h3').textContent = '课程知识点';
+    panel.querySelector('.knowledge-course').textContent = '点击左侧课程节点查看覆盖知识点。';
+    pathThread.innerHTML = '';
+    route.innerHTML = '';
+    return;
+  }
+  panel.querySelector('h3').textContent = course.name;
+  panel.querySelector('.knowledge-course').textContent = `${course.stage_label} / ${course.knowledge_count || 0} 个知识点`;
+  const path = coursePath(course.id);
+  pathThread.innerHTML = [
+    path.before.length ? `<span>前置：${path.before.map(courseNameById).map(escapeHtml).join(' / ')}</span>` : '',
+    path.after.length ? `<span>后续：${path.after.map(courseNameById).map(escapeHtml).join(' / ')}</span>` : ''
+  ].join('');
+  const knowledge = course.knowledge_points || [];
+  if (!knowledge.length) {
+    route.innerHTML = '<div class="roadmap-empty">当前课程暂无知识点记录。</div>';
+    return;
+  }
+  const visibleKnowledge = knowledgeExpanded ? knowledge : knowledge.slice(0, 18);
+  route.innerHTML = `
+    ${visibleKnowledge.map((item, index) => `
+      <div class="knowledge-node">
+        <span class="knowledge-index">${formatIndex(index)}</span>
+        <span class="knowledge-name">${escapeHtml(item.name)}</span>
+      </div>
+    `).join('')}
+    ${knowledge.length > 18 ? `
+      <button class="line-action knowledge-expand" id="btn-expand-knowledge" type="button">
+        ${knowledgeExpanded ? '收起知识点' : `展开全部 ${knowledge.length} 个知识点`}
+      </button>
+    ` : ''}
+  `;
+}
+
+function renderCourseRoadmap(data) {
+  const lanes = document.getElementById('roadmap-lanes');
+  const stages = new Map((data.stages || []).map(stage => [stage.key, stage]));
+  const edges = buildRoadmapEdges(data);
+  activeRoadmap = { ...data, edges };
+  const edgesBySource = edgeMapBySource(edges);
+  lanes.innerHTML = ROADMAP_STAGE_ORDER.map(stageKey => {
+    const stage = stages.get(stageKey) || { key: stageKey, label: ROADMAP_STAGE_LABELS[stageKey], courses: [] };
+    const courses = stage.courses || [];
+    return `
+      <section class="roadmap-lane" data-stage="${stage.key}">
+        <div class="lane-label">${escapeHtml(stage.label)}</div>
+        <div class="lane-track">
+          ${courses.length ? courses.map((course, index) => {
+            const outgoing = edgesBySource.get(course.id) || [];
+            const hasRealLink = outgoing.some(edge => edge.kind === 'real');
+            return `
+              <button class="course-node${hasRealLink ? ' has-real-link' : ''}" type="button" data-stage="${escapeHtml(stage.key)}" data-index="${index}" data-course-id="${escapeHtml(course.id)}">
+                <span class="course-index">${formatIndex(index)}</span>
+                <span class="course-copy">
+                  <span class="course-name">${escapeHtml(course.name)}</span>
+                  <span class="course-meta">${course.knowledge_count || 0} knowledge</span>
+                  ${hasRealLink ? '<span class="course-edge-note">linked path</span>' : ''}
+                </span>
+              </button>
+            `;
+          }).join('') : '<span class="roadmap-empty">暂无课程</span>'}
+        </div>
+      </section>
+    `;
+  }).join('');
+}
+
+function selectRoadmapCourse(courseId) {
+  if (selectedCourseId !== courseId) {
+    knowledgeExpanded = false;
+  }
+  selectedCourseId = courseId;
+  const path = coursePath(courseId);
+  const relatedIds = new Set([...path.before, ...path.after]);
+  const activeEdgeSources = new Set([...path.before, courseId]);
+  document.querySelectorAll('.course-node').forEach(node => {
+    node.classList.toggle('active', node.dataset.courseId === courseId);
+    node.classList.toggle('path-related', relatedIds.has(node.dataset.courseId));
+    node.classList.toggle('path-active', activeEdgeSources.has(node.dataset.courseId));
+  });
+  const course = activeRoadmap?.courses?.find(item => item.id === courseId);
+  renderKnowledgeRoadmap(course);
+}
+
+function renderRoadmap(data) {
+  activeMajorName = data.major?.name || activeMajorName;
+  document.getElementById('roadmap-title').textContent = `${activeMajorName} Roadmap`;
+  document.getElementById('roadmap-meta').textContent =
+    `${data.displayed_courses}/${data.total_courses} courses · ${data.total_prerequisite_links} prerequisite links`;
+  document.getElementById('btn-expand-roadmap').hidden = data.include_all || data.displayed_courses >= data.total_courses;
+  renderCourseRoadmap(data);
+  const firstCourse = representativeCourse(data.courses || []);
+  selectRoadmapCourse(firstCourse?.id || '');
+  renderMajorDirectory(document.getElementById('major-search').value || '');
+}
+
+async function loadMajorRoadmap(majorName, options = {}) {
+  const includeAll = Boolean(options.includeAll);
+  roadmapIncludesAll = includeAll;
+  activeMajorName = majorName;
+  document.getElementById('roadmap-title').textContent = `${majorName} Roadmap`;
+  document.getElementById('roadmap-meta').textContent = '正在生成课程路径...';
+  document.getElementById('roadmap-lanes').innerHTML = '<div class="roadmap-empty">正在读取课程和知识点。</div>';
+  renderKnowledgeRoadmap(null);
+  const res = await fetch(`${API}/api/majors/${encodeURIComponent(majorName)}/roadmap?limit=32&include_all=${includeAll ? 'true' : 'false'}`);
+  if (!res.ok) throw new Error(`roadmap ${res.status}`);
+  renderRoadmap(await res.json());
+  if (options.updateUrl !== false) updateRoadmapUrl(majorName);
+  if (options.scroll !== false) learningScrollTo('roadmap');
+}
+
+async function loadMajorsHome() {
+  try {
+    const res = await fetch(`${API}/api/majors`);
+    if (!res.ok) throw new Error(`majors ${res.status}`);
+    majorList = await res.json();
+    const preferred = new URLSearchParams(window.location.search).get('major') || '人工智能';
+    const defaultMajor = majorList.find(major => major.name === preferred)
+      || majorList.find(major => major.name === '人工智能')
+      || majorList.slice().sort((a, b) => (b.course_count || 0) - (a.course_count || 0))[0];
+    activeMajorName = defaultMajor?.name || '';
+    renderMajorDirectory();
+    if (activeMajorName) {
+      await loadMajorRoadmap(activeMajorName, {
+        updateUrl: Boolean(new URLSearchParams(window.location.search).get('major')),
+        scroll: window.location.hash === '#roadmap'
+      });
+    }
+  } catch (error) {
+    console.warn('Major home failed', error);
+    setLearningStatus('专业接口暂不可用');
+    document.getElementById('major-directory').innerHTML = '<div class="major-empty">无法读取专业数据，请确认 FastAPI 和 Neo4j 已启动。</div>';
+    document.getElementById('roadmap-lanes').innerHTML = '<div class="roadmap-empty">等待专业接口恢复。</div>';
+  }
+}
+
+document.getElementById('major-search').addEventListener('input', event => {
+  renderMajorDirectory(event.currentTarget.value);
+});
+
+document.getElementById('major-directory').addEventListener('click', event => {
+  const item = event.target.closest('.major-link');
+  if (!item) return;
+  loadMajorRoadmap(item.dataset.major, { scroll: true }).catch(error => {
+    console.warn(error);
+    showToast?.('专业路线图加载失败');
+  });
+});
+
+document.getElementById('roadmap-lanes').addEventListener('click', event => {
+  const item = event.target.closest('.course-node');
+  if (!item) return;
+  selectRoadmapCourse(item.dataset.courseId);
+});
+
+document.getElementById('course-detail-panel').addEventListener('click', event => {
+  const item = event.target.closest('#btn-expand-knowledge');
+  if (!item || !selectedCourseId) return;
+  knowledgeExpanded = !knowledgeExpanded;
+  const course = activeRoadmap?.courses?.find(entry => entry.id === selectedCourseId);
+  renderKnowledgeRoadmap(course);
+});
+
+document.getElementById('btn-expand-roadmap').addEventListener('click', () => {
+  if (!activeMajorName || roadmapIncludesAll) return;
+  loadMajorRoadmap(activeMajorName, { includeAll: true, scroll: false }).catch(error => {
+    console.warn(error);
+    showToast?.('展开全部失败');
+  });
+});
+
+document.getElementById('btn-back-majors').addEventListener('click', () => learningScrollTo('majors'));
+
+window.addEventListener('popstate', () => {
+  const majorName = new URLSearchParams(window.location.search).get('major');
+  if (majorName && majorName !== activeMajorName) {
+    loadMajorRoadmap(majorName, { updateUrl: false, scroll: window.location.hash === '#roadmap' }).catch(console.warn);
+  }
+});
+
+const UI_COLORS = {
+  Major: '#ff4a3d',
+  Course: '#ffd51d',
+  KnowledgePoint: '#ffad22',
+  KnowledgeConcept: '#ffad22',
+  path: '#fff1a3',
+  link: '#8a6d24'
+};
+
+const LABEL_TEXT = {
+  Major: '专业',
+  Course: '课程',
+  KnowledgePoint: '知识点',
+  KnowledgeConcept: '知识概念',
+  Overview: '概览'
+};
+
+const NODE_LETTER = {
+  Major: 'M',
+  Course: 'C',
+  KnowledgePoint: 'K',
+  KnowledgeConcept: 'K'
+};
+
+function isKnowledgeNode(node) {
+  return node && (node.label === 'KnowledgePoint' || node.label === 'KnowledgeConcept');
+}
+
+function endpointId(endpoint) {
+  return typeof endpoint === 'object' ? endpoint.id : endpoint;
+}
+
+function escapeHtml(value) {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function setMode(mode) {
+  document.querySelectorAll('.mode-card').forEach(el => el.classList.remove('active'));
+  const active = document.getElementById(`mode-${mode}`);
+  if (active) active.classList.add('active');
+}
+
+function renderTimeline(stages = [], summary = 'OVERVIEW') {
+  const box = document.getElementById('stage-list');
+  document.getElementById('timeline-summary').textContent = summary;
+  const fallback = [
+    { stage: 1, knowledge_points: ['专业培养结构'] },
+    { stage: 2, knowledge_points: ['课程体系'] },
+    { stage: 3, knowledge_points: ['核心知识点'] },
+    { stage: 4, knowledge_points: ['前置依赖'] },
+    { stage: 5, knowledge_points: ['学习路径'] },
+  ];
+  const source = stages.length ? stages.slice(0, 5) : fallback;
+  box.innerHTML = source.map((stage, index) => {
+    const title = (stage.knowledge_points || []).join(' / ') || '待选择节点';
+    return `
+      <div class="stage-card ${index === 0 ? 'active' : ''}">
+        <strong>阶段 ${stage.stage || index + 1}</strong>
+        <span>${escapeHtml(title)}</span>
+      </div>
+    `;
+  }).join('');
+}
+
+function updateTimelineProgress(index = 0) {
+  document.querySelectorAll('.stage-card').forEach((card, i) => {
+    card.classList.toggle('active', i === index);
+  });
+}
+
+function showTimeline() {
+  document.getElementById('timeline-panel').classList.add('show');
+}
+
+function hideTimeline() {
+  document.getElementById('timeline-panel').classList.remove('show');
+}
+
+function applyVisualTokens(data, mode = 'overview') {
+  data.nodes.forEach(n => {
+    n.color = UI_COLORS[n.label] || '#d7dee2';
+    n.displayName = n.name || n.id;
+    n.z = 0;
+    n.fz = 0;
+  });
+  data.links.forEach(l => {
+    l.color = isPrerequisiteLink(l) ? UI_COLORS.path : UI_COLORS.link;
+  });
+  seedPlanarLayout(data, mode);
+  centerAndPinNodes(data.nodes);
+  return data;
+}
+
+function isPrerequisiteLink(link) {
+  return link.type === 'PREREQUISITE_OF'
+    || link.type === 'CONCEPT_PREREQUISITE_FOR'
+    || link.type === 'PREREQUISITE_FOR';
+}
+
+function isCourseKnowledgeLink(link) {
+  return link.type === 'COVERS_KNOWLEDGE' || link.type === 'COVERS';
+}
+
+function demoGraphData() {
+  const majors = ['人工智能', '软件工程', '数据科学'];
+  const courses = ['机器学习', '深度学习', '数据结构', '算法设计', '数据库系统', '计算机视觉'];
+  const points = ['线性代数', '概率统计', '梯度下降', '神经网络', '卷积网络', '模型评估', '特征工程', '反向传播', '过拟合'];
+  const nodes = [
+    ...majors.map(name => ({ id: `Major::${name}`, name, label: 'Major', properties: { type: 'major' } })),
+    ...courses.map(name => ({ id: `Course::${name}`, name, label: 'Course', properties: { credits: 3 } })),
+    ...points.map(name => ({ id: `KnowledgeConcept::${name}`, name, label: 'KnowledgeConcept', properties: { difficulty: '核心' } })),
+  ];
+  const links = [];
+  courses.forEach((course, index) => {
+    links.push({ source: `Major::${majors[index % majors.length]}`, target: `Course::${course}`, type: 'HAS_COURSE' });
+  });
+  points.forEach((point, index) => {
+    links.push({ source: `Course::${courses[index % courses.length]}`, target: `KnowledgeConcept::${point}`, type: 'COVERS_KNOWLEDGE' });
+  });
+  ['线性代数', '概率统计', '梯度下降', '神经网络', '反向传播', '深度学习'].forEach((name, index, arr) => {
+    if (index < arr.length - 1) {
+      links.push({
+        source: `KnowledgeConcept::${name}`,
+        target: arr[index + 1] === '深度学习' ? 'Course::深度学习' : `KnowledgeConcept::${arr[index + 1]}`,
+        type: 'CONCEPT_PREREQUISITE_FOR'
+      });
+    }
+  });
+  return { nodes, links };
+}
+
+function demoPathData() {
+  const sequence = ['线性代数', '概率统计', '梯度下降', '神经网络', '反向传播', '深度学习'];
+  const nodes = sequence.map((name, index) => ({
+    id: `KnowledgeConcept::${name}`,
+    name,
+    label: 'KnowledgeConcept',
+    stage: index + 1,
+    properties: { stage: index + 1 }
+  }));
+  const links = sequence.slice(0, -1).map((name, index) => ({
+    source: `KnowledgeConcept::${name}`,
+    target: `KnowledgeConcept::${sequence[index + 1]}`,
+    type: 'CONCEPT_PREREQUISITE_FOR'
+  }));
+  const stages = sequence.map((name, index) => ({
+    stage: index + 1,
+    knowledge_points: [name]
+  }));
+  return { nodes, links, stages };
+}
+
+function idleGraphData() {
+  const nodes = [];
+  const links = [];
+  const count = isMobile ? 42 : 72;
+  for (let i = 0; i < count; i++) {
+    const ring = i % 3;
+    const angle = (Math.PI * 2 * i) / count;
+    const radius = 72 + ring * 88;
+    const id = `Idle::${i}`;
+    nodes.push({
+      id,
+      name: '',
+      label: 'Idle',
+      color: ring === 0 ? '#ffd51d' : ring === 1 ? '#ffad22' : '#fff1a3',
+      size: ring === 0 ? 2.6 : 1.8,
+      x: Math.cos(angle) * radius,
+      y: Math.sin(angle) * radius,
+      z: 0,
+      fx: Math.cos(angle) * radius,
+      fy: Math.sin(angle) * radius,
+      fz: 0,
+      isIdle: true
+    });
+    if (i > 0 && i % 2 === 0) {
+      links.push({ source: `Idle::${i - 1}`, target: id, type: 'IDLE_FLOW', color: '#8a6d24' });
+    }
+  }
+  return { nodes, links };
+}
+
+function seedPlanarLayout(data, mode) {
+  const groups = {
+    Major: data.nodes.filter(n => n.label === 'Major'),
+    Course: data.nodes.filter(n => n.label === 'Course'),
+    KnowledgePoint: data.nodes.filter(isKnowledgeNode)
+  };
+
+  if (mode === 'qa-major-courses') {
+    layoutQaMajorCourses(data, groups);
+    return;
+  }
+
+  if (mode === 'path') {
+    const byStage = new Map();
+    data.nodes.forEach(node => {
+      const stage = Number(node.stage || 1);
+      if (!byStage.has(stage)) byStage.set(stage, []);
+      byStage.get(stage).push(node);
+    });
+    const stages = [...byStage.keys()].sort((a, b) => a - b);
+    const step = isMobile ? 72 : 112;
+    const start = -((stages.length - 1) * step) / 2;
+    stages.forEach((stage, stageIndex) => {
+      const nodes = byStage.get(stage);
+      const yStart = -((nodes.length - 1) * 42) / 2;
+      nodes.forEach((node, nodeIndex) => {
+        node.x = start + stageIndex * step;
+        node.y = yStart + nodeIndex * 42;
+        node.fx = node.x;
+        node.fy = node.y;
+        node.fz = 0;
+      });
+    });
+    return;
+  }
+
+  data.nodes.forEach(node => {
+    delete node.fx;
+    delete node.fy;
+    node.fz = 0;
   });
 
-Graph.cameraPosition({ x: 200, y: 200, z: 300 });
+  placeRing(groups.Major, 48, -Math.PI / 2);
+  placeRing(groups.Course, mode === 'major' ? 170 : 155, 0.18);
+  placeRing(groups.KnowledgePoint, mode === 'major' ? 260 : 310, 0.06);
+}
 
-	// 限制移动端 DPR
-	try {
-	  const renderer = Graph.renderer();
-	  if (renderer) renderer.setPixelRatio(isMobile ? 1 : Math.min(window.devicePixelRatio, 2));
-	} catch(e) {}
+function layoutQaMajorCourses(data, groups) {
+  const courses = groups.Course;
+  groups.Major.forEach((node, index) => {
+    node.x = -170;
+    node.y = index * 52;
+    node.z = 0;
+    node.fx = node.x;
+    node.fy = node.y;
+    node.fz = 0;
+  });
+  courses.forEach((node, index) => {
+    const angle = index * 2.399963 + 0.45;
+    const radius = 72 + Math.sqrt(index + 1) * 29;
+    const band = index % 5;
+    const squash = 0.72 + band * 0.035;
+    node.x = 44 + Math.cos(angle) * radius + Math.sin(index * 0.71) * 20;
+    node.y = Math.sin(angle) * radius * squash + Math.cos(index * 1.19) * 16;
+    node.z = 0;
+    node.fx = node.x;
+    node.fy = node.y;
+    node.fz = 0;
+  });
+  groups.KnowledgePoint.forEach((node, index) => {
+    node.x = 430;
+    node.y = (index - (groups.KnowledgePoint.length - 1) / 2) * 38;
+    node.z = 0;
+    node.fx = node.x;
+    node.fy = node.y;
+    node.fz = 0;
+  });
+}
 
-// ── 光束动画状态 ──
-let beamGroup = null;          // Three.js group holding all beam objects
-let photon = null;             // the glowing sphere
-let photonLight = null;        // point light attached to photon
-let pathSegments = [];         // [{startNodeId, endNodeId, mesh, startPos, endPos}]
-let pathNodeIds = [];          // ordered list of node IDs on the path
-let currentSegment = 0;        // which segment the photon is on
-let segmentProgress = 0;       // 0..1 within current segment
-let beamSpeed = 0.3;           // progress per second
+function placeRing(nodes, radius, offset = 0) {
+  const count = Math.max(nodes.length, 1);
+  nodes.forEach((node, index) => {
+    const angle = offset + (Math.PI * 2 * index) / count;
+    const stagger = index % 2 ? 18 : -10;
+    node.x = Math.cos(angle) * (radius + stagger);
+    node.y = Math.sin(angle) * (radius + stagger);
+    node.z = 0;
+  });
+}
+
+function centerAndPinNodes(nodes) {
+  const positioned = nodes.filter(node => Number.isFinite(node.x) && Number.isFinite(node.y));
+  if (!positioned.length) return;
+
+  const bounds = positioned.reduce((acc, node) => ({
+    minX: Math.min(acc.minX, node.x),
+    maxX: Math.max(acc.maxX, node.x),
+    minY: Math.min(acc.minY, node.y),
+    maxY: Math.max(acc.maxY, node.y)
+  }), {
+    minX: Infinity,
+    maxX: -Infinity,
+    minY: Infinity,
+    maxY: -Infinity
+  });
+  const centerX = (bounds.minX + bounds.maxX) / 2;
+  const centerY = (bounds.minY + bounds.maxY) / 2;
+
+  positioned.forEach(node => {
+    node.x -= centerX;
+    node.y -= centerY;
+    node.z = 0;
+    node.fx = node.x;
+    node.fy = node.y;
+    node.fz = 0;
+  });
+}
+
+function nodeSize(node) {
+  if (node.isIdle) return node.size || 2;
+  const base = node.label === 'Major' ? 5.6 : node.label === 'Course' ? 4.2 : 3.2;
+  const selected = node.isOnPath || node.isQaEvidence || node.is_center ? 1.25 : 1;
+  return base * selected;
+}
+
+function makeTextSprite(text, color, compact = false) {
+  const canvas = document.createElement('canvas');
+  const scale = 2;
+  const width = compact ? 172 : 280;
+  const height = compact ? 56 : 66;
+  canvas.width = width * scale;
+  canvas.height = height * scale;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(scale, scale);
+  ctx.font = `780 ${compact ? 17 : 20}px Inter, sans-serif`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillStyle = 'rgba(8, 11, 16, 0.78)';
+  roundRectCanvas(ctx, 0.5, 0.5, width - 1, height - 1, 10);
+  ctx.fill();
+  ctx.strokeStyle = `${color}88`;
+  ctx.lineWidth = 1;
+  ctx.stroke();
+  ctx.fillStyle = '#eef3f4';
+  const clipped = text.length > (compact ? 9 : 13) ? `${text.slice(0, compact ? 9 : 13)}…` : text;
+  ctx.fillText(clipped, width / 2, height / 2 + 1);
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.anisotropy = 4;
+  const sprite = new THREE.Sprite(new THREE.SpriteMaterial({
+    map: texture,
+    transparent: true,
+    depthWrite: false
+  }));
+  sprite.scale.set(width / 8.4, height / 8.4, 1);
+  sprite.position.set(0, -nodeLabelOffset(compact), 0);
+  return sprite;
+}
+
+function roundRectCanvas(ctx, x, y, width, height, radius) {
+  ctx.beginPath();
+  ctx.moveTo(x + radius, y);
+  ctx.lineTo(x + width - radius, y);
+  ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+  ctx.lineTo(x + width, y + height - radius);
+  ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+  ctx.lineTo(x + radius, y + height);
+  ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+  ctx.lineTo(x, y + radius);
+  ctx.quadraticCurveTo(x, y, x + radius, y);
+  ctx.closePath();
+}
+
+function nodeLabelOffset(compact) {
+  return compact ? 10.5 : 13;
+}
+
+function makeNodeObject(node) {
+  const color = new THREE.Color(node.isOnPath || node.isQaEvidence ? UI_COLORS.path : node.color);
+  const radius = nodeSize(node);
+  const group = new THREE.Group();
+  group.userData.nodeId = node.id;
+
+  if (node.isIdle) {
+    const orb = new THREE.Mesh(
+      new THREE.SphereGeometry(radius, 14, 14),
+      new THREE.MeshBasicMaterial({
+        color,
+        transparent: true,
+        opacity: 0.64
+      })
+    );
+    group.add(orb);
+    const halo = new THREE.Mesh(
+      new THREE.TorusGeometry(radius * 2.2, radius * 0.08, 8, 32),
+      new THREE.MeshBasicMaterial({
+        color,
+        transparent: true,
+        opacity: 0.22,
+        depthWrite: false
+      })
+    );
+    group.add(halo);
+    return group;
+  }
+
+  const core = new THREE.Mesh(
+    new THREE.OctahedronGeometry(radius, 1),
+    new THREE.MeshStandardMaterial({
+      color,
+      emissive: color,
+      emissiveIntensity: node.isOnPath || node.isQaEvidence ? 0.7 : 0.28,
+      metalness: 0.72,
+      roughness: 0.22
+    })
+  );
+  core.rotation.z = Math.PI / 4;
+  group.add(core);
+
+  const beacon = new THREE.Mesh(
+    new THREE.CylinderGeometry(radius * 0.22, radius * 0.44, radius * 8.6, 18, 1, true),
+    new THREE.MeshBasicMaterial({
+      color,
+      transparent: true,
+      opacity: node.isOnPath || node.isQaEvidence || node.is_center ? 0.20 : 0.08,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false
+    })
+  );
+  beacon.rotation.x = Math.PI / 2;
+  beacon.position.z = radius * 3.6;
+  group.add(beacon);
+
+  const ring = new THREE.Mesh(
+    new THREE.TorusGeometry(radius * 2.25, radius * 0.055, 8, 72),
+    new THREE.MeshBasicMaterial({
+      color,
+      transparent: true,
+      opacity: node.isOnPath || node.isQaEvidence || node.is_center ? 0.78 : 0.34,
+      depthWrite: false
+    })
+  );
+  group.add(ring);
+
+  const outer = new THREE.Mesh(
+    new THREE.TorusGeometry(radius * 3.08, radius * 0.026, 8, 84),
+    new THREE.MeshBasicMaterial({
+      color,
+      transparent: true,
+      opacity: node.label === 'Major' || node.isOnPath || node.isQaEvidence ? 0.40 : 0.16,
+      depthWrite: false
+    })
+  );
+  group.add(outer);
+
+  if (node.label === 'Major' || node.isOnPath || node.isQaEvidence || node.is_center) {
+    group.add(makeTextSprite(node.name, node.isOnPath || node.isQaEvidence ? UI_COLORS.path : node.color, node.label !== 'Major'));
+  }
+
+  const letter = makeTextSprite(NODE_LETTER[node.label] || 'N', '#eef3f4', true);
+  letter.scale.set(6.8, 2.7, 1);
+  letter.position.set(0, 0, radius + 0.15);
+  group.add(letter);
+
+  return group;
+}
+
+function activeLinkKey() {
+  if (!pathNodeIds.length || currentSegment >= pathNodeIds.length - 1) return '';
+  return `${pathNodeIds[currentSegment]}->${pathNodeIds[currentSegment + 1]}`;
+}
+
+function linkKey(link) {
+  return `${endpointId(link.source)}->${endpointId(link.target)}`;
+}
+
+function redrawGraph() {
+  if (typeof Graph.refresh === 'function') Graph.refresh();
+}
+
+function createContourLines() {
+  const group = new THREE.Group();
+  const material = new THREE.LineBasicMaterial({
+    color: 0xffd51d,
+    transparent: true,
+    opacity: 0.18
+  });
+  for (let ring = 0; ring < 12; ring++) {
+    const points = [];
+    const base = 64 + ring * 25;
+    const wobble = 7 + ring * 0.8;
+    for (let i = 0; i <= 180; i++) {
+      const angle = (Math.PI * 2 * i) / 180;
+      const noise = Math.sin(angle * 3 + ring * 0.7) * wobble + Math.cos(angle * 5 - ring) * wobble * 0.5;
+      const radius = base + noise;
+      points.push(new THREE.Vector3(Math.cos(angle) * radius, Math.sin(angle) * radius, -2.4));
+    }
+    const geometry = new THREE.BufferGeometry().setFromPoints(points);
+    group.add(new THREE.Line(geometry, material));
+  }
+  return group;
+}
+
+const Graph = ForceGraph3D({
+  controlType: 'orbit',
+  rendererConfig: {
+    antialias: !isMobile,
+    alpha: true,
+    powerPreference: 'high-performance'
+  }
+})(graphEl);
+window.KGGraph = Graph;
+
+if (typeof Graph.numDimensions === 'function') Graph.numDimensions(2);
+
+try {
+  const controls = Graph.controls();
+  controls.enableRotate = false;
+  controls.enablePan = false;
+  controls.enableZoom = false;
+  controls.enableDamping = false;
+  controls.autoRotate = false;
+} catch (e) {
+  console.warn('Graph controls lock skipped', e);
+}
+
+Graph
+  .graphData({ nodes: [], links: [] })
+  .nodeId('id')
+  .nodeLabel(node => `${LABEL_TEXT[node.label] || node.label}: ${node.name}`)
+  .nodeVal(node => nodeSize(node))
+  .nodeResolution(18)
+  .nodeThreeObject(makeNodeObject)
+  .nodeThreeObjectExtend(false)
+  .linkColor(link => {
+    if (link.type === 'SHARES_KNOWLEDGE') return '#ffad22';
+    if (link.isOnPath || (link.isQaEvidence && isPrerequisiteLink(link))) return UI_COLORS.path;
+    if (link.isQaEvidence) return link.color || UI_COLORS.link;
+    return link.color || UI_COLORS.link;
+  })
+  .linkWidth(link => {
+    if (link.isOnPath && linkKey(link) === activeLinkKey()) return 1.7;
+    if (link.isQaEvidence && link.type === 'PREREQUISITE_FOR') return 0.8;
+    if (link.isQaEvidence && link.type === 'SHARES_KNOWLEDGE') return 0.58;
+    if (link.isQaEvidence && isPrerequisiteLink(link)) return 1.7;
+    if (link.isQaEvidence) return 0.72;
+    if (link.isOnPath) return 1.15;
+    return isPrerequisiteLink(link) ? 0.42 : 0.28;
+  })
+  .linkOpacity(0.38)
+  .linkDirectionalParticles(link => {
+    if (link.isOnPath) return isMobile ? 2 : 3;
+    if (isPrerequisiteLink(link)) return link.type === 'PREREQUISITE_FOR' ? 2 : 1;
+    if (link.type === 'SHARES_KNOWLEDGE') return 1;
+    return 0;
+  })
+  .linkDirectionalParticleWidth(link => {
+    if (link.isOnPath) return 2.4;
+    if (link.type === 'PREREQUISITE_FOR') return 2.8;
+    if (link.type === 'SHARES_KNOWLEDGE') return 1.8;
+    return isPrerequisiteLink(link) ? 1.8 : 0;
+  })
+  .linkDirectionalParticleSpeed(link => {
+    if (link.isOnPath) return beamSpeed * 0.018;
+    if (link.type === 'PREREQUISITE_FOR') return 0.026;
+    if (link.type === 'SHARES_KNOWLEDGE') return 0.014;
+    return isPrerequisiteLink(link) ? 0.018 : 0;
+  })
+  .linkDirectionalArrowLength(link => isPrerequisiteLink(link) || link.isOnPath ? 2.6 : 0)
+  .linkDirectionalArrowRelPos(0.86)
+  .backgroundColor('rgba(0,0,0,0)')
+  .showNavInfo(false)
+  .cooldownTicks(120)
+  .onEngineTick(() => {
+    Graph.graphData().nodes.forEach(node => {
+      node.z = 0;
+    });
+  })
+  .onNodeClick(onNodeClick)
+  .onNodeHover(onNodeHover)
+  .onNodeDrag(node => {
+    endCameraPan();
+    node.z = 0;
+    node.fx = node.x;
+    node.fy = node.y;
+    node.fz = 0;
+    scheduleQaFlowRefresh();
+  })
+  .onNodeDragEnd(node => {
+    node.fx = node.x;
+    node.fy = node.y;
+    node.fz = 0;
+    refreshQaFlowFromCurrentGraph();
+  });
+
+function suppressGraphDefaultHints() {
+  const navInfo = graphEl.querySelector('.graph-info-msg');
+  if (navInfo) {
+    if (navInfo.style.display !== 'none') navInfo.style.display = 'none';
+    if (navInfo.getAttribute('aria-hidden') !== 'true') navInfo.setAttribute('aria-hidden', 'true');
+    if (navInfo.textContent) navInfo.textContent = '';
+  }
+  graphEl.querySelectorAll('[title], [aria-label]').forEach(el => {
+    const title = el.getAttribute('title') || '';
+    const ariaLabel = el.getAttribute('aria-label') || '';
+    if (title.includes('Left-click') || ariaLabel.includes('Left-click')) {
+      el.removeAttribute('title');
+      el.removeAttribute('aria-label');
+    }
+  });
+  const sceneContainer = graphEl.querySelector('.scene-container');
+  if (sceneContainer) {
+    if (sceneContainer.hasAttribute('title')) sceneContainer.removeAttribute('title');
+    if (sceneContainer.getAttribute('aria-label') !== '知识图谱证据沙盘') {
+      sceneContainer.setAttribute('aria-label', '知识图谱证据沙盘');
+    }
+  }
+}
+
+if (typeof Graph.showNavInfo === 'function') Graph.showNavInfo(false);
+suppressGraphDefaultHints();
+setTimeout(suppressGraphDefaultHints, 0);
+new MutationObserver(suppressGraphDefaultHints).observe(graphEl, {
+  attributes: true,
+  childList: true,
+  subtree: true
+});
+
+if (typeof Graph.enableNodeDrag === 'function') Graph.enableNodeDrag(true);
+
+Graph.d3Force('link').distance(link => isPrerequisiteLink(link) ? 82 : 64);
+Graph.d3Force('charge').strength(-125);
+Graph.d3Force('center').strength(0.12);
+
+const CAMERA_TARGET = { x: 0, y: 0, z: 0 };
+const PARALLAX_LIMIT = { x: 40, y: 24 };
+const CAMERA_DISTANCE_LIMIT = { min: isMobile ? 300 : 340, max: isMobile ? 760 : 900 };
+const CAMERA_VIEW_DISTANCE = Math.hypot(430, 520);
+const CAMERA_VIEW_DIRECTION = {
+  x: 0,
+  y: -430 / CAMERA_VIEW_DISTANCE,
+  z: 520 / CAMERA_VIEW_DISTANCE
+};
+let activeCameraTarget = { ...CAMERA_TARGET };
+let baseCamera = cameraFromDistance(CAMERA_VIEW_DISTANCE);
+let parallaxCurrent = { x: 0, y: 0 };
+let parallaxTarget = { x: 0, y: 0 };
+let parallaxAnimId = null;
+let hoveredGraphNode = null;
+let isCameraPanning = false;
+let cameraPanStart = null;
+
+function cameraFromDistance(distance, target = activeCameraTarget) {
+  return {
+    x: target.x + CAMERA_VIEW_DIRECTION.x * distance,
+    y: target.y + CAMERA_VIEW_DIRECTION.y * distance,
+    z: target.z + CAMERA_VIEW_DIRECTION.z * distance
+  };
+}
+
+function cameraWithParallax() {
+  return {
+    x: baseCamera.x + parallaxCurrent.x,
+    y: baseCamera.y + parallaxCurrent.y,
+    z: baseCamera.z
+  };
+}
+
+function cameraTargetWithParallax() {
+  return {
+    x: activeCameraTarget.x + parallaxCurrent.x,
+    y: activeCameraTarget.y + parallaxCurrent.y,
+    z: activeCameraTarget.z
+  };
+}
+
+function lockCameraOrientation() {
+  const target = cameraTargetWithParallax();
+  try {
+    const camera = Graph.camera();
+    camera.up.set(0, 1, 0);
+    camera.lookAt(new THREE.Vector3(target.x, target.y, target.z));
+  } catch (_) {}
+  try {
+    const controls = Graph.controls();
+    controls.enableRotate = false;
+    controls.enablePan = false;
+    controls.enableZoom = false;
+    controls.enableDamping = false;
+    controls.target.set(target.x, target.y, target.z);
+    controls.update();
+  } catch (_) {}
+}
+
+function applyCamera(duration = 0) {
+  Graph.cameraPosition(cameraWithParallax(), cameraTargetWithParallax(), duration);
+  if (duration > 0) {
+    setTimeout(lockCameraOrientation, duration + 40);
+  } else {
+    lockCameraOrientation();
+  }
+}
+
+function setBaseCamera(position, duration = 0) {
+  const fallbackDistance = cameraDistance();
+  const requestedDistance = position ? Math.hypot(position.x || 0, position.y || 0, position.z || 0) : 0;
+  baseCamera = cameraFromDistance(requestedDistance || fallbackDistance || CAMERA_VIEW_DISTANCE);
+  applyCamera(duration);
+}
+
+function setCameraTarget(target = CAMERA_TARGET) {
+  activeCameraTarget = { ...target };
+}
+
+function setGraphCursor() {
+  if (isCameraPanning) {
+    graphEl.style.cursor = 'grabbing';
+  } else if (hoveredGraphNode) {
+    graphEl.style.cursor = 'pointer';
+  } else {
+    graphEl.style.cursor = 'grab';
+  }
+}
+
+function clamp(value, min, max) {
+  return Math.min(max, Math.max(min, value));
+}
+
+function cameraDistance(camera = baseCamera, target = activeCameraTarget) {
+  return Math.hypot(camera.x - target.x, camera.y - target.y, camera.z - target.z);
+}
+
+function setCameraDistance(distance) {
+  const currentDistance = cameraDistance();
+  if (!currentDistance) return;
+  const nextDistance = clamp(distance, CAMERA_DISTANCE_LIMIT.min, CAMERA_DISTANCE_LIMIT.max);
+  baseCamera = cameraFromDistance(nextDistance);
+  applyCamera(0);
+}
+
+function onGraphWheel(event) {
+  event.preventDefault();
+  parallaxCurrent = { x: 0, y: 0 };
+  parallaxTarget = { x: 0, y: 0 };
+  const nextDistance = cameraDistance() * Math.exp(event.deltaY * 0.0012);
+  setCameraDistance(nextDistance);
+}
+
+function cameraPanFactor() {
+  return clamp(cameraDistance() / 520, 0.72, 1.65);
+}
+
+function startCameraPan(event) {
+  if (isMobile || event.button !== 0 || hoveredGraphNode) return;
+  isCameraPanning = true;
+  cameraPanStart = {
+    x: event.clientX,
+    y: event.clientY,
+    base: { ...baseCamera },
+    target: { ...activeCameraTarget },
+    factor: cameraPanFactor(),
+    pointerId: event.pointerId
+  };
+  resetPointerParallax();
+  graphEl.setPointerCapture?.(event.pointerId);
+  setGraphCursor();
+  event.preventDefault();
+}
+
+function updateCameraPan(event) {
+  if (!isCameraPanning || !cameraPanStart) return;
+  const dx = event.clientX - cameraPanStart.x;
+  const dy = event.clientY - cameraPanStart.y;
+  const shiftX = -dx * 0.64 * cameraPanStart.factor;
+  const shiftY = dy * 0.48 * cameraPanStart.factor;
+  baseCamera = {
+    ...cameraPanStart.base,
+    x: cameraPanStart.base.x + shiftX,
+    y: cameraPanStart.base.y + shiftY
+  };
+  activeCameraTarget = {
+    ...cameraPanStart.target,
+    x: cameraPanStart.target.x + shiftX,
+    y: cameraPanStart.target.y + shiftY
+  };
+  applyCamera(0);
+  event.preventDefault();
+}
+
+function endCameraPan(event) {
+  if (!isCameraPanning) return;
+  const pointerId = event?.pointerId ?? cameraPanStart?.pointerId;
+  if (pointerId !== undefined) {
+    try {
+      graphEl.releasePointerCapture?.(pointerId);
+    } catch (_) {}
+  }
+  isCameraPanning = false;
+  cameraPanStart = null;
+  setGraphCursor();
+}
+
+function startParallaxLoop() {
+  if (parallaxAnimId || !enablePointerParallax) return;
+  parallaxAnimId = requestAnimationFrame(updatePointerParallax);
+}
+
+function updatePointerParallax() {
+  parallaxCurrent.x += (parallaxTarget.x - parallaxCurrent.x) * 0.09;
+  parallaxCurrent.y += (parallaxTarget.y - parallaxCurrent.y) * 0.09;
+  applyCamera(0);
+
+  const dx = Math.abs(parallaxTarget.x - parallaxCurrent.x);
+  const dy = Math.abs(parallaxTarget.y - parallaxCurrent.y);
+  if (dx > 0.08 || dy > 0.08) {
+    parallaxAnimId = requestAnimationFrame(updatePointerParallax);
+  } else {
+    parallaxCurrent = { ...parallaxTarget };
+    applyCamera(0);
+    parallaxAnimId = null;
+  }
+}
+
+function resetPointerParallax() {
+  parallaxTarget = { x: 0, y: 0 };
+  startParallaxLoop();
+}
+
+if (enablePointerParallax) {
+  window.addEventListener('pointermove', event => {
+    if (isCameraPanning) return;
+    const nx = (event.clientX / window.innerWidth - 0.5) * 2;
+    const ny = (event.clientY / window.innerHeight - 0.5) * 2;
+    parallaxTarget = {
+      x: nx * PARALLAX_LIMIT.x,
+      y: ny * PARALLAX_LIMIT.y
+    };
+    startParallaxLoop();
+  }, { passive: true });
+  document.addEventListener('pointerleave', resetPointerParallax);
+  window.addEventListener('blur', resetPointerParallax);
+}
+
+setBaseCamera(baseCamera, 0);
+graphEl.addEventListener('wheel', onGraphWheel, { passive: false });
+graphEl.addEventListener('pointerdown', startCameraPan);
+graphEl.addEventListener('pointermove', updateCameraPan);
+graphEl.addEventListener('pointerup', endCameraPan);
+graphEl.addEventListener('pointercancel', endCameraPan);
+graphEl.addEventListener('pointerleave', endCameraPan);
+setGraphCursor();
+
+try {
+  const renderer = Graph.renderer();
+  renderer.setPixelRatio(isMobile ? 1 : Math.min(window.devicePixelRatio, 2));
+  renderer.setClearColor(0x000000, 0);
+  const scene = Graph.scene();
+  scene.add(new THREE.AmbientLight(0x9fb7c9, 1.2));
+  const keyLight = new THREE.DirectionalLight(0xffffff, 1.8);
+  keyLight.position.set(-180, -260, 420);
+  scene.add(keyLight);
+  const rimLight = new THREE.DirectionalLight(0x9be7ff, 0.9);
+  rimLight.position.set(240, 180, 240);
+  scene.add(rimLight);
+  const grid = new THREE.GridHelper(760, 28, 0x28404b, 0x14222a);
+  grid.rotation.x = Math.PI / 2;
+  grid.material.transparent = true;
+  grid.material.opacity = 0.08;
+  grid.position.z = -0.8;
+  scene.add(grid);
+  scene.add(createContourLines());
+} catch (e) {
+  console.warn('Scene polish skipped', e);
+}
+
+const qaFlowLayer = new THREE.Group();
+let qaFlowAnimId = null;
+let qaFlowStart = performance.now();
+let qaFlowRefreshId = null;
+
+try {
+  Graph.scene().add(qaFlowLayer);
+} catch (e) {
+  console.warn('QA flow layer skipped', e);
+}
+
+function clearQaFlowLayer() {
+  if (qaFlowAnimId) {
+    cancelAnimationFrame(qaFlowAnimId);
+    qaFlowAnimId = null;
+  }
+  while (qaFlowLayer.children.length) {
+    const child = qaFlowLayer.children.pop();
+    if (child.geometry) child.geometry.dispose();
+    if (child.material) child.material.dispose();
+  }
+}
+
+function sampleLinks(links, limit) {
+  if (links.length <= limit) return links;
+  const step = links.length / limit;
+  return Array.from({ length: limit }, (_, index) => links[Math.floor(index * step)]);
+}
+
+function selectQaFlowLinks(links) {
+  const prerequisites = links.filter(link => link.type === 'PREREQUISITE_FOR' || isPrerequisiteLink(link));
+  const sharedKnowledge = sampleLinks(links.filter(link => link.type === 'SHARES_KNOWLEDGE'), 12);
+  const majorCourses = sampleLinks(links.filter(link => link.type === 'HAS_COURSE'), isMobile ? 10 : 18);
+  const seen = new Set();
+  return [...prerequisites, ...sharedKnowledge, ...majorCourses].filter(link => {
+    const key = `${endpointId(link.source)}->${endpointId(link.target)}:${link.type}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
+function qaFlowStyle(link) {
+  if (link.type === 'HAS_COURSE') {
+    return { color: 0xffd51d, opacity: 0.34, size: 3.6, pulses: 1, bend: 18, z: 12 };
+  }
+  if (link.type === 'SHARES_KNOWLEDGE') {
+    return { color: 0xffad22, opacity: 0.62, size: 4.6, pulses: 2, bend: 34, z: 15 };
+  }
+  return { color: 0xfff1a3, opacity: 0.92, size: 6.2, pulses: 3, bend: 48, z: 18 };
+}
+
+function drawQaFlowLayer(nodes, links) {
+  clearQaFlowLayer();
+  const nodeById = new Map(nodes.map(node => [node.id, node]));
+  const flowLinks = selectQaFlowLinks(links);
+  if (!flowLinks.length) return;
+
+  flowLinks.forEach((link, index) => {
+    const source = nodeById.get(endpointId(link.source));
+    const target = nodeById.get(endpointId(link.target));
+    if (!source || !target) return;
+    const style = qaFlowStyle(link);
+    const wobble = Math.sin(index * 1.7) * 16;
+    const mid = new THREE.Vector3(
+      (source.x + target.x) / 2,
+      (source.y + target.y) / 2 + style.bend + wobble,
+      style.z
+    );
+    const curve = new THREE.QuadraticBezierCurve3(
+      new THREE.Vector3(source.x, source.y, style.z),
+      mid,
+      new THREE.Vector3(target.x, target.y, style.z)
+    );
+    const points = curve.getPoints(42);
+    const line = new THREE.Line(
+      new THREE.BufferGeometry().setFromPoints(points),
+      new THREE.LineBasicMaterial({
+        color: style.color,
+        transparent: true,
+        opacity: style.opacity,
+        depthWrite: false
+      })
+    );
+    qaFlowLayer.add(line);
+
+    for (let pulseIndex = 0; pulseIndex < style.pulses; pulseIndex++) {
+      const pulse = new THREE.Mesh(
+        new THREE.SphereGeometry(Math.max(2.4, style.size - pulseIndex * 0.8), 18, 18),
+        new THREE.MeshBasicMaterial({
+          color: style.color,
+          transparent: true,
+          opacity: Math.max(0.38, style.opacity + 0.18 - pulseIndex * 0.12),
+          depthWrite: false
+        })
+      );
+      pulse.userData.curve = curve;
+      pulse.userData.offset = index * 0.21 + pulseIndex * 0.26;
+      qaFlowLayer.add(pulse);
+    }
+  });
+
+  qaFlowStart = performance.now();
+  animateQaFlow();
+}
+
+function refreshQaFlowFromCurrentGraph() {
+  const data = Graph.graphData();
+  const evidenceLinks = data.links.filter(link => link.isQaEvidence);
+  if (!selectQaFlowLinks(evidenceLinks).length) return;
+  drawQaFlowLayer(data.nodes, evidenceLinks);
+}
+
+function scheduleQaFlowRefresh() {
+  if (qaFlowRefreshId) return;
+  qaFlowRefreshId = requestAnimationFrame(() => {
+    qaFlowRefreshId = null;
+    refreshQaFlowFromCurrentGraph();
+  });
+}
+
+function animateQaFlow(now = performance.now()) {
+  const t = ((now - qaFlowStart) / 1250) % 1;
+  qaFlowLayer.children.forEach(child => {
+    if (!child.userData.curve) return;
+    const point = child.userData.curve.getPoint((t + child.userData.offset) % 1);
+    child.position.copy(point);
+  });
+  qaFlowAnimId = requestAnimationFrame(animateQaFlow);
+}
+
+let pathNodeIds = [];
+let pathEdges = [];
+let currentSegment = 0;
+let segmentProgress = 0;
+let beamSpeed = 0.3;
 let beamPlaying = true;
 let beamAnimId = null;
 let lastFrameTime = null;
 
-// ── 工具函数：两点之间创建发光圆柱 ──
-function createGlowCylinder(start, end, radius, color) {
-  const dir = new THREE.Vector3().subVectors(end, start);
-  const len = dir.length();
-  if (len < 0.01) return null;
-  const mid = new THREE.Vector3().addVectors(start, end).multiplyScalar(0.5);
-  const geom = new THREE.CylinderGeometry(radius, radius, len, 6, 1, true);
-  const mat = new THREE.MeshPhongMaterial({
-    color: color,
-    emissive: color,
-    emissiveIntensity: 0.4,
-    transparent: true,
-    opacity: 0.7,
-    side: THREE.DoubleSide,
-  });
-  const mesh = new THREE.Mesh(geom, mat);
-  mesh.position.copy(mid);
-  const axis = new THREE.Vector3(0, 1, 0);
-  const quat = new THREE.Quaternion().setFromUnitVectors(axis, dir.normalize());
-  mesh.setRotationFromQuaternion(quat);
-  return mesh;
-}
-
-// ── 从图中读取节点位置 ──
-function getNodePosition(nodeId) {
-  const data = Graph.graphData();
-  const node = data.nodes.find(n => n.id === nodeId);
-  if (!node) return new THREE.Vector3(0, 0, 0);
-  // 读取力模拟中的实际位置
-  return new THREE.Vector3(
-    node.hasOwnProperty('x') ? node.x : 0,
-    node.hasOwnProperty('y') ? node.y : 0,
-    node.hasOwnProperty('z') ? node.z : 0
-  );
-}
-
-// ── 构建光束路径 ──
-function buildBeamPath() {
-  clearBeam();
-
-  const data = Graph.graphData();
-  const nodes = data.nodes;
-  const links = data.links;
-
-  if (!nodes.length) return;
-
-  // 找出路径上的节点（按 stage 排序）
-  const pathNodes = nodes
-    .filter(n => n.label === 'KnowledgePoint' && n.stage)
-    .sort((a, b) => a.stage - b.stage);
-
-  if (pathNodes.length < 2) return;
-
-  // 收集 path 上的节点 ID 和有向边
-  const pathIds = new Set(pathNodes.map(n => n.id));
-  const pathEdges = []; // [{srcId, dstId}]
-
-  // 按 stage 顺序，找到连接相邻阶段的 PREREQUISITE_OF 边
-  const kpLinks = links.filter(l => l.type === 'PREREQUISITE_OF' && pathIds.has(l.source) && pathIds.has(l.target));
-
-  // 从第一个节点开始，BFS/DFS 通过这些边，遵循 stage 顺序
-  const orderedIds = pathNodes.map(n => n.id);
-
-  // 为每对相邻 stage 的节点找到最短边连接
-  for (let i = 0; i < orderedIds.length - 1; i++) {
-    const srcId = orderedIds[i];
-    const dstId = orderedIds[i + 1];
-    const edge = kpLinks.find(l =>
-      (l.source === srcId && l.target === dstId) ||
-      (typeof l.source === 'object' && l.source.id === srcId && typeof l.target === 'object' && l.target.id === dstId) ||
-      (l.source === srcId && (typeof l.target === 'object' ? l.target.id : l.target) === dstId)
-    );
-    if (edge) {
-      const src = typeof edge.source === 'object' ? edge.source.id : edge.source;
-      const tgt = typeof edge.target === 'object' ? edge.target.id : edge.target;
-      pathEdges.push({ srcId: src, dstId: tgt });
-    }
-  }
-
-  if (pathEdges.length === 0) return;
-
-  // 构建唯一的节点序列: start → ... → end
-  pathNodeIds = [];
-  const edgeMap = new Map();
-  for (const e of pathEdges) {
-    if (!edgeMap.has(e.srcId)) edgeMap.set(e.srcId, []);
-    edgeMap.get(e.srcId).push(e.dstId);
-  }
-
-  // 找到起始节点（没有边指向它的）
-  const targets = new Set(pathEdges.map(e => e.dstId));
-  const startId = pathEdges.find(e => !targets.has(e.srcId))?.srcId || pathEdges[0].srcId;
-
-  // 从 startId 遍历得到顺序
-  const visited2 = new Set();
-  let cur = startId;
-  while (cur && !visited2.has(cur)) {
-    visited2.add(cur);
-    pathNodeIds.push(cur);
-    const nexts = edgeMap.get(cur) || [];
-    cur = nexts.find(n => !visited2.has(n)) || null;
-  }
-
-  if (pathNodeIds.length < 2) return;
-
-  // 标记节点在路径上
-  nodes.forEach(n => {
-    n.isOnPath = pathNodeIds.includes(n.id);
-  });
-
-  // 固定的节点头上不再解开
-  // 标记边在路径上
-  const edgeKeySet = new Set(pathEdges.map(e => `${e.srcId}->${e.dstId}`));
-  links.forEach(l => {
-    const src = typeof l.source === 'object' ? l.source.id : l.source;
-    const tgt = typeof l.target === 'object' ? l.target.id : l.target;
-    l.isOnPath = edgeKeySet.has(`${src}->${tgt}`);
-  });
-
-  // 刷新图以应用新颜色
-  Graph.graphData({ nodes: [...nodes], links: [...links] });
-
-  // 等待力模拟稳定后创建光束（轮询直到所有路径节点有位置，最多等 8 秒）
-  let stabilityChecks = 0;
-  function checkStability() {
-    const graphNodes = Graph.graphData().nodes;
-    const allPlaced = pathNodeIds.every(id => {
-      const nd = graphNodes.find(n => n.id === id);
-      return nd && nd.x !== undefined && nd.y !== undefined && nd.z !== undefined;
-    });
-    if (allPlaced || stabilityChecks >= 32) {
-      createBeamObjects();
-    } else {
-      stabilityChecks++;
-      setTimeout(checkStability, 250);
-    }
-  }
-  setTimeout(checkStability, 300);
-
-  document.getElementById('path-controls').classList.add('show');
-  showToast(`光束路径: ${pathNodeIds.length} 个阶段`);
-}
-
-// ── 创建光束 Three.js 对象 ──
-function createBeamObjects() {
-  const scene = Graph.scene();
-  beamGroup = new THREE.Group();
-  beamGroup.name = 'BeamGroup';
-  scene.add(beamGroup);
-
-  pathSegments = [];
-
-  for (let i = 0; i < pathNodeIds.length - 1; i++) {
-    const startPos = getNodePosition(pathNodeIds[i]);
-    const endPos = getNodePosition(pathNodeIds[i + 1]);
-    const mesh = createGlowCylinder(startPos, endPos, 1.2, 0x00e5ff);
-    if (mesh) {
-      mesh.material.emissiveIntensity = 0.15; // 初始暗淡
-      beamGroup.add(mesh);
-      pathSegments.push({
-        startNodeId: pathNodeIds[i],
-        endNodeId: pathNodeIds[i + 1],
-        mesh: mesh,
-        startPos: startPos.clone(),
-        endPos: endPos.clone(),
-      });
-    }
-  }
-
-  // 光子球
-  if (pathSegments.length > 0) {
-    const photonGeom = new THREE.SphereGeometry(2.5, 16, 16);
-    const photonMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
-    photon = new THREE.Mesh(photonGeom, photonMat);
-    beamGroup.add(photon);
-
-    // 光环（稍大的半透明球）
-    const haloGeom = new THREE.SphereGeometry(4, 16, 16);
-    const haloMat = new THREE.MeshBasicMaterial({
-      color: 0x00e5ff,
-      transparent: true,
-      opacity: 0.35,
-    });
-    const halo = new THREE.Mesh(haloGeom, haloMat);
-    photon.add(halo);
-
-    // 点光源
-    photonLight = new THREE.PointLight(0x00e5ff, 50, 80);
-    photon.add(photonLight);
-
-    // 初始位置
-    photon.position.copy(pathSegments[0].startPos);
-  }
-
-  // 环境光 + 方向光（确保管道可见）
-  const ambient = new THREE.AmbientLight(0x0a1628);
-  ambient.name = 'BeamAmbient';
-  beamGroup.add(ambient);
-
-  currentSegment = 0;
-  segmentProgress = 0;
-  beamPlaying = true;
-  lastFrameTime = performance.now();
-  updatePathProgress();
-  animateBeam();
-}
-
-// ── 清除光束 ──
 function clearBeam() {
+  clearQaFlowLayer();
   if (beamAnimId) {
     cancelAnimationFrame(beamAnimId);
     beamAnimId = null;
   }
-  const scene = Graph.scene();
-  if (beamGroup) {
-    scene.remove(beamGroup);
-    // 清理
-    beamGroup.traverse(child => {
-      if (child.geometry) child.geometry.dispose();
-      if (child.material) {
-        if (Array.isArray(child.material)) {
-          child.material.forEach(m => m.dispose());
-        } else {
-          child.material.dispose();
-        }
-      }
-    });
-    beamGroup = null;
-  }
-  photon = null;
-  photonLight = null;
-  pathSegments = [];
   pathNodeIds = [];
-
-  // 清除节点和边的路径标记
+  pathEdges = [];
+  currentSegment = 0;
+  segmentProgress = 0;
   const data = Graph.graphData();
   data.nodes.forEach(n => { n.isOnPath = false; });
   data.links.forEach(l => { l.isOnPath = false; });
   Graph.graphData(data);
-
   document.getElementById('path-controls').classList.remove('show');
+  document.getElementById('btn-play').textContent = '▶';
 }
 
-// ── 光束动画循环 ──
-function animateBeam(timestamp) {
-  if (!beamPlaying || !photon || pathSegments.length === 0) {
-    beamAnimId = requestAnimationFrame(animateBeam);
-    return;
+function buildBeamPath() {
+  clearBeam();
+  const data = Graph.graphData();
+  const nodes = data.nodes;
+  const links = data.links;
+  const pathNodes = nodes
+    .filter(n => isKnowledgeNode(n) && n.stage)
+    .sort((a, b) => a.stage - b.stage);
+
+  if (pathNodes.length < 2) return;
+
+  const pathIds = new Set(pathNodes.map(n => n.id));
+  const kpLinks = links.filter(l =>
+    isPrerequisiteLink(l)
+    && pathIds.has(endpointId(l.source))
+    && pathIds.has(endpointId(l.target))
+  );
+  const orderedIds = pathNodes.map(n => n.id);
+  pathEdges = [];
+
+  for (let i = 0; i < orderedIds.length - 1; i++) {
+    const srcId = orderedIds[i];
+    const dstId = orderedIds[i + 1];
+    const edge = kpLinks.find(l => endpointId(l.source) === srcId && endpointId(l.target) === dstId);
+    if (edge) pathEdges.push({ srcId, dstId });
   }
 
+  if (!pathEdges.length) return;
+
+  pathNodeIds = [pathEdges[0].srcId, ...pathEdges.map(e => e.dstId)];
+  const edgeKeySet = new Set(pathEdges.map(e => `${e.srcId}->${e.dstId}`));
+  nodes.forEach(n => { n.isOnPath = pathNodeIds.includes(n.id); });
+  links.forEach(l => { l.isOnPath = edgeKeySet.has(linkKey(l)); });
+  Graph.graphData({ nodes: [...nodes], links: [...links] });
+
+  currentSegment = 0;
+  segmentProgress = 0;
+  beamPlaying = true;
+  lastFrameTime = null;
+  updatePathProgress();
+  document.getElementById('btn-play').textContent = '⏸';
+  document.getElementById('path-controls').classList.add('show');
+  showToast(`3D 平面路径: ${pathNodeIds.length} 个阶段`);
+  animateBeam();
+}
+
+function animateBeam(timestamp) {
+  if (!pathNodeIds.length) return;
   if (!timestamp) timestamp = performance.now();
   if (!lastFrameTime) lastFrameTime = timestamp;
   let dt = (timestamp - lastFrameTime) / 1000;
   lastFrameTime = timestamp;
-
-  // 限制最大 dt 避免跳帧时跳跃
   if (dt > 0.1) dt = 0.1;
 
-  // 推进光子
-  segmentProgress += beamSpeed * dt;
-
-  while (segmentProgress >= 1.0 && currentSegment < pathSegments.length - 1) {
-    segmentProgress -= 1.0;
-    currentSegment++;
-  }
-
-  // 到头后循环
-  if (currentSegment >= pathSegments.length - 1 && segmentProgress >= 1.0) {
-    currentSegment = 0;
-    segmentProgress = 0;
-    // 重置所有管道的发光
-    pathSegments.forEach(s => {
-      s.mesh.material.emissiveIntensity = 0.15;
-    });
-  }
-
-  // 更新管道位置（节点可能在力模拟中移动）
-  const seg = pathSegments[currentSegment];
-  if (seg) {
-    const newStart = getNodePosition(seg.startNodeId);
-    const newEnd = getNodePosition(seg.endNodeId);
-    seg.startPos.copy(newStart);
-    seg.endPos.copy(newEnd);
-
-    // 更新管道 mesh 位置
-    const dir = new THREE.Vector3().subVectors(newEnd, newStart);
-    const len = dir.length();
-    const mid = new THREE.Vector3().addVectors(newStart, newEnd).multiplyScalar(0.5);
-    seg.mesh.position.copy(mid);
-    seg.mesh.scale.y = len / (seg.mesh.geometry.parameters?.height || len);
-    const axis = new THREE.Vector3(0, 1, 0);
-    const quat = new THREE.Quaternion().setFromUnitVectors(axis, dir.normalize());
-    seg.mesh.setRotationFromQuaternion(quat);
-
-    // 计算光子位置
-    const photonPos = new THREE.Vector3().lerpVectors(newStart, newEnd, segmentProgress);
-    photon.position.copy(photonPos);
-
-    // 点亮光子经过的管道
-    for (let i = 0; i < currentSegment; i++) {
-      pathSegments[i].mesh.material.emissiveIntensity = 1.0;
+  if (beamPlaying && pathNodeIds.length > 1) {
+    segmentProgress += beamSpeed * dt;
+    while (segmentProgress >= 1 && currentSegment < pathNodeIds.length - 2) {
+      segmentProgress -= 1;
+      currentSegment++;
     }
-    // 当前段：随进度逐渐变亮
-    seg.mesh.material.emissiveIntensity = 0.15 + 0.85 * segmentProgress;
-
-    // 未到达的段：保持暗淡
-    for (let i = currentSegment + 1; i < pathSegments.length; i++) {
-      pathSegments[i].mesh.material.emissiveIntensity = 0.15;
+    if (currentSegment >= pathNodeIds.length - 2 && segmentProgress >= 1) {
+      currentSegment = 0;
+      segmentProgress = 0;
     }
+    updatePathProgress();
   }
 
-  updatePathProgress();
+  redrawGraph();
   beamAnimId = requestAnimationFrame(animateBeam);
 }
 
@@ -704,48 +4862,41 @@ function updatePathProgress() {
   if (el && pathNodeIds.length > 0) {
     const stage = currentSegment + (segmentProgress >= 0.5 ? 1 : 0);
     el.textContent = `${Math.min(stage + 1, pathNodeIds.length)}/${pathNodeIds.length}`;
+    updateTimelineProgress(Math.min(stage, pathNodeIds.length - 1));
+  } else if (el) {
+    el.textContent = '0/0';
   }
 }
 
-// ── 控件事件 ──
+document.getElementById('btn-close-detail').addEventListener('click', closeDetail);
+
 document.getElementById('btn-play').addEventListener('click', () => {
+  if (!pathNodeIds.length) return;
   beamPlaying = !beamPlaying;
   document.getElementById('btn-play').textContent = beamPlaying ? '⏸' : '▶';
   if (beamPlaying) lastFrameTime = null;
 });
 
 document.getElementById('btn-prev').addEventListener('click', () => {
-  if (pathSegments.length === 0) return;
+  if (!pathNodeIds.length) return;
   currentSegment = Math.max(0, currentSegment - 1);
   segmentProgress = 0;
-  if (photon && pathSegments[currentSegment]) {
-    photon.position.copy(pathSegments[currentSegment].startPos);
-  }
-  // 重置高亮
-  pathSegments.forEach((s, i) => {
-    s.mesh.material.emissiveIntensity = i < currentSegment ? 1.0 : 0.15;
-  });
   updatePathProgress();
+  redrawGraph();
 });
 
 document.getElementById('btn-next').addEventListener('click', () => {
-  if (pathSegments.length === 0) return;
-  currentSegment = Math.min(pathSegments.length - 1, currentSegment + 1);
+  if (!pathNodeIds.length) return;
+  currentSegment = Math.min(pathNodeIds.length - 2, currentSegment + 1);
   segmentProgress = 0;
-  if (photon && pathSegments[currentSegment]) {
-    photon.position.copy(pathSegments[currentSegment].startPos);
-  }
-  pathSegments.forEach((s, i) => {
-    s.mesh.material.emissiveIntensity = i < currentSegment ? 1.0 : 0.15;
-  });
   updatePathProgress();
+  redrawGraph();
 });
 
 document.getElementById('speed-slider').addEventListener('input', function() {
   beamSpeed = this.value * 0.1;
 });
 
-// ── 提示 ──
 function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg;
@@ -753,72 +4904,314 @@ function showToast(msg) {
   setTimeout(() => { t.style.display = 'none'; }, 2500);
 }
 
-// ── 加载全图 ──
+function frameGraph(delay = 420) {
+  setTimeout(() => {
+    applyCamera(0);
+  }, delay);
+}
+
+function showIdleGraph() {
+  clearBeam();
+  hideTimeline();
+  setCameraTarget();
+  const data = idleGraphData();
+  Graph.graphData(data);
+  Graph.d3Force('link').distance(46);
+  Graph.d3Force('charge').strength(-18);
+  setBaseCamera({ x: 0, y: -430, z: 520 }, 500);
+  setMode('overview');
+  updateStats();
+  showOverview();
+  renderTimeline([], 'STANDBY');
+  frameGraph();
+  document.getElementById('loading').style.display = 'none';
+}
+
 async function loadFullGraph() {
   clearBeam();
+  hideTimeline();
+  setCameraTarget();
   document.getElementById('loading').style.display = 'block';
   try {
-    const res = await fetch(`${API}/api/graph?limit=300`);
-    const data = await res.json();
+    const res = await fetch(`${API}/api/graph?limit=5000`);
+    const data = applyVisualTokens(await res.json(), 'overview');
     data.nodes.forEach(n => { n.isOnPath = false; });
     data.links.forEach(l => { l.isOnPath = false; });
     Graph.graphData(data);
+    Graph.d3Force('link').distance(68);
+    Graph.d3Force('charge').strength(-118);
+    setBaseCamera({ x: 0, y: -430, z: 520 }, 700);
     updateStats();
-    setTimeout(() => {
-      Graph.d3Force('link')?.distance(80);
-      Graph.d3Force('charge')?.strength(-200);
-    }, 800);
+    setMode('overview');
+    renderTimeline([], 'OVERVIEW');
+    showOverview();
+    frameGraph();
   } catch(e) {
-    console.error(e);
-    document.getElementById('loading').textContent = '加载失败';
+    const data = applyVisualTokens(demoGraphData(), 'overview');
+    Graph.graphData(data);
+    setBaseCamera({ x: 0, y: -430, z: 520 }, 700);
+    updateStats();
+    setMode('overview');
+    renderTimeline([], 'DEMO');
+    showOverview();
+    frameGraph();
+    showToast('后端未连接，已显示演示沙盘');
   }
   document.getElementById('loading').style.display = 'none';
 }
 
-// ── 加载邻居 ──
-async function loadNeighbors(label, name) {
+function isQaMajorIntent(intent) {
+  return intent === 'major_courses' || intent === 'major_overview';
+}
+
+function isQaPathIntent(intent) {
+  return intent === 'knowledge_prerequisites' || intent === 'course_prerequisites';
+}
+
+function qaMatchedName(result) {
+  return result.matched_entities?.[0]?.name
+    || result.evidence_nodes?.find(node => node.label === 'KnowledgeConcept' || node.label === 'KnowledgePoint')?.name
+    || '';
+}
+
+function assignQaPathStages(data) {
+  const nodeIds = new Set(data.nodes.map(node => node.id));
+  const pathLinks = data.links.filter(link =>
+    isPrerequisiteLink(link) && nodeIds.has(endpointId(link.source)) && nodeIds.has(endpointId(link.target))
+  );
+  const depths = new Map(data.nodes.map(node => [node.id, 1]));
+
+  for (let i = 0; i < data.nodes.length; i++) {
+    let changed = false;
+    pathLinks.forEach(link => {
+      const source = endpointId(link.source);
+      const target = endpointId(link.target);
+      const nextDepth = (depths.get(source) || 1) + 1;
+      if (nextDepth > (depths.get(target) || 1)) {
+        depths.set(target, nextDepth);
+        changed = true;
+      }
+    });
+    if (!changed) break;
+  }
+
+  data.links
+    .filter(link => isCourseKnowledgeLink(link))
+    .forEach(link => {
+      const source = endpointId(link.source);
+      const target = endpointId(link.target);
+      const sourceNode = data.nodes.find(node => node.id === source);
+      const targetNode = data.nodes.find(node => node.id === target);
+      if (sourceNode?.label === 'Course' && isKnowledgeNode(targetNode)) {
+        depths.set(source, Math.max(depths.get(source) || 1, (depths.get(target) || 1) + 1));
+      }
+    });
+
+  data.nodes.forEach(node => {
+    node.stage = depths.get(node.id) || 1;
+    node.properties = { ...(node.properties || {}), stage: node.stage };
+  });
+}
+
+function renderQaEvidenceGraph(result, qaMode = 'neighbors') {
+  const nodes = (result.evidence_nodes || []).map(node => ({
+    ...node,
+    color: UI_COLORS[node.label] || '#d7dee2',
+    size: node.label === 'Major' ? 12 : node.label === 'Course' ? 8 : 5,
+    isQaEvidence: true
+  }));
+  const knownIds = new Set(nodes.map(node => node.id));
+  const links = (result.evidence_links || [])
+    .filter(link => knownIds.has(link.source) && knownIds.has(link.target))
+    .map(link => ({
+      ...link,
+      color: link.type === 'SHARES_KNOWLEDGE' ? '#ffad22' : (isPrerequisiteLink(link) ? UI_COLORS.path : UI_COLORS.link),
+      isQaEvidence: true
+    }));
+
+  if (!nodes.length) {
+    showIdleGraph();
+    return;
+  }
+
+  const data = { nodes, links };
+  if (qaMode === 'path') assignQaPathStages(data);
+  applyVisualTokens(data, qaMode);
+  data.nodes.forEach(node => {
+    node.isQaEvidence = true;
+    node.fx = node.x;
+    node.fy = node.y;
+    node.fz = 0;
+  });
+  data.links.forEach(link => { link.isQaEvidence = true; });
+  Graph.graphData(data);
+  Graph.d3Force('link').distance(link => {
+    if (qaMode === 'path') return 108;
+    return link.type === 'PREREQUISITE_FOR' ? 132 : 92;
+  });
+  Graph.d3Force('charge').strength(qaMode === 'qa-major-courses' ? -40 : (qaMode === 'path' ? -80 : -130));
+  drawQaFlowLayer(data.nodes, data.links);
+  const target = qaMode === 'qa-major-courses' ? { x: 35, y: 54, z: 0 } : CAMERA_TARGET;
+  setCameraTarget(target);
+  setBaseCamera(
+    qaMode === 'qa-major-courses' ? { x: 0, y: -360, z: 470 } : (qaMode === 'path' ? { x: 0, y: -260, z: 320 } : { x: 0, y: -360, z: 430 }),
+    700
+  );
+  updateStats();
+  if (qaMode === 'path') {
+    setMode('path');
+    renderTimeline(data.nodes
+      .slice()
+      .sort((a, b) => (a.stage || 1) - (b.stage || 1))
+      .map(node => ({ stage: node.stage || 1, knowledge_points: [node.name] })), 'QA PATH');
+    showTimeline();
+    setTimeout(() => buildBeamPath(), 650);
+  } else {
+    setMode(qaMode === 'qa-major-courses' ? 'major' : 'overview');
+  }
+  frameGraph();
+}
+
+async function renderQaPathGraph(result) {
+  const targetName = qaMatchedName(result);
+  if (targetName && result.intent === 'knowledge_prerequisites') {
+    try {
+      const res = await fetch(`${API}/api/graph/prerequisites/${encodeURIComponent(targetName)}`);
+      const raw = await res.json();
+      if (raw.error || !raw.nodes?.length) throw new Error(raw.error || 'empty path');
+      const data = applyVisualTokens(raw, 'path');
+      Graph.graphData(data);
+      Graph.d3Force('link').distance(108);
+      Graph.d3Force('charge').strength(-80);
+      setMode('path');
+      renderTimeline(data.stages || [], 'QA PATH');
+      showTimeline();
+      setCameraTarget();
+      setBaseCamera({ x: 0, y: -260, z: 320 }, 700);
+      updateStats();
+      frameGraph(520);
+      setTimeout(() => buildBeamPath(), 650);
+      return;
+    } catch (e) {
+      showToast('未取到完整路径，已显示问答证据链');
+    }
+  }
+  renderQaEvidenceGraph(result, 'path');
+}
+
+async function renderQaGraph(result) {
+  if (isQaMajorIntent(result.intent)) {
+    renderQaEvidenceGraph(result, 'qa-major-courses');
+    return;
+  }
+  if (isQaPathIntent(result.intent)) {
+    await renderQaPathGraph(result);
+    return;
+  }
+  renderQaEvidenceGraph(result, 'neighbors');
+}
+
+async function loadNeighbors(label, name, preferredId = '') {
   clearBeam();
+  hideTimeline();
+  setCameraTarget();
   document.getElementById('loading').style.display = 'block';
   try {
     const res = await fetch(`${API}/api/graph/neighbors/${label}/${encodeURIComponent(name)}?depth=1`);
-    const data = await res.json();
-    data.nodes.forEach(n => { n.isOnPath = false; });
-    data.links.forEach(l => { l.isOnPath = false; });
+    const data = applyVisualTokens(await res.json(), 'neighbors');
+    const focus = data.nodes.find(n => n.id === preferredId)
+      || data.nodes.find(n => n.is_center)
+      || data.nodes.find(n => n.label === label && n.name === name);
+    if (focus) {
+      focus.x = 0;
+      focus.y = 0;
+      focus.fx = 0;
+      focus.fy = 0;
+      focus.fz = 0;
+    }
     Graph.graphData(data);
+    Graph.d3Force('link').distance(82);
+    Graph.d3Force('charge').strength(-168);
+    setBaseCamera({ x: 0, y: -430, z: 520 }, 700);
     updateStats();
-  } catch(e) { console.error(e); }
+    setMode('overview');
+    renderTimeline([
+      { stage: 1, knowledge_points: [name] },
+      { stage: 2, knowledge_points: [`关联节点 ${data.nodes.length}`] },
+      { stage: 3, knowledge_points: [`关系 ${data.links.length}`] },
+    ], 'NEIGHBORHOOD');
+    if (focus) showDetail(focus);
+    frameGraph();
+  } catch(e) {
+    const data = applyVisualTokens(demoGraphData(), 'neighbors');
+    const focus = data.nodes.find(n => n.id === preferredId)
+      || data.nodes.find(n => n.label === label && n.name === name);
+    if (focus) {
+      focus.x = 0;
+      focus.y = 0;
+      focus.fx = 0;
+      focus.fy = 0;
+      focus.fz = 0;
+    }
+    Graph.graphData(data);
+    Graph.d3Force('link').distance(82);
+    Graph.d3Force('charge').strength(-168);
+    setBaseCamera({ x: 0, y: -430, z: 520 }, 700);
+    updateStats();
+    setMode('overview');
+    renderTimeline([
+      { stage: 1, knowledge_points: [name] },
+      { stage: 2, knowledge_points: [`演示节点 ${data.nodes.length}`] },
+      { stage: 3, knowledge_points: [`关系 ${data.links.length}`] },
+    ], 'DEMO');
+    if (focus) showDetail(focus);
+    frameGraph();
+    showToast('后端未连接，已显示演示关联');
+  }
   document.getElementById('loading').style.display = 'none';
 }
 
-// ── 加载前驱链 + 触发光束 ──
 async function loadPrerequisites(kpName) {
   clearBeam();
+  setCameraTarget();
   document.getElementById('loading').style.display = 'block';
   try {
     const res = await fetch(`${API}/api/graph/prerequisites/${encodeURIComponent(kpName)}`);
-    const data = await res.json();
+    const data = applyVisualTokens(await res.json(), 'path');
     if (data.error) {
       alert(data.error);
       document.getElementById('loading').style.display = 'none';
       return;
     }
-    data.nodes.forEach(n => { n.isOnPath = false; });
-    data.links.forEach(l => { l.isOnPath = false; });
     Graph.graphData(data);
-    // 拉大力模拟参数让节点分散
-    setTimeout(() => {
-      Graph.d3Force('link')?.distance(140);
-      Graph.d3Force('charge')?.strength(-500);
-      Graph.d3Force('center')?.strength(0.3);
-    }, 500);
+    Graph.d3Force('link').distance(108);
+    Graph.d3Force('charge').strength(-80);
+    setBaseCamera({ x: 0, y: -260, z: 320 }, 700);
     updateStats();
-    // 等力模拟稳定后构建光束
-    setTimeout(() => buildBeamPath(), 1500);
-  } catch(e) { console.error(e); }
+    setMode('path');
+    renderTimeline(data.stages || [], 'PATH');
+    showTimeline();
+    showOverview();
+    frameGraph(520);
+    setTimeout(() => buildBeamPath(), 650);
+  } catch(e) {
+    const data = applyVisualTokens(demoPathData(), 'path');
+    Graph.graphData(data);
+    Graph.d3Force('link').distance(108);
+    Graph.d3Force('charge').strength(-80);
+    setBaseCamera({ x: 0, y: -260, z: 320 }, 700);
+    updateStats();
+    setMode('path');
+    renderTimeline(data.stages || [], 'DEMO PATH');
+    showTimeline();
+    showOverview();
+    frameGraph(520);
+    setTimeout(() => buildBeamPath(), 650);
+    showToast('后端未连接，已显示演示学习路径');
+  }
   document.getElementById('loading').style.display = 'none';
 }
 
-// ── 搜索 ──
 let searchTimeout;
 document.getElementById('search-box').addEventListener('input', function() {
   clearTimeout(searchTimeout);
@@ -828,47 +5221,207 @@ document.getElementById('search-box').addEventListener('input', function() {
 });
 
 async function searchNodes(q) {
-  const res = await fetch(`${API}/api/search?q=${encodeURIComponent(q)}`);
-  const nodes = await res.json();
+  let nodes = [];
+  try {
+    const res = await fetch(`${API}/api/search?q=${encodeURIComponent(q)}`);
+    nodes = await res.json();
+  } catch(e) {
+    const query = q.toLowerCase();
+    nodes = demoGraphData().nodes
+      .filter(n => n.name.toLowerCase().includes(query))
+      .slice(0, 20);
+  }
+  nodes.forEach(n => { n.color = UI_COLORS[n.label] || n.color; });
   const box = document.getElementById('search-results');
-  box.innerHTML = nodes.map(n => `
-    <div class="search-item" onclick="focusNode('${n.id}','${n.label}','${n.name.replace(/'/g,"&#39;")}')">
-      <span class="search-dot" style="background:${n.color}"></span>
-      <span>${n.name}</span>
-      <span class="search-label">${n.label}</span>
-    </div>
-  `).join('');
+  box.innerHTML = nodes.map(n => {
+    const id = escapeHtml(n.id);
+    const label = escapeHtml(n.label);
+    const name = escapeHtml(n.name);
+    return `
+      <button class="search-item" type="button" data-id="${id}" data-label="${label}" data-name="${name}">
+        <span class="search-dot" style="background:${n.color}"></span>
+        <span>${name}</span>
+        <span class="search-label">${label}</span>
+      </button>
+    `;
+  }).join('');
   box.classList.toggle('show', nodes.length > 0);
 }
 
 function focusNode(id, label, name) {
   document.getElementById('search-results').classList.remove('show');
   document.getElementById('search-box').value = '';
-  loadNeighbors(label, name);
+  loadNeighbors(label, name, id);
 }
+
+document.getElementById('search-results').addEventListener('click', event => {
+  const item = event.target.closest('.search-item');
+  if (!item) return;
+  focusNode(item.dataset.id, item.dataset.label, item.dataset.name);
+});
+
+function setDetailTab(tabName) {
+  const isQa = tabName === 'qa';
+  const panel = document.getElementById('detail');
+  document.getElementById('tab-detail').classList.toggle('active', !isQa);
+  document.getElementById('tab-qa').classList.toggle('active', isQa);
+  document.getElementById('detail-section').hidden = isQa;
+  document.getElementById('qa-section').hidden = !isQa;
+  panel.scrollTop = 0;
+  panel.classList.add('show');
+}
+
+function clearQaEvidence() {
+  const data = Graph.graphData();
+  data.nodes.forEach(node => { node.isQaEvidence = false; });
+  data.links.forEach(link => { link.isQaEvidence = false; });
+  Graph.graphData({ nodes: [...data.nodes], links: [...data.links] });
+}
+
+function highlightQaEvidence(evidenceNodes = [], evidenceLinks = []) {
+  const data = Graph.graphData();
+  const nodeIds = new Set(evidenceNodes.map(node => node.id));
+  const linkIds = new Set(evidenceLinks.map(link => `${link.source}->${link.target}`));
+  let highlightedNodes = 0;
+  let highlightedLinks = 0;
+
+  data.nodes.forEach(node => {
+    node.isQaEvidence = nodeIds.has(node.id);
+    if (node.isQaEvidence) highlightedNodes++;
+  });
+  data.links.forEach(link => {
+    link.isQaEvidence = linkIds.has(linkKey(link));
+    if (link.isQaEvidence) highlightedLinks++;
+  });
+  Graph.graphData({ nodes: [...data.nodes], links: [...data.links] });
+  redrawGraph();
+
+  if (!highlightedNodes && evidenceNodes.length) {
+    showToast('答案有图谱证据，但当前视图未包含这些节点');
+  } else if (highlightedNodes || highlightedLinks) {
+    showToast(`已高亮 ${highlightedNodes} 个节点 / ${highlightedLinks} 条关系`);
+  }
+}
+
+async function renderQaResult(result) {
+  document.getElementById('qa-answer').textContent = result.answer || '没有生成答案。';
+  const evidenceNodes = result.evidence_nodes || [];
+  const evidence = document.getElementById('qa-evidence');
+  evidence.innerHTML = evidenceNodes.length ? evidenceNodes.slice(0, 18).map(node => {
+    const label = LABEL_TEXT[node.label] || node.label;
+    return `<button class="qa-chip" type="button" data-label="${escapeHtml(node.label)}" data-name="${escapeHtml(node.name)}">${escapeHtml(label)} / ${escapeHtml(node.name)}</button>`;
+  }).join('') : '<div class="prop-row"><span class="prop-key">证据</span><span class="prop-val">暂无匹配节点</span></div>';
+
+  const suggestions = result.suggested_questions || [];
+  document.getElementById('qa-suggestions').innerHTML = suggestions.slice(0, 5).map(text =>
+    `<button class="qa-chip" type="button">${escapeHtml(text)}</button>`
+  ).join('');
+
+  await renderQaGraph(result);
+}
+
+async function askQa(question) {
+  const q = question.trim();
+  if (!q) return;
+  setDetailTab('qa');
+  clearQaEvidence();
+  hideTimeline();
+  const input = document.getElementById('qa-input');
+  const button = document.getElementById('qa-submit');
+  input.value = q;
+  button.disabled = true;
+  button.textContent = '查询中';
+  document.getElementById('qa-answer').textContent = '正在查询知识图谱…';
+  try {
+    const res = await fetch(`${API}/api/qa`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ question: q })
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    await renderQaResult(await res.json());
+  } catch (e) {
+    document.getElementById('qa-answer').textContent = '问答后端暂时不可用，请确认 FastAPI 服务已启动。';
+    showToast('问答接口连接失败');
+  } finally {
+    button.disabled = false;
+    button.textContent = '发送问题';
+  }
+}
+
+document.getElementById('tab-detail').addEventListener('click', () => setDetailTab('detail'));
+document.getElementById('tab-qa').addEventListener('click', () => setDetailTab('qa'));
+document.getElementById('qa-submit').addEventListener('click', () => askQa(document.getElementById('qa-input').value));
+document.getElementById('qa-input').addEventListener('keydown', event => {
+  if ((event.metaKey || event.ctrlKey) && event.key === 'Enter') {
+    askQa(event.currentTarget.value);
+  }
+});
+document.getElementById('qa-suggestions').addEventListener('click', event => {
+  const item = event.target.closest('.qa-chip');
+  if (!item) return;
+  askQa(item.textContent);
+});
+document.getElementById('qa-evidence').addEventListener('click', event => {
+  const item = event.target.closest('.qa-chip');
+  if (!item || !item.dataset.label || !item.dataset.name) return;
+  focusNode('', item.dataset.label, item.dataset.name);
+});
 
 function onNodeClick(node) { showDetail(node); }
 function onNodeHover(node) {
-  document.getElementById('graph').style.cursor = node ? 'pointer' : 'default';
+  hoveredGraphNode = node;
+  setGraphCursor();
 }
 
 function showDetail(node) {
+  setDetailTab('detail');
   const panel = document.getElementById('detail');
   document.getElementById('detail-name').textContent = node.name;
   const tag = document.getElementById('detail-label');
-  tag.textContent = node.label;
+  tag.textContent = LABEL_TEXT[node.label] || node.label;
   tag.style.background = (node.color || '#888') + '33';
   tag.style.color = node.color || '#fff';
   const props = node.properties || {};
   document.getElementById('detail-props').innerHTML = Object.entries(props)
     .filter(([k]) => k !== 'name')
-    .map(([k, v]) => `<div class="prop-row"><span class="prop-key">${k}</span><span class="prop-val">${v}</span></div>`)
+    .map(([k, v]) => `<div class="prop-row"><span class="prop-key">${escapeHtml(k)}</span><span class="prop-val">${escapeHtml(v)}</span></div>`)
     .join('') || '<div style="color:#888;font-size:13px">无额外属性</div>';
+  document.getElementById('btn-expand').textContent = '查看关联';
   document.getElementById('btn-expand').onclick = () => loadNeighbors(node.label, node.name);
-  document.getElementById('btn-path').style.display = node.label === 'KnowledgePoint' ? 'block' : 'none';
+  document.getElementById('btn-path').textContent = '学习路径';
+  document.getElementById('btn-path').style.display = isKnowledgeNode(node) ? 'block' : 'none';
   document.getElementById('btn-path').onclick = () => {
-    if (node.label === 'KnowledgePoint') loadPrerequisites(node.name);
+    if (isKnowledgeNode(node)) loadPrerequisites(node.name);
   };
+  panel.classList.add('show');
+}
+
+function showOverview() {
+  setDetailTab('detail');
+  const panel = document.getElementById('detail');
+  const data = Graph.graphData();
+  const isIdle = data.nodes.every(node => node.isIdle);
+  document.getElementById('detail-name').textContent = isIdle ? '待机沙盘' : '知识图谱';
+  const tag = document.getElementById('detail-label');
+  tag.textContent = isIdle ? 'Standby' : '概览';
+  tag.style.background = 'rgba(155,231,255,0.08)';
+  tag.style.color = UI_COLORS.path;
+  const counts = data.nodes.reduce((acc, node) => {
+    acc[node.label] = (acc[node.label] || 0) + 1;
+    return acc;
+  }, {});
+  document.getElementById('detail-props').innerHTML = `
+    <div class="prop-row"><span class="prop-key">${isIdle ? '粒子' : '专业'}</span><span class="prop-val">${isIdle ? data.nodes.length : (counts.Major || 0)}</span></div>
+    <div class="prop-row"><span class="prop-key">课程</span><span class="prop-val">${isIdle ? 0 : (counts.Course || 0)}</span></div>
+    <div class="prop-row"><span class="prop-key">知识点</span><span class="prop-val">${isIdle ? 0 : ((counts.KnowledgePoint || 0) + (counts.KnowledgeConcept || 0))}</span></div>
+    <div class="prop-row"><span class="prop-key">关系</span><span class="prop-val">${data.links.length}</span></div>
+  `;
+  document.getElementById('btn-expand').textContent = '查看专业';
+  document.getElementById('btn-expand').onclick = () => document.getElementById('btn-major').click();
+  document.getElementById('btn-path').textContent = '学习路径';
+  document.getElementById('btn-path').style.display = 'block';
+  document.getElementById('btn-path').onclick = () => loadPrerequisites('深度学习');
   panel.classList.add('show');
 }
 
@@ -876,35 +5429,107 @@ function closeDetail() { document.getElementById('detail').classList.remove('sho
 
 function updateStats() {
   const d = Graph.graphData();
-  document.getElementById('stats').textContent = `节点: ${d.nodes.length} | 关系: ${d.links.length}`;
+  document.getElementById('stats').textContent = `节点 ${d.nodes.length} / 关系 ${d.links.length}`;
 }
 
-// ── 工具栏 ──
+function deriveSharedCourseLinks(data, courseIds, existingKeys, limit = 160) {
+  const knowledgeCourses = new Map();
+  data.links.filter(isCourseKnowledgeLink).forEach(link => {
+    const source = endpointId(link.source);
+    const target = endpointId(link.target);
+    if (!courseIds.has(source)) return;
+    if (!knowledgeCourses.has(target)) knowledgeCourses.set(target, []);
+    knowledgeCourses.get(target).push(source);
+  });
+
+  const pairCounts = new Map();
+  knowledgeCourses.forEach(courses => {
+    const unique = [...new Set(courses)].slice(0, 24);
+    for (let i = 0; i < unique.length; i++) {
+      for (let j = i + 1; j < unique.length; j++) {
+        const key = unique[i] < unique[j] ? `${unique[i]}->${unique[j]}` : `${unique[j]}->${unique[i]}`;
+        pairCounts.set(key, (pairCounts.get(key) || 0) + 1);
+      }
+    }
+  });
+
+  return [...pairCounts.entries()]
+    .filter(([key]) => !existingKeys.has(key))
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, limit)
+    .map(([key, sharedCount]) => {
+      const [source, target] = key.split('->');
+      return {
+        source,
+        target,
+        type: 'SHARES_KNOWLEDGE',
+        color: '#ffad22',
+        shared_count: sharedCount,
+        isDerived: true
+      };
+    });
+}
+
+function renderMajorGraph(data) {
+  hideTimeline();
+  const majorIds = new Set(data.nodes.filter(n => n.label === 'Major').map(n => n.id));
+  const courseIds = new Set();
+  const keepLinks = [];
+  for (const l of data.links) {
+    const src = endpointId(l.source);
+    if (majorIds.has(src)) {
+      const tgt = endpointId(l.target);
+      courseIds.add(tgt);
+      keepLinks.push(l);
+    }
+  }
+
+  const existingCourseKeys = new Set();
+  for (const l of data.links) {
+    const src = endpointId(l.source);
+    const tgt = endpointId(l.target);
+    if (!courseIds.has(src) || !courseIds.has(tgt)) continue;
+    if (isPrerequisiteLink(l) || l.type === 'SHARES_KNOWLEDGE') {
+      keepLinks.push(l);
+      existingCourseKeys.add(src < tgt ? `${src}->${tgt}` : `${tgt}->${src}`);
+    }
+  }
+  keepLinks.push(...deriveSharedCourseLinks(data, courseIds, existingCourseKeys));
+
+  const keepIds = new Set([...majorIds, ...courseIds]);
+  const keepNodes = data.nodes.filter(n => keepIds.has(n.id));
+  centerAndPinNodes(keepNodes);
+  Graph.graphData({ nodes: keepNodes, links: keepLinks });
+  Graph.d3Force('link').distance(92);
+  Graph.d3Force('charge').strength(-156);
+  setBaseCamera({ x: 0, y: -430, z: 520 }, 700);
+  updateStats();
+  setMode('major');
+  renderTimeline([
+    { stage: 1, knowledge_points: ['选择专业'] },
+    { stage: 2, knowledge_points: ['查看课程群'] },
+    { stage: 3, knowledge_points: ['进入知识点'] },
+  ], 'MAJOR');
+  showOverview();
+  frameGraph();
+}
+
 document.getElementById('btn-reset').onclick = () => {
-  Graph.cameraPosition({ x: 200, y: 200, z: 300 }, { x: 0, y: 0, z: 0 }, 1000);
-  Graph.zoomToFit(400, 100);
+  resetPointerParallax();
+  showIdleGraph();
+  setBaseCamera({ x: 0, y: -430, z: 520 }, 900);
 };
 document.getElementById('btn-full').onclick = () => loadFullGraph();
 document.getElementById('btn-major').onclick = async () => {
   clearBeam();
   document.getElementById('loading').style.display = 'block';
-  const res = await fetch(`${API}/api/graph?limit=300`);
-  const data = await res.json();
-  const majorIds = new Set(data.nodes.filter(n => n.label === 'Major').map(n => n.id));
-  const courseIds = new Set();
-  const keepLinks = [];
-  for (const l of data.links) {
-    const src = typeof l.source === 'object' ? l.source.id : l.source;
-    if (majorIds.has(src)) {
-      const tgt = typeof l.target === 'object' ? l.target.id : l.target;
-      courseIds.add(tgt); keepLinks.push(l);
-    }
+  try {
+    const res = await fetch(`${API}/api/graph?limit=5000`);
+    renderMajorGraph(applyVisualTokens(await res.json(), 'major'));
+  } catch(e) {
+    renderMajorGraph(applyVisualTokens(demoGraphData(), 'major'));
+    showToast('后端未连接，已显示演示专业视图');
   }
-  const keepIds = new Set([...majorIds, ...courseIds]);
-  data.nodes.forEach(n => { n.isOnPath = false; });
-  data.links.forEach(l => { l.isOnPath = false; });
-  Graph.graphData({ nodes: data.nodes.filter(n => keepIds.has(n.id)), links: keepLinks });
-  updateStats();
   document.getElementById('loading').style.display = 'none';
 };
 
@@ -915,8 +5540,13 @@ document.addEventListener('click', e => {
   }
 });
 
-// ── 启动 ──
-loadFullGraph();
+window.addEventListener('resize', () => {
+  Graph.width(graphEl.clientWidth);
+  Graph.height(graphEl.clientHeight);
+});
+
+loadMajorsHome();
+showIdleGraph();
 </script>
 </body>
 </html>

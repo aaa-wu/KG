@@ -3,7 +3,7 @@
 这是一个基于 Neo4j 的课程知识图谱原型，包含：
 
 - 专业、课程、知识点和前置依赖关系建模
-- 样例数据导入
+- `entities.csv` / `relations.csv` 真实数据导入
 - 知识点前驱链与学习路径推荐
 - 跨学校同名专业课程/知识点覆盖对比
 - FastAPI 后端和 3D 图谱前端可视化
@@ -45,10 +45,10 @@ DEEPSEEK_MODEL=deepseek-chat
 python3 -m src.cli init
 ```
 
-导入样例数据：
+导入当前真实数据：
 
 ```bash
-python3 -m src.cli import --dir data/sample
+python3 -m src.cli import --dir data
 ```
 
 导入命令会清空当前 Neo4j 数据库中的所有节点和关系，再写入指定目录数据。
@@ -67,11 +67,20 @@ python3 -m src.server
 http://localhost:8000
 ```
 
+当前 `data` 使用实体-关系 CSV 格式。新数据可以只提供实体文件，导入器会先构建节点；如果存在关系文件，会一并构建关系：
+
+```text
+entities_final.csv           id,label,name  （优先使用）
+entities.csv                 id,label,name  （备选）
+relations.csv                start_id,type,end_id  （可选）
+knowledge_concept_audit.csv  关系来源和置信度审计信息
+```
+
 常用接口：
 
 ```text
 GET /api/stats
-GET /api/graph?limit=300
+GET /api/graph?limit=5000
 GET /api/search?q=深度学习
 GET /api/graph/prerequisites/深度学习
 ```

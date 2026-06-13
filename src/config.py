@@ -15,7 +15,10 @@ DEEPSEEK_MODEL = os.getenv("DEEPSEEK_MODEL", "deepseek-chat")
 
 neo4j_driver = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_USER, NEO4J_PASSWORD))
 
-deepseek_client = OpenAI(api_key=DEEPSEEK_API_KEY, base_url=DEEPSEEK_BASE_URL)
+deepseek_client = (
+    OpenAI(api_key=DEEPSEEK_API_KEY, base_url=DEEPSEEK_BASE_URL)
+    if DEEPSEEK_API_KEY else None
+)
 
 
 def get_neo4j_driver():
@@ -23,4 +26,6 @@ def get_neo4j_driver():
 
 
 def get_deepseek_client():
+    if deepseek_client is None:
+        raise RuntimeError("DEEPSEEK_API_KEY is not configured")
     return deepseek_client

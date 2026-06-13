@@ -1,6 +1,7 @@
 """DeepSeek 大模型接口：意图解析 + 实体匹配 + 结果格式化"""
 import json
 from src.config import get_neo4j_driver, get_deepseek_client, DEEPSEEK_MODEL
+from src.models.schema import LABEL_COURSE, LABEL_KNOWLEDGE_POINT, LABEL_MAJOR
 
 
 INTENT_SYSTEM_PROMPT = """你是一个学习路径推荐系统的意图解析器。用户会用自然语言描述他们想学什么、已掌握什么。
@@ -88,7 +89,7 @@ def get_all_knowledge_point_names() -> list[str]:
     driver = get_neo4j_driver()
     with driver.session() as session:
         result = session.run(
-            "MATCH (k:KnowledgePoint) RETURN k.name AS name ORDER BY name"
+            f"MATCH (k:{LABEL_KNOWLEDGE_POINT}) RETURN k.name AS name ORDER BY name"
         )
         return [r["name"] for r in result]
 
@@ -98,7 +99,7 @@ def get_all_major_names() -> list[str]:
     driver = get_neo4j_driver()
     with driver.session() as session:
         result = session.run(
-            "MATCH (m:Major) RETURN DISTINCT m.name AS name ORDER BY name"
+            f"MATCH (m:{LABEL_MAJOR}) RETURN DISTINCT m.name AS name ORDER BY name"
         )
         return [r["name"] for r in result]
 
@@ -108,7 +109,7 @@ def get_all_course_names() -> list[str]:
     driver = get_neo4j_driver()
     with driver.session() as session:
         result = session.run(
-            "MATCH (c:Course) RETURN DISTINCT c.name AS name ORDER BY name"
+            f"MATCH (c:{LABEL_COURSE}) RETURN DISTINCT c.name AS name ORDER BY name"
         )
         return [r["name"] for r in result]
 
@@ -140,7 +141,7 @@ def resolve_target_and_known(user_input: str) -> dict:
                 target_type = "Course"
                 matched_target = matched_name
             elif matched_name in all_kps:
-                target_type = "KnowledgePoint"
+                target_type = LABEL_KNOWLEDGE_POINT
                 matched_target = matched_name
 
     # 匹配已知知识点

@@ -1,5 +1,8 @@
 """跨校专业对比：课程重叠率、知识点覆盖差异"""
-from src.models.schema import LABEL_MAJOR, LABEL_COURSE, LABEL_KNOWLEDGE_POINT
+from src.models.schema import (
+    LABEL_MAJOR, LABEL_COURSE, LABEL_KNOWLEDGE_POINT,
+    REL_BELONGS_TO, REL_COVERS,
+)
 
 
 def compare_majors(session, major_name: str, uni_a: str, uni_b: str) -> dict:
@@ -9,8 +12,8 @@ def compare_majors(session, major_name: str, uni_a: str, uni_b: str) -> dict:
         result = session.run(
             f"""
             MATCH (m:{LABEL_MAJOR} {{name: $major, university: $uni}})
-            -[:BELONGS_TO]->(c:{LABEL_COURSE})
-            OPTIONAL MATCH (c)-[:COVERS]->(k:{LABEL_KNOWLEDGE_POINT})
+            -[:{REL_BELONGS_TO}]->(c:{LABEL_COURSE})
+            OPTIONAL MATCH (c)-[:{REL_COVERS}]->(k:{LABEL_KNOWLEDGE_POINT})
             RETURN m.name AS major, m.university AS university,
                    collect(DISTINCT c.name) AS courses,
                    collect(DISTINCT k.name) AS knowledge_points
