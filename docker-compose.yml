@@ -1,6 +1,8 @@
 services:
   neo4j:
-    image: neo4j:5-community
+    # 默认使用 DaoCloud 国内镜像代理，避免 Docker Hub 直接访问问题
+    # 如需使用官方源，可改为：image: neo4j:5-community
+    image: m.daocloud.io/docker.io/library/neo4j:5-community
     container_name: kg-neo4j
     ports:
       - "7474:7474"   # Neo4j Browser

@@ -1,11 +1,17 @@
-neo4j>=5.0.0
-openai>=1.0.0
-openpyxl>=3.0.0
-python-dotenv>=1.0.0
-fastapi>=0.100.0
-uvicorn>=0.20.0
-sentence-transformers>=2.2.0
-scikit-learn>=1.3.0
-numpy>=1.24.0
-langgraph>=0.2.0
-langchain-openai>=0.1.0
+# 使用 PyTorch CPU 版本，避免安装 CUDA 相关依赖（减小 Docker 镜像体积）
+--extra-index-url https://download.pytorch.org/whl/cpu
+
+# 核心依赖（版本已固定，保证可复现性）
+neo4j==5.23.1
+openai==1.37.0
+httpx==0.27.2
+openpyxl==3.1.5
+python-dotenv==1.0.1
+fastapi==0.111.1
+uvicorn==0.30.3
+sentence-transformers==2.7.0
+scikit-learn==1.5.1
+numpy==1.26.4
+langgraph==0.2.3
+langchain-openai==0.1.20
+torch==2.6.0+cpu

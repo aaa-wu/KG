@@ -1,4 +1,6 @@
-FROM python:3.11-slim
+# 默认使用 DaoCloud 国内镜像代理，避免 Docker Hub 直接访问问题
+# 如需使用官方源，可改为：FROM python:3.11-slim
+FROM m.daocloud.io/docker.io/library/python:3.11-slim
 
 WORKDIR /app
 
