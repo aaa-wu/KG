@@ -43,11 +43,91 @@
 
 ## 环境要求
 
-- Python 3.9+
-- Neo4j 5.x（社区版/桌面版均可）
+- Docker + Docker Compose（**推荐，一键启动**）
+- 或手动安装：Python 3.9+、Neo4j 5.x
 - 有效的 DeepSeek API Key（用于 chat、Topic 抽取、前置关系补全等增强功能）
 
-## 快速开始
+## 快速开始（推荐：Docker）
+
+只需要安装 [Docker](https://www.docker.com/)，无需手动配置 Python 和 Neo4j。
+
+### 1. 克隆仓库
+
+```bash
+git clone https://github.com/aaa-wu/KG.git
+cd KG
+```
+
+### 2. 配置环境变量
+
+```bash
+cp .env.example .env
+```
+
+编辑 `.env`，至少填写 `DEEPSEEK_API_KEY`：
+
+```bash
+NEO4J_USER=neo4j
+NEO4J_PASSWORD=password
+
+DEEPSEEK_API_KEY=your-deepseek-api-key
+DEEPSEEK_BASE_URL=https://api.deepseek.com/v1
+DEEPSEEK_MODEL=deepseek-chat
+```
+
+> 🔒 `.env` 包含密钥和数据库密码，**不应提交到 Git**，`.gitignore` 已忽略它。
+
+### 3. 启动全部服务
+
+```bash
+docker compose up --build
+```
+
+首次启动会自动：
+1. 拉取并启动 Neo4j 容器
+2. 等待 Neo4j 就绪
+3. 初始化 Schema
+4. 导入 `data/` 目录数据
+5. 启动 FastAPI 服务
+
+### 4. 打开前端
+
+浏览器访问：
+
+```text
+http://localhost:8000
+```
+
+管理后台：
+
+```text
+http://localhost:8000/admin.html
+```
+
+Neo4j Browser（可选）：
+
+```text
+http://localhost:7474
+```
+
+默认账号：`neo4j` / 你在 `.env` 中设置的密码。
+
+### 停止服务
+
+```bash
+# 前台运行时按 Ctrl+C
+# 或后台停止
+docker compose down
+
+# 想清空数据库数据
+docker compose down -v
+```
+
+---
+
+## 手动安装（备选）
+
+如果你不想用 Docker，可以按以下步骤手动安装。
 
 ### 1. 克隆仓库
 
@@ -74,13 +154,11 @@ pip install -r requirements.txt
 
 ### 4. 配置环境变量
 
-复制模板文件：
-
 ```bash
 cp .env.example .env
 ```
 
-编辑 `.env`，填入你的 Neo4j 密码和 DeepSeek API Key：
+编辑 `.env`：
 
 ```bash
 NEO4J_URI=bolt://localhost:7687
@@ -92,23 +170,16 @@ DEEPSEEK_BASE_URL=https://api.deepseek.com/v1
 DEEPSEEK_MODEL=deepseek-chat
 ```
 
-> 🔒 `.env` 包含密钥和数据库密码，**不应提交到 Git**，`.gitignore` 已忽略它。
-
-### 5. 初始化 Neo4j Schema
+### 5. 初始化并导入数据
 
 ```bash
 python3 -m src.cli init
-```
-
-### 6. 导入数据
-
-```bash
 python3 -m src.cli import --dir data
 ```
 
 > 导入命令会**清空当前 Neo4j 数据库中的所有节点和关系**，再写入指定目录数据。
 
-### 7. 启动后端服务
+### 6. 启动后端服务
 
 ```bash
 python3 -m src.server
@@ -116,7 +187,7 @@ python3 -m src.server
 
 默认监听 `http://localhost:8000`。
 
-### 8. 打开前端
+### 7. 打开前端
 
 浏览器访问：
 

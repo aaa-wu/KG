@@ -13,7 +13,9 @@ DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY")
 DEEPSEEK_BASE_URL = os.getenv("DEEPSEEK_BASE_URL", "https://api.deepseek.com/v1")
 DEEPSEEK_MODEL = os.getenv("DEEPSEEK_MODEL", "deepseek-chat")
 
-neo4j_driver = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_USER, NEO4J_PASSWORD))
+# 延迟初始化，避免在导入模块时立即连接 Neo4j
+#（例如 Docker 启动时 Neo4j 可能尚未就绪）
+_neo4j_driver = None
 
 deepseek_client = (
     OpenAI(api_key=DEEPSEEK_API_KEY, base_url=DEEPSEEK_BASE_URL)
@@ -22,7 +24,12 @@ deepseek_client = (
 
 
 def get_neo4j_driver():
-    return neo4j_driver
+    global _neo4j_driver
+    if _neo4j_driver is None:
+        _neo4j_driver = GraphDatabase.driver(
+            NEO4J_URI, auth=(NEO4J_USER, NEO4J_PASSWORD)
+        )
+    return _neo4j_driver
 
 
 def get_deepseek_client():
