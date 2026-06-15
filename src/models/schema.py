@@ -4,6 +4,10 @@
 LABEL_MAJOR = "Major"
 LABEL_COURSE = "Course"
 LABEL_KNOWLEDGE_POINT = "KnowledgeConcept"
+LABEL_TOPIC = "Topic"
+LABEL_SUBTOPIC = "SubTopic"
+LABEL_DOMAIN = "Domain"
+LABEL_USER = "User"
 
 # 关系类型
 REL_BELONGS_TO = "HAS_COURSE"          # Major → Course
@@ -11,6 +15,16 @@ REL_COVERS = "COVERS_KNOWLEDGE"        # Course → KnowledgeConcept
 REL_PREREQUISITE_OF = "CONCEPT_PREREQUISITE_FOR" # KnowledgeConcept → KnowledgeConcept
 REL_PREREQUISITE_FOR = "PREREQUISITE_FOR" # Course → Course
 REL_RELATED_TO = "RELATED_TO"           # KnowledgeConcept ↔ KnowledgeConcept
+
+# 新增：P0 本体扩展
+REL_HAS_TOPIC = "HAS_TOPIC"             # Course → Topic
+REL_HAS_SUBTOPIC = "HAS_SUBTOPIC"       # Topic → SubTopic
+REL_COVERS_SUBTOPIC = "COVERS_SUBTOPIC" # Course → SubTopic
+REL_IN_DOMAIN = "IN_DOMAIN"             # Topic/SubTopic/Course → Domain
+REL_SEMANTIC_SIMILARITY = "SEMANTIC_SIMILARITY"  # Concept↔Concept / Course↔Course
+
+# 新增：P1 预测前置关系（与原始人工边分离，避免覆盖）
+REL_PREDICTED_PREREQ = "PREDICTED_PREREQUISITE"  # KnowledgeConcept → KnowledgeConcept
 
 # 创建约束和索引的 Cypher 语句
 CREATE_CONSTRAINTS = [
@@ -26,6 +40,30 @@ CREATE_CONSTRAINTS = [
     FOR (k:{LABEL_KNOWLEDGE_POINT})
     REQUIRE k.name IS UNIQUE
     """,
+    # Topic 的 name 唯一约束
+    f"""
+    CREATE CONSTRAINT topic_unique IF NOT EXISTS
+    FOR (t:{LABEL_TOPIC})
+    REQUIRE t.name IS UNIQUE
+    """,
+    # SubTopic 的 (name, parent_topic) 复合唯一约束
+    f"""
+    CREATE CONSTRAINT subtopic_unique IF NOT EXISTS
+    FOR (st:{LABEL_SUBTOPIC})
+    REQUIRE (st.name, st.parent_topic) IS UNIQUE
+    """,
+    # Domain 的 name 唯一约束
+    f"""
+    CREATE CONSTRAINT domain_unique IF NOT EXISTS
+    FOR (d:{LABEL_DOMAIN})
+    REQUIRE d.name IS UNIQUE
+    """,
+    # User 的 user_id 唯一约束
+    f"""
+    CREATE CONSTRAINT user_unique IF NOT EXISTS
+    FOR (u:{LABEL_USER})
+    REQUIRE u.user_id IS UNIQUE
+    """,
 ]
 
 CREATE_INDEXES = [
@@ -33,6 +71,21 @@ CREATE_INDEXES = [
     CREATE INDEX course_name IF NOT EXISTS
     FOR (c:{LABEL_COURSE})
     ON (c.name)
+    """,
+    f"""
+    CREATE INDEX topic_name IF NOT EXISTS
+    FOR (t:{LABEL_TOPIC})
+    ON (t.name)
+    """,
+    f"""
+    CREATE INDEX subtopic_name IF NOT EXISTS
+    FOR (st:{LABEL_SUBTOPIC})
+    ON (st.name)
+    """,
+    f"""
+    CREATE INDEX domain_name IF NOT EXISTS
+    FOR (d:{LABEL_DOMAIN})
+    ON (d.name)
     """,
 ]
 

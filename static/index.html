@@ -2278,6 +2278,106 @@
     background: rgba(255,213,29,0.58);
   }
 
+  /* ===== Topics section in course detail panel ===== */
+  .topics-section {
+    margin-top: 18px;
+    border-top: 1px solid var(--learn-rule-soft);
+    padding-top: 14px;
+  }
+
+  .topics-title {
+    color: var(--learn-accent);
+    font: 11px var(--learn-font-display);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .topic-card {
+    display: grid;
+    gap: 6px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    border: 1px solid var(--learn-rule-soft);
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--learn-ink);
+    font: 12px/1.4 var(--learn-font-display);
+    text-transform: uppercase;
+  }
+
+  .topic-domain {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    padding: 2px 8px;
+    border: 1px solid var(--learn-blue);
+    color: var(--learn-blue);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+  }
+
+  .topic-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--learn-ink);
+  }
+
+  .topic-subtopics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 4px;
+  }
+
+  .topic-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 8px;
+    border: 1px solid var(--learn-rule);
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--learn-muted);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  /* ===== Similar concepts section ===== */
+  .similar-section {
+    margin-top: 18px;
+    border-top: 1px solid var(--learn-rule-soft);
+    padding-top: 14px;
+  }
+
+  .similar-title {
+    color: var(--learn-accent);
+    font: 11px var(--learn-font-display);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .similar-item {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 10px;
+    align-items: center;
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--learn-rule-soft);
+    color: var(--learn-ink);
+    font: 12px/1.4 var(--learn-font-display);
+    text-transform: uppercase;
+  }
+
+  .similar-score {
+    display: inline-grid;
+    place-items: center;
+    padding: 2px 8px;
+    border: 1px solid var(--learn-blue);
+    color: var(--learn-blue);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+  }
+
   .mode-status {
     cursor: default;
     pointer-events: none;
@@ -2538,16 +2638,18 @@
 </style>
 <style>
   :root {
-    --learn-bg: #0507d8;
-    --learn-bg-deep: #02031e;
-    --learn-ink: #f7f7ef;
-    --learn-muted: rgba(247, 247, 239, 0.68);
-    --learn-faint: rgba(247, 247, 239, 0.38);
-    --learn-blue: #87a5ff;
-    --learn-accent: #edff45;
-    --learn-rule: rgba(247, 247, 239, 0.24);
-    --learn-rule-soft: rgba(247, 247, 239, 0.12);
-    --learn-font-display: "SF Mono", "JetBrains Mono", "Cascadia Code", Menlo, monospace;
+    --learn-bg: #edf6ff;
+    --learn-bg-deep: #d9ebff;
+    --learn-ink: #155af5;
+    --learn-muted: rgba(21, 66, 170, 0.62);
+    --learn-faint: rgba(21, 66, 170, 0.34);
+    --learn-blue: #2d67ff;
+    --learn-accent: #1d5cff;
+    --learn-rule: rgba(45, 103, 255, 0.30);
+    --learn-rule-soft: rgba(45, 103, 255, 0.16);
+    --learn-font-head: "Arial Black", Impact, "Helvetica Neue Condensed Black", "PingFang SC", "Heiti SC", "Microsoft YaHei UI", sans-serif;
+    --learn-font-display: "Courier Prime", "Courier New", "SF Mono", "JetBrains Mono", "Cascadia Code", Menlo, monospace;
+    --learn-font-copy: "Courier Prime", "Courier New", "SF Mono", "PingFang SC", monospace;
   }
 
   html {
@@ -2556,34 +2658,52 @@
   }
 
   body.learning-page {
+    --scroll-grid-y: 0px;
+    --scroll-grid-y-neg: 0px;
+    --scroll-haze-y: 0px;
+    --nav-bg-alpha: 0.76;
+    --nav-rule-alpha: 0.16;
     min-height: 100dvh;
     overflow-x: hidden;
     overflow-y: auto;
     background:
-      linear-gradient(180deg, rgba(0,0,0,0.12), rgba(0,0,0,0.52)),
-      radial-gradient(circle at 74% 12%, rgba(237,255,69,0.12), transparent 26%),
-      linear-gradient(135deg, var(--learn-bg) 0%, #090a65 44%, var(--learn-bg-deep) 100%);
+      linear-gradient(180deg, rgba(255,255,255,0.22), rgba(221,237,255,0.64)),
+      radial-gradient(circle at 18% 10%, rgba(255,255,255,0.96), transparent 30%),
+      radial-gradient(circle at 82% 36%, rgba(95,146,255,0.18), transparent 34%),
+      linear-gradient(135deg, var(--learn-bg) 0%, #e5f1ff 52%, var(--learn-bg-deep) 100%);
     color: var(--learn-ink);
     font-family: var(--learn-font-display);
+    font-variant-numeric: tabular-nums;
+    text-rendering: geometricPrecision;
     text-transform: uppercase;
   }
 
   body.learning-page::before {
     z-index: 0;
     background-image:
-      linear-gradient(rgba(247,247,239,0.055) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(247,247,239,0.04) 1px, transparent 1px);
-    background-size: 24px 24px;
-    opacity: 0.5;
+      linear-gradient(rgba(45,103,255,0.075) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(45,103,255,0.06) 1px, transparent 1px),
+      radial-gradient(circle at 25% 12%, rgba(21,90,245,0.05) 0 1px, transparent 1.4px),
+      radial-gradient(circle at 82% 34%, rgba(21,90,245,0.045) 0 1px, transparent 1.4px);
+    background-size: 24px 24px, 24px 24px, 7px 7px, 9px 9px;
+    background-position:
+      0 var(--scroll-grid-y),
+      var(--scroll-grid-y) 0,
+      0 var(--scroll-grid-y-neg),
+      var(--scroll-grid-y) var(--scroll-grid-y);
+    opacity: 0.9;
     mask-image: none;
   }
 
   body.learning-page::after {
     z-index: 0;
     background:
-      repeating-linear-gradient(0deg, rgba(247,247,239,0.035) 0 1px, transparent 1px 9px),
-      linear-gradient(90deg, rgba(0,0,0,0.35), transparent 20%, transparent 80%, rgba(0,0,0,0.45));
-    opacity: 0.4;
+      radial-gradient(ellipse at 52% 4%, rgba(21,90,245,0.10), transparent 38%),
+      radial-gradient(ellipse at 58% 82%, rgba(255,255,255,0.55), transparent 42%),
+      repeating-linear-gradient(0deg, rgba(21,90,245,0.025) 0 1px, transparent 1px 8px),
+      linear-gradient(90deg, rgba(255,255,255,0.56), transparent 18%, transparent 82%, rgba(255,255,255,0.64));
+    opacity: 0.82;
+    transform: translate3d(0, var(--scroll-haze-y), 0);
   }
 
   .learning-nav,
@@ -2604,17 +2724,23 @@
     align-items: center;
     min-height: 72px;
     padding: 0 clamp(18px, 4vw, 64px);
-    border-bottom: 1px solid var(--learn-rule-soft);
-    background: rgba(2, 3, 30, 0.72);
+    border-bottom: 1px solid rgba(45, 103, 255, var(--nav-rule-alpha));
+    background: rgba(239, 248, 255, var(--nav-bg-alpha));
     backdrop-filter: blur(14px);
+    transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .learning-nav.is-scrolled {
+    box-shadow: 0 12px 42px rgba(45, 103, 255, 0.08);
   }
 
   .learning-wordmark {
     color: var(--learn-ink);
     text-decoration: none;
     border: 0;
-    font-weight: 800;
-    letter-spacing: 0.08em;
+    font-family: var(--learn-font-head);
+    font-weight: 900;
+    letter-spacing: 0.12em;
   }
 
   .learning-wordmark span {
@@ -2635,8 +2761,9 @@
   .learning-nav-links a {
     color: var(--learn-muted);
     border: 0;
+    font-family: var(--learn-font-display);
     font-size: 12px;
-    letter-spacing: 0.16em;
+    letter-spacing: 0.24em;
     text-decoration: none;
   }
 
@@ -2656,23 +2783,135 @@
     max-width: 1180px;
   }
 
+  body.motion-ready .learning-hero,
+  body.motion-ready .learning-section,
+  body.motion-ready .roadmap-head,
+  body.motion-ready .major-tools,
+  body.motion-ready .major-link,
+  body.motion-ready .roadmap-layout,
+  body.motion-ready .agent-layout,
+  body.motion-ready .agent-output,
+  body.motion-ready .agent-message,
+  body.motion-ready .agent-plan-step,
+  body.motion-ready .agent-chip,
+  body.motion-ready .agent-trace-item {
+    opacity: 0;
+    filter: blur(8px);
+    transform: translate3d(0, 34px, 0);
+    transition:
+      opacity 0.72s cubic-bezier(0.16, 1, 0.3, 1),
+      filter 0.72s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.72s cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+
+  body.motion-ready .learning-hero.is-in-view,
+  body.motion-ready .learning-section.is-in-view,
+  body.motion-ready .roadmap-head.is-in-view,
+  body.motion-ready .major-tools.is-in-view,
+  body.motion-ready .major-link.is-in-view,
+  body.motion-ready .roadmap-layout.is-in-view,
+  body.motion-ready .agent-layout.is-in-view,
+  body.motion-ready .agent-output.is-in-view,
+  body.motion-ready .agent-message.is-in-view,
+  body.motion-ready .agent-plan-step.is-in-view,
+  body.motion-ready .agent-chip.is-in-view,
+  body.motion-ready .agent-trace-item.is-in-view {
+    opacity: 1;
+    filter: none;
+    transform: translate3d(0, 0, 0);
+  }
+
   .learning-kicker,
   .section-kicker,
   .major-stat,
   .roadmap-meta,
   .knowledge-label {
     color: var(--learn-muted);
+    font-family: var(--learn-font-display);
     font-size: 12px;
-    letter-spacing: 0.18em;
+    letter-spacing: 0.26em;
   }
 
   .learning-hero h1 {
     max-width: 940px;
     color: var(--learn-ink);
+    font-family: var(--learn-font-head);
+    font-weight: 950;
     font-size: clamp(48px, 10vw, 144px);
-    line-height: 0.82;
-    letter-spacing: -0.02em;
+    line-height: 0.78;
+    letter-spacing: 0.02em;
     text-wrap: balance;
+  }
+
+  .learning-title-decode {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.04em;
+    min-height: 0.86em;
+  }
+
+  .learning-title-decode .decode-char {
+    position: relative;
+    display: inline-block;
+    min-width: 0.86em;
+    color: var(--learn-ink);
+    animation: decode-glyph 720ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: var(--decode-delay, 0ms);
+  }
+
+  .learning-title-decode .decode-char::after {
+    content: "";
+    position: absolute;
+    right: -0.02em;
+    bottom: 0.06em;
+    left: 0;
+    height: 0.055em;
+    background: var(--learn-accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    animation: line-scan 620ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: calc(var(--decode-delay, 0ms) + 80ms);
+  }
+
+  .learning-title-decode.is-decoding .decode-char {
+    text-shadow: 0 0 18px rgba(45, 103, 255, 0.26);
+  }
+
+  @keyframes decode-glyph {
+    0% {
+      opacity: 0;
+      filter: blur(10px) contrast(1.9);
+      transform: translate3d(0, 0.22em, 0) scale(0.86);
+      clip-path: inset(36% 42% 36% 42%);
+    }
+    48% {
+      opacity: 0.86;
+      filter: blur(2px) contrast(1.35);
+      transform: translate3d(0, -0.04em, 0) scale(1.04);
+      clip-path: inset(0 10% 0 10%);
+    }
+    100% {
+      opacity: 1;
+      filter: none;
+      transform: translate3d(0, 0, 0) scale(1);
+      clip-path: inset(0 0 0 0);
+    }
+  }
+
+  @keyframes line-scan {
+    0% {
+      opacity: 0;
+      transform: scaleX(0);
+    }
+    42% {
+      opacity: 1;
+      transform: scaleX(1);
+    }
+    100% {
+      opacity: 0;
+      transform: scaleX(1);
+    }
   }
 
   .learning-hero p {
@@ -2737,9 +2976,11 @@
 
   .section-heading h2 {
     color: var(--learn-ink);
+    font-family: var(--learn-font-head);
+    font-weight: 950;
     font-size: clamp(32px, 6vw, 76px);
     line-height: 0.95;
-    letter-spacing: 0;
+    letter-spacing: 0.04em;
   }
 
   .section-heading p {
@@ -2822,8 +3063,10 @@
   .major-title {
     display: block;
     color: var(--learn-ink);
+    font-family: var(--learn-font-head);
+    font-weight: 900;
     font-size: clamp(16px, 1.6vw, 22px);
-    letter-spacing: 0.04em;
+    letter-spacing: 0.06em;
   }
 
   .major-stat {
@@ -2846,8 +3089,11 @@
 
   .roadmap-title h2 {
     color: var(--learn-ink);
+    font-family: var(--learn-font-head);
+    font-weight: 950;
     font-size: clamp(34px, 6.6vw, 86px);
-    line-height: 0.9;
+    line-height: 0.84;
+    letter-spacing: 0.035em;
   }
 
   .roadmap-controls {
@@ -3029,8 +3275,8 @@
   .course-node.active .course-index {
     border-color: var(--learn-accent);
     background: var(--learn-accent);
-    color: var(--learn-bg-deep);
-    box-shadow: 0 0 0 4px rgba(237, 255, 69, 0.12);
+    color: #ffffff;
+    box-shadow: 0 0 0 4px rgba(45, 103, 255, 0.14);
   }
 
   .course-node.active .course-copy {
@@ -3052,6 +3298,342 @@
     color: var(--learn-accent);
   }
 
+  /* ===== Module dependency graph ===== */
+  .roadmap-map {
+    position: relative;
+    min-width: 0;
+    min-height: 520px;
+    overflow: auto;
+    padding: 32px 24px 48px;
+    transition: opacity 0.22s ease, filter 0.22s ease, transform 0.22s ease;
+  }
+
+  .roadmap-map.is-switching,
+  .knowledge-roadmap.is-switching {
+    opacity: 0.08;
+    filter: blur(5px) contrast(1.45);
+    transform: translateY(10px) scale(0.992);
+  }
+
+  .roadmap-map.is-materializing .module-node,
+  .roadmap-map.is-materializing .module-level-label,
+  .knowledge-roadmap.is-materializing .module-course-item,
+  .knowledge-roadmap.is-materializing .course-relation-node,
+  .knowledge-roadmap.is-materializing .knowledge-node,
+  .knowledge-roadmap.is-materializing .relation-node {
+    animation: pixel-materialize 520ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: var(--stagger, 0ms);
+  }
+
+  .roadmap-map.is-materializing .module-link {
+    animation: path-materialize 680ms ease-out both;
+    animation-delay: calc(140ms + var(--stagger, 0ms));
+  }
+
+  @keyframes pixel-materialize {
+    0% {
+      opacity: 0;
+      filter: blur(8px) contrast(1.8);
+      transform: translate3d(0, 18px, 0) scale(0.92);
+      clip-path: inset(46% 46% 46% 46%);
+    }
+    44% {
+      opacity: 0.82;
+      filter: blur(2px) contrast(1.35);
+      clip-path: inset(0 18% 0 18%);
+    }
+    100% {
+      opacity: 1;
+      filter: none;
+      transform: translate3d(0, 0, 0) scale(1);
+      clip-path: inset(0 0 0 0);
+    }
+  }
+
+  @keyframes path-materialize {
+    from {
+      opacity: 0;
+      stroke-dashoffset: 28;
+      filter: blur(3px);
+    }
+    to {
+      opacity: 0.55;
+      stroke-dashoffset: 0;
+      filter: none;
+    }
+  }
+
+  .module-graph {
+    position: relative;
+    min-height: 520px;
+    margin: 0 auto;
+  }
+
+  .module-node {
+    position: absolute;
+    display: grid;
+    gap: 10px;
+    width: 170px;
+    padding: 16px 18px;
+    border: 1px solid var(--learn-rule);
+    background: rgba(255, 255, 255, 0.18);
+    color: var(--learn-ink);
+    font: 12px/1.35 var(--learn-font-display);
+    letter-spacing: 0.04em;
+    text-align: left;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s, transform 0.2s, box-shadow 0.2s;
+    z-index: 2;
+  }
+
+  .module-level-label {
+    position: absolute;
+    left: 0;
+    width: 72px;
+    color: var(--learn-accent);
+    font: 12px var(--learn-font-display);
+    letter-spacing: 0.14em;
+    text-align: left;
+    text-transform: uppercase;
+    z-index: 2;
+  }
+
+  .module-level-label::after {
+    content: "";
+    position: absolute;
+    left: 52px;
+    top: 50%;
+    width: 28px;
+    border-top: 1px dashed var(--learn-rule);
+  }
+
+  .module-node::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 3px;
+    height: 100%;
+    background: var(--learn-blue);
+    opacity: 0.7;
+  }
+
+  .module-node:hover {
+    border-color: var(--learn-accent);
+    background: rgba(45, 103, 255, 0.08);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(45, 103, 255, 0.12);
+  }
+
+  .module-node.active,
+  .module-node:focus-visible {
+    border-color: var(--learn-accent);
+    background: rgba(45, 103, 255, 0.10);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(45, 103, 255, 0.12);
+  }
+
+  .module-node.active::before,
+  .module-node:focus-visible::before {
+    background: var(--learn-accent);
+  }
+
+  .module-name {
+    font-family: var(--learn-font-head);
+    font-size: 13px;
+    font-weight: 900;
+    color: var(--learn-ink);
+    overflow-wrap: anywhere;
+  }
+
+  .module-meta {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    color: var(--learn-muted);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+  }
+
+  .module-count {
+    display: inline-grid;
+    place-items: center;
+    width: 22px;
+    height: 22px;
+    border: 1px solid var(--learn-blue);
+    color: var(--learn-blue);
+    font-size: 10px;
+  }
+
+  .roadmap-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .module-link {
+    fill: none;
+    stroke: var(--learn-blue);
+    stroke-width: 1.6;
+    stroke-dasharray: 6 5;
+    opacity: 0.55;
+  }
+
+  .module-link.active {
+    stroke: var(--learn-accent);
+    stroke-width: 2.2;
+    stroke-dasharray: none;
+    opacity: 0.9;
+  }
+
+  /* ===== Module course list in side panel ===== */
+  .module-course-list {
+    display: grid;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .module-course-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px;
+    border: 1px solid var(--learn-rule-soft);
+    background: rgba(255, 255, 255, 0.18);
+    color: var(--learn-ink);
+    font: 12px/1.4 var(--learn-font-display);
+    text-align: left;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .module-course-item:hover {
+    border-color: var(--learn-accent);
+    background: rgba(45, 103, 255, 0.08);
+  }
+
+  .module-course-item .course-kp-count {
+    color: var(--learn-muted);
+    font-size: 10px;
+  }
+
+  .course-relation-page {
+    display: grid;
+    gap: 18px;
+    margin-bottom: 22px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--learn-rule-soft);
+  }
+
+  .course-relation-band {
+    position: relative;
+    display: grid;
+    gap: 10px;
+    padding-left: 24px;
+  }
+
+  .course-relation-band::before {
+    content: "";
+    position: absolute;
+    left: 7px;
+    top: 22px;
+    bottom: -22px;
+    width: 1px;
+    background: var(--learn-blue);
+    opacity: 0.35;
+  }
+
+  .course-relation-band:last-child::before {
+    display: none;
+  }
+
+  .course-relation-label {
+    color: var(--learn-accent);
+    font: 11px var(--learn-font-display);
+    letter-spacing: 0.14em;
+  }
+
+  .course-relation-node {
+    position: relative;
+    display: grid;
+    grid-template-columns: 28px minmax(0, 1fr);
+    gap: 10px;
+    align-items: center;
+    min-height: 36px;
+    color: var(--learn-ink);
+    font: 12px/1.4 var(--learn-font-display);
+  }
+
+  button.course-relation-node {
+    width: 100%;
+    border: 0;
+    background: transparent;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .course-relation-node::before {
+    content: "";
+    position: absolute;
+    left: -16px;
+    top: 17px;
+    width: 14px;
+    border-top: 1px solid var(--learn-rule);
+  }
+
+  .course-relation-node.is-current {
+    color: var(--learn-accent);
+  }
+
+  .course-relation-node.is-current .knowledge-index {
+    border-color: var(--learn-accent);
+    color: var(--learn-accent);
+  }
+
+  button.course-relation-node:hover .knowledge-index,
+  button.course-relation-node:focus-visible .knowledge-index,
+  button.course-relation-node:hover .knowledge-name,
+  button.course-relation-node:focus-visible .knowledge-name {
+    border-color: var(--learn-accent);
+    color: var(--learn-accent);
+  }
+
+  button.course-relation-node:focus-visible {
+    outline: 1px solid var(--learn-accent);
+    outline-offset: 3px;
+  }
+
+  .course-relation-empty {
+    color: var(--learn-muted);
+    font: 12px/1.6 var(--learn-font-copy);
+    text-transform: none;
+  }
+
+  .btn-back-to-module {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 14px;
+    padding: 6px 10px;
+    border: 1px solid var(--learn-rule);
+    background: transparent;
+    color: var(--learn-muted);
+    font: 11px var(--learn-font-display);
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+  }
+
+  .btn-back-to-module:hover {
+    border-color: var(--learn-accent);
+    color: var(--learn-accent);
+  }
+
   .knowledge-roadmap {
     position: sticky;
     top: 112px;
@@ -3060,20 +3642,23 @@
     padding: 18px 0 18px 26px;
     border-left: 1px solid var(--learn-rule);
     background:
-      linear-gradient(90deg, rgba(4, 5, 43, 0.96), rgba(4, 5, 43, 0.72) 72%, rgba(4, 5, 43, 0));
+      linear-gradient(90deg, rgba(239, 248, 255, 0.92), rgba(239, 248, 255, 0.66) 72%, rgba(239, 248, 255, 0));
   }
 
   .knowledge-roadmap h3 {
     color: var(--learn-ink);
+    font-family: var(--learn-font-head);
+    font-weight: 950;
     font-size: clamp(22px, 2.4vw, 30px);
-    line-height: 1;
+    line-height: 0.94;
+    letter-spacing: 0.04em;
     margin: 0 0 14px;
     overflow-wrap: anywhere;
   }
 
   .knowledge-course {
     color: var(--learn-muted);
-    font: 14px/1.55 var(--font-ui);
+    font: 14px/1.55 var(--learn-font-copy);
     text-transform: none;
     margin-bottom: 22px;
   }
@@ -3083,7 +3668,7 @@
     gap: 8px;
     margin: 0 0 20px;
     color: var(--learn-muted);
-    font: 12px/1.6 var(--font-ui);
+    font: 12px/1.6 var(--learn-font-copy);
     text-transform: none;
   }
 
@@ -3108,6 +3693,31 @@
     padding-bottom: 16px;
     color: var(--learn-ink);
     font: 12px/1.45 var(--learn-font-display);
+  }
+
+  button.knowledge-node {
+    width: 100%;
+    border: 0;
+    background: transparent;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  button.knowledge-node:hover .knowledge-index,
+  button.knowledge-node:focus-visible .knowledge-index {
+    border-color: var(--learn-accent);
+    color: var(--learn-accent);
+  }
+
+  button.knowledge-node:hover .knowledge-name,
+  button.knowledge-node:focus-visible .knowledge-name {
+    border-color: var(--learn-accent);
+    color: var(--learn-accent);
+  }
+
+  button.knowledge-node:focus-visible {
+    outline: 1px solid var(--learn-accent);
+    outline-offset: 4px;
   }
 
   .knowledge-node::before {
@@ -3142,9 +3752,319 @@
     overflow-wrap: anywhere;
   }
 
+  .knowledge-relation-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding-top: 4px;
+    color: var(--learn-muted);
+    font: 10px var(--font-ui);
+  }
+
+  .knowledge-relation-meta span {
+    border: 1px solid var(--learn-rule-soft);
+    padding: 2px 5px;
+  }
+
   .knowledge-expand {
     margin-top: 8px;
     border-color: var(--learn-rule-soft);
+  }
+
+  .knowledge-relation-page {
+    display: grid;
+    gap: 18px;
+  }
+
+  .knowledge-relation-band {
+    position: relative;
+    display: grid;
+    gap: 10px;
+    padding-left: 24px;
+  }
+
+  .knowledge-relation-band::before {
+    content: "";
+    position: absolute;
+    left: 7px;
+    top: 22px;
+    bottom: -22px;
+    width: 1px;
+    background: var(--learn-blue);
+    opacity: 0.45;
+  }
+
+  .knowledge-relation-band:last-child::before {
+    display: none;
+  }
+
+  .relation-band-label {
+    color: var(--learn-accent);
+    font: 11px var(--learn-font-display);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .relation-node {
+    position: relative;
+    display: grid;
+    grid-template-columns: 28px minmax(0, 1fr);
+    gap: 10px;
+    align-items: center;
+    min-height: 36px;
+    color: var(--learn-ink);
+    font: 12px/1.4 var(--learn-font-display);
+  }
+
+  button.relation-node {
+    width: 100%;
+    border: 0;
+    background: transparent;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  button.relation-node:hover .knowledge-index,
+  button.relation-node:focus-visible .knowledge-index,
+  button.relation-node:hover .knowledge-name,
+  button.relation-node:focus-visible .knowledge-name {
+    border-color: var(--learn-accent);
+    color: var(--learn-accent);
+  }
+
+  button.relation-node:focus-visible {
+    outline: 1px solid var(--learn-accent);
+    outline-offset: 3px;
+  }
+
+  .relation-node::before {
+    content: "";
+    position: absolute;
+    left: -16px;
+    top: 17px;
+    width: 14px;
+    border-top: 1px solid var(--learn-rule);
+  }
+
+  .relation-node.is-target {
+    color: var(--learn-accent);
+  }
+
+  .relation-node.is-target .knowledge-index {
+    border-color: var(--learn-accent);
+    color: var(--learn-accent);
+  }
+
+  .relation-empty {
+    color: var(--learn-muted);
+    font: 12px/1.6 var(--font-ui);
+  }
+
+  .relation-node.is-predicted .knowledge-name {
+    color: var(--learn-accent);
+  }
+
+  .relation-more {
+    width: 100%;
+    min-height: 34px;
+    border: 1px dashed var(--learn-rule);
+    background: transparent;
+    color: var(--learn-accent);
+    cursor: pointer;
+    font: 12px var(--learn-font-display);
+  }
+
+  .relation-more:hover,
+  .relation-more:focus-visible {
+    border-color: var(--learn-accent);
+    outline: none;
+  }
+
+  /* ===== Learning path Agent ===== */
+  .agent-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 340px);
+    gap: clamp(34px, 5vw, 72px);
+    align-items: start;
+    border-top: 1px solid var(--learn-rule-soft);
+    border-bottom: 1px solid var(--learn-rule-soft);
+    padding: 28px 0;
+  }
+
+  .agent-console,
+  .agent-profile {
+    min-width: 0;
+  }
+
+  .agent-messages {
+    display: grid;
+    gap: 18px;
+    min-height: 280px;
+    max-height: 520px;
+    overflow-y: auto;
+    padding-right: 12px;
+  }
+
+  .agent-message {
+    display: grid;
+    gap: 8px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--learn-rule-soft);
+  }
+
+  .agent-message-role {
+    color: var(--learn-accent);
+    font: 11px var(--learn-font-display);
+    letter-spacing: 0.16em;
+  }
+
+  .agent-message-body {
+    color: var(--learn-ink);
+    font: 14px/1.75 var(--learn-font-copy);
+    text-transform: none;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+
+  .agent-composer {
+    display: grid;
+    gap: 14px;
+    margin-top: 22px;
+  }
+
+  .agent-composer textarea,
+  .agent-profile input,
+  .agent-profile select {
+    width: 100%;
+    border: 0;
+    border-bottom: 1px solid var(--learn-rule);
+    background: rgba(255, 255, 255, 0.24);
+    color: var(--learn-ink);
+    font: 14px/1.6 var(--learn-font-copy);
+    text-transform: none;
+    outline: none;
+  }
+
+  .agent-composer textarea {
+    min-height: 118px;
+    padding: 14px 16px;
+    resize: vertical;
+  }
+
+  .agent-profile input,
+  .agent-profile select {
+    min-height: 42px;
+    padding: 8px 0;
+    font-family: var(--learn-font-display);
+    letter-spacing: 0.04em;
+  }
+
+  .agent-profile select option {
+    background: var(--learn-bg);
+    color: var(--learn-ink);
+  }
+
+  .agent-composer textarea:focus,
+  .agent-profile input:focus,
+  .agent-profile select:focus {
+    border-bottom-color: var(--learn-accent);
+  }
+
+  .agent-profile {
+    display: grid;
+    gap: 18px;
+    padding-left: 24px;
+    border-left: 1px solid var(--learn-rule);
+  }
+
+  .agent-field {
+    display: grid;
+    gap: 8px;
+  }
+
+  .agent-field label,
+  .agent-output h3 {
+    color: var(--learn-muted);
+    font: 11px var(--learn-font-display);
+    letter-spacing: 0.16em;
+  }
+
+  .agent-output-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(220px, 0.75fr) minmax(200px, 0.6fr);
+    gap: clamp(22px, 4vw, 48px);
+    margin-top: 28px;
+  }
+
+  .agent-output {
+    min-width: 0;
+    border-top: 1px solid var(--learn-rule-soft);
+    padding-top: 16px;
+  }
+
+  .agent-plan-list,
+  .agent-evidence-list,
+  .agent-trace-list,
+  .agent-suggestions {
+    display: grid;
+    gap: 8px;
+    margin-top: 14px;
+  }
+
+  .agent-plan-step,
+  .agent-chip,
+  .agent-trace-item {
+    display: grid;
+    grid-template-columns: 34px minmax(0, 1fr);
+    gap: 12px;
+    align-items: center;
+    min-height: 38px;
+    color: var(--learn-ink);
+    font: 12px/1.45 var(--learn-font-display);
+    text-align: left;
+    text-transform: uppercase;
+    border: 0;
+    border-bottom: 1px solid var(--learn-rule-soft);
+    background: transparent;
+  }
+
+  .agent-chip {
+    cursor: pointer;
+  }
+
+  .agent-chip:hover {
+    color: var(--learn-accent);
+    border-bottom-color: var(--learn-accent);
+  }
+
+  .agent-step-index {
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    border: 1px solid var(--learn-blue);
+    color: var(--learn-blue);
+    font-size: 10px;
+  }
+
+  .agent-step-copy {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .agent-step-reason,
+  .agent-trace-meta {
+    display: block;
+    margin-top: 3px;
+    color: var(--learn-muted);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+  }
+
+  .agent-empty {
+    color: var(--learn-muted);
+    font: 13px/1.7 var(--font-ui);
+    text-transform: none;
   }
 
   .roadmap-empty,
@@ -3217,8 +4137,17 @@
 
     .section-heading,
     .roadmap-head,
-    .roadmap-layout {
+    .roadmap-layout,
+    .agent-layout,
+    .agent-output-grid {
       grid-template-columns: 1fr;
+    }
+
+    .agent-profile {
+      padding-left: 0;
+      border-left: 0;
+      border-top: 1px solid var(--learn-rule-soft);
+      padding-top: 24px;
     }
 
     .roadmap-controls {
@@ -3287,6 +4216,66 @@
       padding-right: 18px;
     }
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    .roadmap-map,
+    .knowledge-roadmap,
+    .learning-nav,
+    .learning-hero,
+    .learning-section,
+    .roadmap-head,
+    .major-tools,
+    .major-link,
+    .roadmap-layout,
+    .agent-layout,
+    .agent-output,
+    .agent-message,
+    .agent-plan-step,
+    .agent-chip,
+    .agent-trace-item,
+    .learning-title-decode .decode-char,
+    .learning-title-decode .decode-char::after,
+    .module-node,
+    .module-link,
+    .module-course-item,
+    .knowledge-node,
+    .relation-node {
+      animation: none !important;
+      transition: none !important;
+    }
+
+    .roadmap-map.is-switching,
+    .knowledge-roadmap.is-switching {
+      opacity: 1;
+      filter: none;
+      transform: none;
+    }
+
+    body.learning-page::after {
+      transform: none;
+    }
+
+    body.motion-ready .learning-hero,
+    body.motion-ready .learning-section,
+    body.motion-ready .roadmap-head,
+    body.motion-ready .major-tools,
+    body.motion-ready .major-link,
+    body.motion-ready .roadmap-layout,
+    body.motion-ready .agent-layout,
+    body.motion-ready .agent-output,
+    body.motion-ready .agent-message,
+    body.motion-ready .agent-plan-step,
+    body.motion-ready .agent-chip,
+    body.motion-ready .agent-trace-item {
+      opacity: 1;
+      filter: none;
+      transform: none;
+    }
+  }
 </style>
 </head>
 <body class="learning-page">
@@ -3296,6 +4285,7 @@
   <nav class="learning-nav-links">
     <a href="#majors">Majors</a>
     <a href="#roadmap">Roadmap</a>
+    <a href="#agent">Agent</a>
   </nav>
 </header>
 
@@ -3303,7 +4293,6 @@
   <section class="learning-hero" aria-labelledby="learning-title">
     <div class="learning-kicker">Major Index / Course Roadmap / Knowledge Evidence</div>
     <h1 id="learning-title">专业路线图</h1>
-    <p>选择一个专业，进入课程路径，再查看每门课程覆盖的知识点。页面保持纵向滚动目录结构，视觉采用 Hermes 式高对比线性技术风格。</p>
     <div class="learning-actions">
       <a class="line-action" href="#majors">选择专业</a>
     </div>
@@ -3315,12 +4304,11 @@
         <div class="section-kicker">01 / Major Directory</div>
         <h2 id="majors-title">专业目录</h2>
       </div>
-      <p>专业入口采用开放式索引，不用厚重卡片。每个专业显示线性徽章、课程数量和知识点覆盖量。</p>
     </div>
     <div class="major-tools">
       <label class="sr-only" for="major-search">搜索专业</label>
       <input id="major-search" type="search" placeholder="搜索专业..." autocomplete="off">
-      <div class="roadmap-meta" id="major-count">正在读取专业...</div>
+      <div class="roadmap-meta" id="major-count"></div>
     </div>
     <div class="major-index" id="major-directory"></div>
   </section>
@@ -3338,18 +4326,101 @@
       </div>
     </div>
     <div class="roadmap-layout">
-      <div class="roadmap-lanes" id="roadmap-lanes">
+      <div class="roadmap-map" id="roadmap-map">
+        <svg class="roadmap-svg" id="roadmap-svg" aria-hidden="true"></svg>
         <div class="roadmap-empty">正在等待专业选择。</div>
       </div>
       <aside class="knowledge-roadmap" id="course-detail-panel" aria-label="课程知识点">
         <div class="knowledge-label">Course Knowledge</div>
         <h3>课程知识点</h3>
-        <div class="knowledge-course">点击左侧课程节点查看覆盖知识点。</div>
+        <div class="knowledge-course">点击地图中的课程组查看覆盖知识点。</div>
         <div class="path-thread" id="path-thread"></div>
         <div class="knowledge-route" id="knowledge-route"></div>
+        <div class="topics-section" id="topics-section" hidden>
+          <div class="topics-title">主题 Topics</div>
+          <div id="topics-list"></div>
+        </div>
+        <div class="similar-section" id="similar-section" hidden>
+          <div class="similar-title">相似概念 Similar</div>
+          <div id="similar-list"></div>
+        </div>
       </aside>
     </div>
   </section>
+
+  <section class="learning-section" id="agent" aria-labelledby="agent-title">
+    <div class="roadmap-head">
+      <div class="roadmap-title">
+        <div class="section-kicker">03 / Learning Agent</div>
+        <h2 id="agent-title">Agent</h2>
+        <div class="roadmap-meta">DeepSeek / LangGraph / Knowledge Graph</div>
+      </div>
+    </div>
+    <div class="agent-layout">
+      <div class="agent-console">
+        <div class="agent-messages" id="agent-messages" aria-live="polite">
+          <div class="agent-message agent-message-assistant">
+            <div class="agent-message-role">Agent</div>
+            <div class="agent-message-body">告诉我你已经掌握的知识、目标、每周时间和当前水平，我会用知识图谱生成学习路径。</div>
+          </div>
+        </div>
+        <div class="agent-composer">
+          <label class="sr-only" for="agent-input">Agent 对话输入</label>
+          <textarea id="agent-input" placeholder="例如：我会线性代数，每周 6 小时，想学神经网络">我会线性代数，每周6小时，想学神经网络</textarea>
+          <button class="line-action" id="agent-submit" type="button">发送给 Agent</button>
+        </div>
+      </div>
+      <aside class="agent-profile" aria-label="学习画像">
+        <div class="agent-field">
+          <label for="agent-known">已掌握知识</label>
+          <input id="agent-known" type="text" placeholder="线性代数、概率统计">
+        </div>
+        <div class="agent-field">
+          <label for="agent-target">目标</label>
+          <input id="agent-target" type="text" placeholder="神经网络 / 深度学习 / 人工智能">
+        </div>
+        <div class="agent-field">
+          <label for="agent-weekly-hours">每周时间</label>
+          <input id="agent-weekly-hours" type="number" min="0" step="0.5" placeholder="6">
+        </div>
+        <div class="agent-field">
+          <label for="agent-level">水平</label>
+          <select id="agent-level">
+            <option value="beginner">Beginner</option>
+            <option value="intermediate" selected>Intermediate</option>
+            <option value="advanced">Advanced</option>
+          </select>
+        </div>
+        <div class="agent-field">
+          <label for="agent-goal">学习目标</label>
+          <input id="agent-goal" type="text" placeholder="入门 / 项目 / 科研 / 就业">
+        </div>
+      </aside>
+    </div>
+    <div class="agent-output-grid">
+      <div class="agent-output">
+        <h3>路径步骤</h3>
+        <div class="agent-plan-list" id="agent-plan">
+          <div class="agent-empty">等待 Agent 输出。</div>
+        </div>
+      </div>
+      <div class="agent-output">
+        <h3>图谱证据</h3>
+        <div class="agent-evidence-list" id="agent-evidence">
+          <div class="agent-empty">暂无证据节点。</div>
+        </div>
+      </div>
+      <div class="agent-output">
+        <h3>工具调用</h3>
+        <div class="agent-trace-list" id="agent-trace">
+          <div class="agent-empty">暂无调用记录。</div>
+        </div>
+      </div>
+    </div>
+    <div class="agent-suggestions" id="agent-suggestions"></div>
+  </section>
+
+  <!-- Module dependency graph renders inside #roadmap-map -->
 
 </main>
 
@@ -3466,6 +4537,125 @@ let activeRoadmap = null;
 let selectedCourseId = '';
 let roadmapIncludesAll = false;
 let knowledgeExpanded = false;
+let roadmapSwitchToken = 0;
+
+function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function setRoadmapSwitching(isSwitching) {
+  document.getElementById('roadmap-map')?.classList.toggle('is-switching', isSwitching);
+  document.getElementById('course-detail-panel')?.classList.toggle('is-switching', isSwitching);
+}
+
+function materializeLearningSurface({ map = true, panel = true } = {}) {
+  const targets = [];
+  if (map) targets.push(document.getElementById('roadmap-map'));
+  if (panel) targets.push(document.getElementById('course-detail-panel'));
+  targets.filter(Boolean).forEach(target => {
+    target.classList.remove('is-materializing');
+    void target.offsetWidth;
+    target.classList.add('is-materializing');
+  });
+}
+
+const prefersReducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches || false;
+const DECODE_SYMBOLS = '[]{}<>/_\\01#*+';
+
+function initLearningTitleDecode() {
+  const title = document.getElementById('learning-title');
+  if (!title) return;
+  const finalText = title.textContent.trim();
+  title.setAttribute('aria-label', finalText);
+  if (prefersReducedMotion) return;
+
+  const chars = [...finalText];
+  title.classList.add('learning-title-decode', 'is-decoding');
+  title.innerHTML = chars.map((char, index) =>
+    `<span class="decode-char" aria-hidden="true" style="--decode-delay:${index * 120}ms">${escapeHtml(DECODE_SYMBOLS[(index * 3) % DECODE_SYMBOLS.length])}</span>`
+  ).join('');
+
+  title.querySelectorAll('.decode-char').forEach((node, index) => {
+    const finalChar = chars[index];
+    [120, 260].forEach((offset, pass) => {
+      window.setTimeout(() => {
+        node.textContent = DECODE_SYMBOLS[(index * 5 + pass * 7) % DECODE_SYMBOLS.length];
+      }, index * 120 + offset);
+    });
+    window.setTimeout(() => {
+      node.textContent = finalChar;
+    }, index * 120 + 420);
+  });
+
+  window.setTimeout(() => {
+    title.classList.remove('is-decoding');
+  }, chars.length * 120 + 900);
+}
+
+function initLearningScrollMotion() {
+  const body = document.body;
+  const nav = document.querySelector('.learning-nav');
+  if (prefersReducedMotion || !body) return;
+  let ticking = false;
+
+  const update = () => {
+    const y = window.scrollY || 0;
+    body.style.setProperty('--scroll-grid-y', `${Math.round(y * -0.07)}px`);
+    body.style.setProperty('--scroll-grid-y-neg', `${Math.round(y * 0.05)}px`);
+    body.style.setProperty('--scroll-haze-y', `${Math.round(y * -0.025)}px`);
+    body.style.setProperty('--nav-bg-alpha', y > 18 ? '0.9' : '0.76');
+    body.style.setProperty('--nav-rule-alpha', y > 18 ? '0.3' : '0.16');
+    nav?.classList.toggle('is-scrolled', y > 18);
+    ticking = false;
+  };
+
+  const requestUpdate = () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(update);
+  };
+
+  update();
+  window.addEventListener('scroll', requestUpdate, { passive: true });
+  window.addEventListener('resize', requestUpdate);
+}
+
+function initLearningRevealMotion() {
+  document.body.classList.add('motion-ready');
+  const revealTargets = [
+    ...document.querySelectorAll('.learning-hero, .learning-section, .roadmap-head, .major-tools, .roadmap-layout, .agent-layout, .agent-output')
+  ];
+
+  if (prefersReducedMotion || !('IntersectionObserver' in window)) {
+    revealTargets.forEach(target => target.classList.add('is-in-view'));
+    return;
+  }
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('is-in-view');
+    });
+  }, { rootMargin: '0px 0px -12% 0px', threshold: 0.12 });
+
+  revealTargets.forEach((target, index) => {
+    target.style.setProperty('--reveal-delay', `${Math.min(index * 26, 180)}ms`);
+    observer.observe(target);
+  });
+  revealDynamicLearningItems(document.getElementById('agent'));
+}
+
+function revealDynamicLearningItems(root = document) {
+  const items = root.querySelectorAll?.('.major-link, .agent-message, .agent-plan-step, .agent-chip, .agent-trace-item');
+  if (!items?.length) return;
+  items.forEach((item, index) => {
+    item.style.setProperty('--reveal-delay', `${Math.min(index * 34, 260)}ms`);
+    if (prefersReducedMotion) {
+      item.classList.add('is-in-view');
+      return;
+    }
+    requestAnimationFrame(() => item.classList.add('is-in-view'));
+  });
+}
 
 function majorIconSvg(iconKey) {
   const common = 'viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true"';
@@ -3512,6 +4702,7 @@ function renderMajorDirectory(filter = '') {
       <span class="major-arrow">→</span>
     </button>
   `).join('');
+  revealDynamicLearningItems(directory);
 }
 
 function updateRoadmapUrl(majorName) {
@@ -3582,120 +4773,534 @@ function edgeMapBySource(edges) {
   return map;
 }
 
+let selectedModuleId = '';
+let viewingCourseInPanel = false;
+let selectedKnowledgeName = '';
+const COURSE_RELATION_PREVIEW_LIMIT = 5;
+const expandedCourseRelationGroups = new Set();
+
+function _findModuleById(moduleId) {
+  return activeRoadmap?.modules?.find(m => m.id === moduleId) || null;
+}
+
+function _findCourseModule(courseId) {
+  return activeRoadmap?.modules?.find(m => m.courses.some(c => c.id === courseId)) || null;
+}
+
+function _findRoadmapCourse(courseId) {
+  return activeRoadmap?.courses?.find(item => item.id === courseId)
+    || activeRoadmap?.modules?.flatMap(module => module.courses || []).find(item => item.id === courseId)
+    || null;
+}
+
+function _uniqueCoursesById(courses = []) {
+  const seen = new Set();
+  return courses.filter(course => {
+    if (!course?.id || seen.has(course.id)) return false;
+    seen.add(course.id);
+    return true;
+  });
+}
+
+function _courseRelationGroups(course) {
+  const direct = coursePath(course.id);
+  const directBefore = _uniqueCoursesById(direct.before.map(_findRoadmapCourse).filter(Boolean));
+  const directAfter = _uniqueCoursesById(direct.after.map(_findRoadmapCourse).filter(Boolean));
+  if (directBefore.length || directAfter.length) {
+    return {
+      source: '直接课程关系',
+      before: directBefore,
+      after: directAfter,
+    };
+  }
+
+  const module = _findCourseModule(course.id);
+  if (!module) return { source: '暂无课程关系', before: [], after: [] };
+  const beforeModules = (module.depends_on || []).map(_findModuleById).filter(Boolean);
+  const afterModules = (activeRoadmap?.modules || []).filter(item => (item.depends_on || []).includes(module.id));
+  return {
+    source: '模块推导关系',
+    before: _uniqueCoursesById(beforeModules.flatMap(item => item.courses || [])),
+    after: _uniqueCoursesById(afterModules.flatMap(item => item.courses || [])),
+  };
+}
+
+function renderCourseRelationNodes(courses, emptyText, groupKey) {
+  if (!courses.length) return `<div class="course-relation-empty">${escapeHtml(emptyText)}</div>`;
+  const expanded = expandedCourseRelationGroups.has(groupKey);
+  const visibleCourses = expanded ? courses : courses.slice(0, COURSE_RELATION_PREVIEW_LIMIT);
+  const hiddenCount = courses.length - visibleCourses.length;
+  const courseHtml = visibleCourses.map((course, index) => `
+    <button class="course-relation-node" type="button" data-course-id="${escapeHtml(course.id)}" style="--stagger:${index * 36}ms" aria-label="查看 ${escapeHtml(course.name)} 的课程详情">
+      <span class="knowledge-index">${formatIndex(index)}</span>
+      <span class="knowledge-name">${escapeHtml(course.name)}</span>
+    </button>
+  `).join('');
+  if (!hiddenCount) return courseHtml;
+  return `${courseHtml}
+    <button class="relation-more" type="button" data-course-relation-group="${escapeHtml(groupKey)}" aria-label="展开其余 ${hiddenCount} 门课程">...</button>
+  `;
+}
+
+function renderCourseRelations(course, relationGroups) {
+  return `
+    <div class="course-relation-page">
+      <section class="course-relation-band">
+        <div class="course-relation-label">前置课程</div>
+        ${renderCourseRelationNodes(relationGroups.before, '暂无前置课程', 'course-before')}
+      </section>
+      <section class="course-relation-band">
+        <div class="course-relation-label">当前课程</div>
+        <div class="course-relation-node is-current">
+          <span class="knowledge-index">--</span>
+          <span class="knowledge-name">${escapeHtml(course.name)}</span>
+        </div>
+      </section>
+      <section class="course-relation-band">
+        <div class="course-relation-label">后续课程</div>
+        ${renderCourseRelationNodes(relationGroups.after, '暂无后续课程', 'course-after')}
+      </section>
+    </div>
+  `;
+}
+
 function renderKnowledgeRoadmap(course) {
   const panel = document.getElementById('course-detail-panel');
   const route = document.getElementById('knowledge-route');
   const pathThread = document.getElementById('path-thread');
+  document.getElementById('topics-section').hidden = true;
+  document.getElementById('similar-section').hidden = true;
+  document.getElementById('topics-list').innerHTML = '';
+  document.getElementById('similar-list').innerHTML = '';
   if (!course) {
     panel.querySelector('h3').textContent = '课程知识点';
-    panel.querySelector('.knowledge-course').textContent = '点击左侧课程节点查看覆盖知识点。';
+    panel.querySelector('.knowledge-course').textContent = '点击左侧模块查看课程，再点击课程查看知识点。';
     pathThread.innerHTML = '';
     route.innerHTML = '';
     return;
   }
+  selectedKnowledgeName = '';
   panel.querySelector('h3').textContent = course.name;
-  panel.querySelector('.knowledge-course').textContent = `${course.stage_label} / ${course.knowledge_count || 0} 个知识点`;
-  const path = coursePath(course.id);
+  const module = _findCourseModule(course.id);
+  const relationGroups = _courseRelationGroups(course);
+  const locationText = module ? `${module.name} · ${course.knowledge_count || 0} 个知识点` : `${course.knowledge_count || 0} 个知识点`;
+  panel.querySelector('.knowledge-course').innerHTML = `
+    <button class="btn-back-to-module" id="btn-back-to-module" type="button">← 返回模块课程</button>
+    <div>${escapeHtml(locationText)} · ${escapeHtml(relationGroups.source)}</div>
+  `;
   pathThread.innerHTML = [
-    path.before.length ? `<span>前置：${path.before.map(courseNameById).map(escapeHtml).join(' / ')}</span>` : '',
-    path.after.length ? `<span>后续：${path.after.map(courseNameById).map(escapeHtml).join(' / ')}</span>` : ''
+    `<span>前置课程：${relationGroups.before.length}</span>`,
+    `<span>后续课程：${relationGroups.after.length}</span>`
   ].join('');
   const knowledge = course.knowledge_points || [];
+  const courseRelationsHtml = renderCourseRelations(course, relationGroups);
   if (!knowledge.length) {
-    route.innerHTML = '<div class="roadmap-empty">当前课程暂无知识点记录。</div>';
-    return;
+    route.innerHTML = `${courseRelationsHtml}<div class="roadmap-empty">当前课程暂无知识点记录。</div>`;
+  } else {
+    const visibleKnowledge = knowledgeExpanded ? knowledge : knowledge.slice(0, 18);
+    route.innerHTML = `
+      ${courseRelationsHtml}
+      ${visibleKnowledge.map((item, index) => `
+        <button class="knowledge-node" type="button" data-kp-name="${escapeHtml(item.name)}" style="--stagger:${index * 36}ms" aria-label="查看 ${escapeHtml(item.name)} 的前后知识点">
+          <span class="knowledge-index">${formatIndex(index)}</span>
+          <span class="knowledge-name">
+            ${escapeHtml(item.name)}
+            <span class="knowledge-relation-meta">
+              <span>前置 ${item.prerequisite_count || 0}</span>
+              <span>后续 ${item.dependent_count || 0}</span>
+            </span>
+          </span>
+        </button>
+      `).join('')}
+      ${knowledge.length > 18 ? `
+        <button class="line-action knowledge-expand" id="btn-expand-knowledge" type="button">
+          ${knowledgeExpanded ? '收起知识点' : `展开全部 ${knowledge.length} 个知识点`}
+        </button>
+      ` : ''}
+    `;
   }
-  const visibleKnowledge = knowledgeExpanded ? knowledge : knowledge.slice(0, 18);
-  route.innerHTML = `
-    ${visibleKnowledge.map((item, index) => `
-      <div class="knowledge-node">
-        <span class="knowledge-index">${formatIndex(index)}</span>
-        <span class="knowledge-name">${escapeHtml(item.name)}</span>
+  loadCourseTopics(course.name);
+  materializeLearningSurface({ map: false, panel: true });
+}
+
+async function loadCourseTopics(courseName) {
+  const section = document.getElementById('topics-section');
+  const list = document.getElementById('topics-list');
+  try {
+    const res = await fetch(`${API}/api/courses/${encodeURIComponent(courseName)}/topics`);
+    if (!res.ok) throw new Error(`topics ${res.status}`);
+    const data = await res.json();
+    const topics = data.topics || [];
+    if (!topics.length) {
+      section.hidden = true;
+      return;
+    }
+    list.innerHTML = topics.map(t => `
+      <div class="topic-card">
+        <div class="topic-domain">${escapeHtml(t.domain || 'General')}</div>
+        <div class="topic-name">${escapeHtml(t.topic)}</div>
+        ${(t.subtopics || []).length ? `
+          <div class="topic-subtopics">
+            ${t.subtopics.map(st => `<span class="topic-chip">${escapeHtml(st)}</span>`).join('')}
+          </div>
+        ` : ''}
       </div>
-    `).join('')}
-    ${knowledge.length > 18 ? `
-      <button class="line-action knowledge-expand" id="btn-expand-knowledge" type="button">
-        ${knowledgeExpanded ? '收起知识点' : `展开全部 ${knowledge.length} 个知识点`}
-      </button>
-    ` : ''}
+    `).join('');
+    section.hidden = false;
+  } catch (err) {
+    console.warn('loadCourseTopics failed', err);
+    section.hidden = true;
+  }
+}
+
+async function loadSimilarConcepts(kpName) {
+  const section = document.getElementById('similar-section');
+  const list = document.getElementById('similar-list');
+  try {
+    const res = await fetch(`${API}/api/similar/concepts/${encodeURIComponent(kpName)}?limit=10`);
+    if (!res.ok) throw new Error(`similar ${res.status}`);
+    const data = await res.json();
+    const similar = data.similar || [];
+    if (!similar.length) {
+      section.hidden = true;
+      return;
+    }
+    list.innerHTML = similar.map(s => `
+      <div class="similar-item">
+        <span>${escapeHtml(s.name)}</span>
+        <span class="similar-score">${(s.similarity * 100).toFixed(0)}%</span>
+      </div>
+    `).join('');
+    section.hidden = false;
+  } catch (err) {
+    console.warn('loadSimilarConcepts failed', err);
+    section.hidden = true;
+  }
+}
+
+const RELATION_PREVIEW_LIMIT = 5;
+const expandedRelationGroups = new Set();
+
+function renderRelationNodes(nodes, emptyText, groupKey) {
+  if (!nodes.length) return `<div class="relation-empty">${escapeHtml(emptyText)}</div>`;
+  const expanded = expandedRelationGroups.has(groupKey);
+  const visibleNodes = expanded ? nodes : nodes.slice(0, RELATION_PREVIEW_LIMIT);
+  const hiddenCount = nodes.length - visibleNodes.length;
+  const nodeHtml = visibleNodes.map((node, index) => `
+    <button class="relation-node ${node.is_predicted ? 'is-predicted' : ''}" type="button" data-kp-name="${escapeHtml(node.name)}" style="--stagger:${index * 46}ms" aria-label="查看 ${escapeHtml(node.name)} 的前后知识点">
+      <span class="knowledge-index">${formatIndex(index)}</span>
+      <span class="knowledge-name">${escapeHtml(node.name)}</span>
+    </button>
+  `).join('');
+  if (!hiddenCount) return nodeHtml;
+  return `${nodeHtml}
+    <button class="relation-more" type="button" data-relation-group="${escapeHtml(groupKey)}" aria-label="展开其余 ${hiddenCount} 个知识点">...</button>
   `;
 }
 
-function renderCourseRoadmap(data) {
-  const lanes = document.getElementById('roadmap-lanes');
-  const stages = new Map((data.stages || []).map(stage => [stage.key, stage]));
-  const edges = buildRoadmapEdges(data);
-  activeRoadmap = { ...data, edges };
-  const edgesBySource = edgeMapBySource(edges);
-  lanes.innerHTML = ROADMAP_STAGE_ORDER.map(stageKey => {
-    const stage = stages.get(stageKey) || { key: stageKey, label: ROADMAP_STAGE_LABELS[stageKey], courses: [] };
-    const courses = stage.courses || [];
-    return `
-      <section class="roadmap-lane" data-stage="${stage.key}">
-        <div class="lane-label">${escapeHtml(stage.label)}</div>
-        <div class="lane-track">
-          ${courses.length ? courses.map((course, index) => {
-            const outgoing = edgesBySource.get(course.id) || [];
-            const hasRealLink = outgoing.some(edge => edge.kind === 'real');
-            return `
-              <button class="course-node${hasRealLink ? ' has-real-link' : ''}" type="button" data-stage="${escapeHtml(stage.key)}" data-index="${index}" data-course-id="${escapeHtml(course.id)}">
-                <span class="course-index">${formatIndex(index)}</span>
-                <span class="course-copy">
-                  <span class="course-name">${escapeHtml(course.name)}</span>
-                  <span class="course-meta">${course.knowledge_count || 0} knowledge</span>
-                  ${hasRealLink ? '<span class="course-edge-note">linked path</span>' : ''}
-                </span>
-              </button>
-            `;
-          }).join('') : '<span class="roadmap-empty">暂无课程</span>'}
+function _relationSummary(nodes) {
+  return `${nodes.length}`;
+}
+
+function renderKnowledgeRelationPage(data) {
+  const panel = document.getElementById('course-detail-panel');
+  const route = document.getElementById('knowledge-route');
+  const pathThread = document.getElementById('path-thread');
+  const target = data.target || { name: selectedKnowledgeName };
+  panel.querySelector('h3').textContent = target.name || '知识点关系';
+  panel.querySelector('.knowledge-course').innerHTML = `
+    <button class="btn-back-to-module" id="btn-back-to-knowledge" type="button">← 返回课程知识点</button>
+    <div>直接前置 / 后续知识点</div>
+  `;
+  pathThread.innerHTML = `
+    <span>前置：${_relationSummary(data.prerequisites || [])}</span>
+    <span>后续：${_relationSummary(data.dependents || [])}</span>
+  `;
+  route.innerHTML = `
+    <div class="knowledge-relation-page">
+      <section class="knowledge-relation-band">
+        <div class="relation-band-label">前置知识点</div>
+        ${renderRelationNodes(data.prerequisites || [], '暂无直接前置知识点', 'prerequisites')}
+      </section>
+      <section class="knowledge-relation-band">
+        <div class="relation-band-label">当前知识点</div>
+        <div class="relation-node is-target">
+          <span class="knowledge-index">--</span>
+          <span class="knowledge-name">${escapeHtml(target.name || selectedKnowledgeName)}</span>
         </div>
       </section>
+      <section class="knowledge-relation-band">
+        <div class="relation-band-label">后续知识点</div>
+        ${renderRelationNodes(data.dependents || [], '暂无直接后续知识点', 'dependents')}
+      </section>
+    </div>
+  `;
+  loadSimilarConcepts(target.name || selectedKnowledgeName);
+  materializeLearningSurface({ map: false, panel: true });
+}
+
+async function selectKnowledgePoint(kpName, options = {}) {
+  selectedKnowledgeName = kpName;
+  if (!options.preserveRelationExpansion) expandedRelationGroups.clear();
+  const panel = document.getElementById('course-detail-panel');
+  const route = document.getElementById('knowledge-route');
+  panel.querySelector('h3').textContent = kpName;
+  panel.querySelector('.knowledge-course').innerHTML = `
+    <button class="btn-back-to-module" id="btn-back-to-knowledge" type="button">← 返回课程知识点</button>
+    <div>正在读取知识点关系...</div>
+  `;
+  document.getElementById('path-thread').innerHTML = '';
+  route.innerHTML = '<div class="roadmap-empty">正在读取前向和后向知识点。</div>';
+
+  try {
+    const res = await fetch(`${API}/api/knowledge/${encodeURIComponent(kpName)}/relations`);
+    if (!res.ok) throw new Error(`knowledge relations ${res.status}`);
+    renderKnowledgeRelationPage(await res.json());
+  } catch (error) {
+    console.warn(error);
+    panel.querySelector('.knowledge-course').innerHTML = `
+      <button class="btn-back-to-module" id="btn-back-to-knowledge" type="button">← 返回课程知识点</button>
+      <div>知识点关系暂不可用</div>
     `;
-  }).join('');
+    route.innerHTML = '<div class="roadmap-empty">无法读取知识点关系。</div>';
+  }
+}
+
+function renderModuleCourseList(module) {
+  const panel = document.getElementById('course-detail-panel');
+  const route = document.getElementById('knowledge-route');
+  const pathThread = document.getElementById('path-thread');
+  panel.querySelector('h3').textContent = module.name;
+  panel.querySelector('.knowledge-course').textContent = `${module.courses.length} 门课程 · 点击课程查看知识点`;
+  pathThread.innerHTML = module.depends_on.length
+    ? `<span>前置模块：${module.depends_on.map(id => escapeHtml(_findModuleById(id)?.name || id)).join(' / ')}</span>`
+    : '';
+
+  if (!module.courses.length) {
+    route.innerHTML = '<div class="roadmap-empty">该模块暂无课程。</div>';
+    return;
+  }
+
+  route.innerHTML = `
+    <div class="module-course-list">
+      ${module.courses.map((course, index) => `
+        <button class="module-course-item" type="button" data-course-id="${escapeHtml(course.id)}" style="--stagger:${index * 36}ms">
+          <span>${escapeHtml(course.name)}</span>
+          <span class="course-kp-count">${course.knowledge_count || 0} KP</span>
+        </button>
+      `).join('')}
+    </div>
+  `;
+  materializeLearningSurface({ map: false, panel: true });
 }
 
 function selectRoadmapCourse(courseId) {
   if (selectedCourseId !== courseId) {
     knowledgeExpanded = false;
+    expandedCourseRelationGroups.clear();
   }
   selectedCourseId = courseId;
-  const path = coursePath(courseId);
-  const relatedIds = new Set([...path.before, ...path.after]);
-  const activeEdgeSources = new Set([...path.before, courseId]);
-  document.querySelectorAll('.course-node').forEach(node => {
-    node.classList.toggle('active', node.dataset.courseId === courseId);
-    node.classList.toggle('path-related', relatedIds.has(node.dataset.courseId));
-    node.classList.toggle('path-active', activeEdgeSources.has(node.dataset.courseId));
+  selectedKnowledgeName = '';
+  viewingCourseInPanel = true;
+  const course = _findRoadmapCourse(courseId);
+  if (course) renderKnowledgeRoadmap(course);
+}
+
+function selectModule(moduleId) {
+  selectedModuleId = moduleId;
+  viewingCourseInPanel = false;
+  selectedCourseId = '';
+  selectedKnowledgeName = '';
+  knowledgeExpanded = false;
+  expandedCourseRelationGroups.clear();
+
+  document.querySelectorAll('.module-node').forEach(node => {
+    node.classList.toggle('active', node.dataset.moduleId === moduleId);
   });
-  const course = activeRoadmap?.courses?.find(item => item.id === courseId);
-  renderKnowledgeRoadmap(course);
+
+  document.querySelectorAll('.module-link').forEach(link => {
+    const src = link.dataset.source;
+    const tgt = link.dataset.target;
+    const active = src === moduleId || tgt === moduleId;
+    link.classList.toggle('active', active);
+  });
+
+  const module = _findModuleById(moduleId);
+  if (module) renderModuleCourseList(module);
+}
+
+function computeModuleLayout(modules) {
+  const moduleWidth = 210;
+  const moduleHeight = 90;
+  const horizontalGap = 54;
+  const verticalGap = 78;
+  const topMargin = 24;
+  const sideMargin = 96;
+
+  const byLevel = new Map();
+  modules.forEach(m => {
+    const lvl = m.level || 0;
+    if (!byLevel.has(lvl)) byLevel.set(lvl, []);
+    byLevel.get(lvl).push(m);
+  });
+
+  const levels = [...byLevel.keys()].sort((a, b) => a - b);
+  const positions = {};
+  const rowWidths = levels.map(level => {
+    const count = byLevel.get(level).length;
+    return count * moduleWidth + Math.max(count - 1, 0) * horizontalGap;
+  });
+  const graphWidth = Math.max(560, Math.max(...rowWidths, 0) + sideMargin * 2);
+
+  levels.forEach((level, rowIndex) => {
+    const levelModules = byLevel.get(level);
+    const rowWidth = rowWidths[rowIndex];
+    const startX = (graphWidth - rowWidth) / 2;
+    levelModules.forEach((m, index) => {
+      positions[m.id] = {
+        x: startX + index * (moduleWidth + horizontalGap),
+        y: topMargin + rowIndex * (moduleHeight + verticalGap),
+        width: moduleWidth,
+        height: moduleHeight,
+      };
+    });
+  });
+
+  const rowCount = Math.max(levels.length, 1);
+
+  return {
+    positions,
+    levels,
+    width: graphWidth,
+    height: topMargin + rowCount * moduleHeight + (rowCount - 1) * verticalGap + topMargin,
+  };
+}
+
+function moduleLevelLabel(rowIndex) {
+  return ['基础', '核心', '方向', '进阶', '实践'][rowIndex] || `阶段 ${rowIndex + 1}`;
+}
+
+function renderModuleGraph(data) {
+  const map = document.getElementById('roadmap-map');
+  const modules = data.modules || [];
+  activeRoadmap = data;
+
+  if (!modules.length) {
+    map.innerHTML = '<div class="roadmap-empty">暂无课程数据。</div>';
+    return;
+  }
+
+  const layout = computeModuleLayout(modules);
+
+  let html = `
+    <div class="module-graph" id="module-graph" style="width:${layout.width}px;height:${layout.height}px;">
+      <svg class="roadmap-svg" id="roadmap-svg" aria-hidden="true" style="width:${layout.width}px;height:${layout.height}px;"></svg>
+  `;
+
+  layout.levels.forEach((level, rowIndex) => {
+    const y = layout.positions[modules.find(m => (m.level || 0) === level)?.id]?.y || 0;
+    html += `<div class="module-level-label" style="top:${y + 36}px;--stagger:${rowIndex * 54}ms;">${moduleLevelLabel(rowIndex)}</div>`;
+  });
+
+  modules.forEach((m, index) => {
+    const pos = layout.positions[m.id];
+    html += `
+      <button class="module-node" type="button"
+              data-module-id="${escapeHtml(m.id)}"
+              style="left:${pos.x}px;top:${pos.y}px;width:${pos.width}px;height:${pos.height}px;--stagger:${index * 54}ms;"
+              aria-label="${escapeHtml(m.name)}，${m.courses.length} 门课程">
+        <span class="module-name">${escapeHtml(m.name)}</span>
+        <div class="module-meta">
+          <span class="module-count">${m.courses.length}</span>
+          <span>COURSES</span>
+        </div>
+      </button>
+    `;
+  });
+
+  html += '</div>';
+  map.innerHTML = html;
+
+  requestAnimationFrame(() => {
+    renderModuleLinks(data.module_links || []);
+    materializeLearningSurface({ map: true, panel: false });
+  });
+}
+
+function renderModuleLinks(moduleLinks) {
+  const svg = document.getElementById('roadmap-svg');
+  const graph = document.getElementById('module-graph');
+  if (!svg || !graph) return;
+
+  const modules = activeRoadmap?.modules || [];
+  const positions = computeModuleLayout(modules).positions;
+
+  moduleLinks.forEach((link, index) => {
+    const sourcePos = positions[link.source];
+    const targetPos = positions[link.target];
+    if (!sourcePos || !targetPos) return;
+
+    const sx = targetPos.x + targetPos.width / 2;
+    const sy = targetPos.y + targetPos.height;
+    const tx = sourcePos.x + sourcePos.width / 2;
+    const ty = sourcePos.y;
+
+    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    path.setAttribute('d', _straightModulePath(sx, sy, tx, ty));
+    path.setAttribute('class', 'module-link');
+    path.setAttribute('data-source', link.source);
+    path.setAttribute('data-target', link.target);
+    path.style.setProperty('--stagger', `${index * 36}ms`);
+    svg.appendChild(path);
+  });
+}
+
+function _straightModulePath(sx, sy, tx, ty) {
+  const midY = (sy + ty) / 2;
+  if (Math.abs(sx - tx) < 1) return `M ${sx} ${sy} L ${tx} ${ty}`;
+  return `M ${sx} ${sy} L ${sx} ${midY} L ${tx} ${midY} L ${tx} ${ty}`;
 }
 
 function renderRoadmap(data) {
   activeMajorName = data.major?.name || activeMajorName;
   document.getElementById('roadmap-title').textContent = `${activeMajorName} Roadmap`;
   document.getElementById('roadmap-meta').textContent =
-    `${data.displayed_courses}/${data.total_courses} courses · ${data.total_prerequisite_links} prerequisite links`;
-  document.getElementById('btn-expand-roadmap').hidden = data.include_all || data.displayed_courses >= data.total_courses;
-  renderCourseRoadmap(data);
-  const firstCourse = representativeCourse(data.courses || []);
-  selectRoadmapCourse(firstCourse?.id || '');
+    `${data.total_courses} courses · ${data.total_prerequisite_links} prerequisite links`;
+  document.getElementById('btn-expand-roadmap').hidden = true;
+  renderModuleGraph(data);
+  const firstModule = data.modules?.[0];
+  if (firstModule) {
+    selectModule(firstModule.id);
+  } else {
+    renderModuleCourseList({ name: '无模块', courses: [], depends_on: [] });
+  }
   renderMajorDirectory(document.getElementById('major-search').value || '');
 }
 
 async function loadMajorRoadmap(majorName, options = {}) {
-  const includeAll = Boolean(options.includeAll);
-  roadmapIncludesAll = includeAll;
+  const token = ++roadmapSwitchToken;
+  roadmapIncludesAll = true;
   activeMajorName = majorName;
+  setRoadmapSwitching(true);
+  await delay(180);
+  if (token !== roadmapSwitchToken) return;
   document.getElementById('roadmap-title').textContent = `${majorName} Roadmap`;
   document.getElementById('roadmap-meta').textContent = '正在生成课程路径...';
-  document.getElementById('roadmap-lanes').innerHTML = '<div class="roadmap-empty">正在读取课程和知识点。</div>';
-  renderKnowledgeRoadmap(null);
-  const res = await fetch(`${API}/api/majors/${encodeURIComponent(majorName)}/roadmap?limit=32&include_all=${includeAll ? 'true' : 'false'}`);
-  if (!res.ok) throw new Error(`roadmap ${res.status}`);
-  renderRoadmap(await res.json());
-  if (options.updateUrl !== false) updateRoadmapUrl(majorName);
-  if (options.scroll !== false) learningScrollTo('roadmap');
+  document.getElementById('roadmap-map').innerHTML = '<div class="roadmap-empty">正在读取课程和知识点。</div>';
+  renderModuleCourseList({ name: '加载中', courses: [], depends_on: [] });
+  try {
+    const res = await fetch(`${API}/api/majors/${encodeURIComponent(majorName)}/roadmap`);
+    if (!res.ok) throw new Error(`roadmap ${res.status}`);
+    if (token !== roadmapSwitchToken) return;
+    renderRoadmap(await res.json());
+    setRoadmapSwitching(false);
+    materializeLearningSurface();
+    if (options.updateUrl !== false) updateRoadmapUrl(majorName);
+    if (options.scroll !== false) learningScrollTo('roadmap');
+  } catch (error) {
+    setRoadmapSwitching(false);
+    throw error;
+  }
 }
 
 async function loadMajorsHome() {
@@ -3717,9 +5322,9 @@ async function loadMajorsHome() {
     }
   } catch (error) {
     console.warn('Major home failed', error);
-    setLearningStatus('专业接口暂不可用');
+    setLearningStatus('');
     document.getElementById('major-directory').innerHTML = '<div class="major-empty">无法读取专业数据，请确认 FastAPI 和 Neo4j 已启动。</div>';
-    document.getElementById('roadmap-lanes').innerHTML = '<div class="roadmap-empty">等待专业接口恢复。</div>';
+    document.getElementById('roadmap-map').innerHTML = '<div class="roadmap-empty">等待专业接口恢复。</div>';
   }
 }
 
@@ -3736,26 +5341,70 @@ document.getElementById('major-directory').addEventListener('click', event => {
   });
 });
 
-document.getElementById('roadmap-lanes').addEventListener('click', event => {
-  const item = event.target.closest('.course-node');
-  if (!item) return;
-  selectRoadmapCourse(item.dataset.courseId);
+document.getElementById('roadmap-map').addEventListener('click', event => {
+  const moduleNode = event.target.closest('.module-node');
+  if (moduleNode) {
+    selectModule(moduleNode.dataset.moduleId);
+    return;
+  }
 });
 
 document.getElementById('course-detail-panel').addEventListener('click', event => {
+  const courseItem = event.target.closest('.module-course-item');
+  if (courseItem) {
+    selectRoadmapCourse(courseItem.dataset.courseId);
+    return;
+  }
+
+  const courseRelationNode = event.target.closest('.course-relation-node[data-course-id]');
+  if (courseRelationNode) {
+    selectRoadmapCourse(courseRelationNode.dataset.courseId);
+    return;
+  }
+
+  const knowledgeNode = event.target.closest('.knowledge-node[data-kp-name], .relation-node[data-kp-name]');
+  if (knowledgeNode) {
+    selectKnowledgePoint(knowledgeNode.dataset.kpName);
+    return;
+  }
+
+  const courseRelationMore = event.target.closest('.relation-more[data-course-relation-group]');
+  if (courseRelationMore && selectedCourseId) {
+    expandedCourseRelationGroups.add(courseRelationMore.dataset.courseRelationGroup);
+    const course = _findRoadmapCourse(selectedCourseId);
+    if (course) renderKnowledgeRoadmap(course);
+    return;
+  }
+
+  const relationMore = event.target.closest('.relation-more[data-relation-group]');
+  if (relationMore) {
+    expandedRelationGroups.add(relationMore.dataset.relationGroup);
+    selectKnowledgePoint(selectedKnowledgeName, { preserveRelationExpansion: true });
+    return;
+  }
+
+  const backKnowledgeBtn = event.target.closest('#btn-back-to-knowledge');
+  if (backKnowledgeBtn && selectedCourseId) {
+    const course = _findRoadmapCourse(selectedCourseId);
+    renderKnowledgeRoadmap(course);
+    return;
+  }
+
+  const backBtn = event.target.closest('#btn-back-to-module');
+  if (backBtn && selectedModuleId) {
+    selectModule(selectedModuleId);
+    return;
+  }
+
   const item = event.target.closest('#btn-expand-knowledge');
   if (!item || !selectedCourseId) return;
   knowledgeExpanded = !knowledgeExpanded;
-  const course = activeRoadmap?.courses?.find(entry => entry.id === selectedCourseId);
+  const course = _findRoadmapCourse(selectedCourseId);
   renderKnowledgeRoadmap(course);
 });
 
 document.getElementById('btn-expand-roadmap').addEventListener('click', () => {
-  if (!activeMajorName || roadmapIncludesAll) return;
-  loadMajorRoadmap(activeMajorName, { includeAll: true, scroll: false }).catch(error => {
-    console.warn(error);
-    showToast?.('展开全部失败');
-  });
+  // Module graph always shows all courses; button is hidden.
 });
 
 document.getElementById('btn-back-majors').addEventListener('click', () => learningScrollTo('majors'));
@@ -5368,6 +7017,168 @@ document.getElementById('qa-evidence').addEventListener('click', event => {
   focusNode('', item.dataset.label, item.dataset.name);
 });
 
+let agentSessionId = sessionStorage.getItem('kg_agent_session_id') || '';
+
+function parseAgentKnown() {
+  return document.getElementById('agent-known').value
+    .split(/[\s，,、/]+/)
+    .map(item => item.trim())
+    .filter(Boolean);
+}
+
+function appendAgentMessage(role, text) {
+  const messages = document.getElementById('agent-messages');
+  const roleLabel = role === 'user' ? 'You' : 'Agent';
+  messages.insertAdjacentHTML('beforeend', `
+    <div class="agent-message agent-message-${role}">
+      <div class="agent-message-role">${roleLabel}</div>
+      <div class="agent-message-body">${escapeHtml(text)}</div>
+    </div>
+  `);
+  revealDynamicLearningItems(messages);
+  messages.scrollTop = messages.scrollHeight;
+}
+
+function renderAgentPlan(steps = []) {
+  const plan = document.getElementById('agent-plan');
+  if (!steps.length) {
+    plan.innerHTML = '<div class="agent-empty">暂无路径步骤。</div>';
+    return;
+  }
+  plan.innerHTML = steps.slice(0, 24).map((step, index) => `
+    <div class="agent-plan-step">
+      <span class="agent-step-index">${formatIndex(index)}</span>
+      <span class="agent-step-copy">
+        ${escapeHtml(step.name || '')}
+        <span class="agent-step-reason">${escapeHtml(step.reason || step.type || '')}</span>
+      </span>
+    </div>
+  `).join('');
+  revealDynamicLearningItems(plan);
+}
+
+function renderAgentEvidence(nodes = []) {
+  const evidence = document.getElementById('agent-evidence');
+  if (!nodes.length) {
+    evidence.innerHTML = '<div class="agent-empty">暂无证据节点。</div>';
+    return;
+  }
+  evidence.innerHTML = nodes.slice(0, 18).map((node, index) => {
+    const label = LABEL_TEXT[node.label] || node.label || 'Node';
+    return `
+      <button class="agent-chip" type="button" data-label="${escapeHtml(node.label || '')}" data-name="${escapeHtml(node.name || '')}">
+        <span class="agent-step-index">${formatIndex(index)}</span>
+        <span class="agent-step-copy">${escapeHtml(label)} / ${escapeHtml(node.name || '')}</span>
+      </button>
+    `;
+  }).join('');
+  revealDynamicLearningItems(evidence);
+}
+
+function renderAgentTrace(trace = []) {
+  const box = document.getElementById('agent-trace');
+  if (!trace.length) {
+    box.innerHTML = '<div class="agent-empty">暂无调用记录。</div>';
+    return;
+  }
+  box.innerHTML = trace.slice(-8).map((item, index) => `
+    <div class="agent-trace-item">
+      <span class="agent-step-index">${formatIndex(index)}</span>
+      <span class="agent-step-copy">
+        ${escapeHtml(item.tool || 'tool')}
+        <span class="agent-trace-meta">${item.ok === false ? 'failed' : 'ok'}${item.path_count !== undefined ? ` · ${item.path_count} steps` : ''}${item.matches !== undefined ? ` · ${item.matches} matches` : ''}</span>
+      </span>
+    </div>
+  `).join('');
+  revealDynamicLearningItems(box);
+}
+
+function renderAgentSuggestions(suggestions = []) {
+  const box = document.getElementById('agent-suggestions');
+  box.innerHTML = suggestions.slice(0, 3).map(text => `
+    <button class="text-action" type="button">${escapeHtml(text)}</button>
+  `).join('');
+}
+
+function updateAgentProfileFields(profile = {}) {
+  if (profile.known?.length) document.getElementById('agent-known').value = profile.known.join('、');
+  if (profile.target) document.getElementById('agent-target').value = profile.target;
+  if (profile.goal) document.getElementById('agent-goal').value = profile.goal;
+  if (profile.weekly_hours !== undefined && profile.weekly_hours !== null) {
+    document.getElementById('agent-weekly-hours').value = profile.weekly_hours;
+  }
+  if (profile.level) document.getElementById('agent-level').value = profile.level;
+}
+
+async function askAgent(messageOverride = '') {
+  const input = document.getElementById('agent-input');
+  const button = document.getElementById('agent-submit');
+  const message = (messageOverride || input.value).trim();
+  if (!message) return;
+
+  appendAgentMessage('user', message);
+  button.disabled = true;
+  button.textContent = '规划中';
+  renderAgentTrace([{ tool: 'agent_chat', ok: true }]);
+
+  const weeklyValue = document.getElementById('agent-weekly-hours').value;
+  const payload = {
+    session_id: agentSessionId || undefined,
+    message,
+    known: parseAgentKnown(),
+    target: document.getElementById('agent-target').value.trim() || undefined,
+    goal: document.getElementById('agent-goal').value.trim() || undefined,
+    weekly_hours: weeklyValue ? Number(weeklyValue) : undefined,
+    level: document.getElementById('agent-level').value || undefined
+  };
+
+  try {
+    const res = await fetch(`${API}/api/agent/chat`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    const result = await res.json();
+    if (!res.ok) throw new Error(result.detail || `HTTP ${res.status}`);
+    agentSessionId = result.session_id || agentSessionId;
+    if (agentSessionId) sessionStorage.setItem('kg_agent_session_id', agentSessionId);
+    appendAgentMessage('assistant', result.answer || 'Agent 没有返回内容。');
+    updateAgentProfileFields(result.profile || {});
+    renderAgentPlan(result.plan_steps || []);
+    renderAgentEvidence(result.evidence_nodes || []);
+    renderAgentTrace(result.tool_trace || []);
+    renderAgentSuggestions(result.suggested_questions || []);
+    if (result.evidence_nodes?.length || result.evidence_links?.length) {
+      highlightQaEvidence(result.evidence_nodes || [], result.evidence_links || []);
+    }
+  } catch (error) {
+    appendAgentMessage('assistant', `Agent 暂时不可用：${error.message}`);
+    renderAgentTrace([{ tool: 'agent_chat', ok: false }]);
+    showToast('Agent 接口连接失败');
+  } finally {
+    button.disabled = false;
+    button.textContent = '发送给 Agent';
+  }
+}
+
+document.getElementById('agent-submit').addEventListener('click', () => askAgent());
+document.getElementById('agent-input').addEventListener('keydown', event => {
+  if ((event.metaKey || event.ctrlKey) && event.key === 'Enter') {
+    askAgent();
+  }
+});
+document.getElementById('agent-suggestions').addEventListener('click', event => {
+  const item = event.target.closest('.text-action');
+  if (!item) return;
+  document.getElementById('agent-input').value = item.textContent;
+  askAgent(item.textContent);
+});
+document.getElementById('agent-evidence').addEventListener('click', event => {
+  const item = event.target.closest('.agent-chip');
+  if (!item || !item.dataset.label || !item.dataset.name) return;
+  focusNode('', item.dataset.label, item.dataset.name);
+});
+
 function onNodeClick(node) { showDetail(node); }
 function onNodeHover(node) {
   hoveredGraphNode = node;
@@ -5545,6 +7356,9 @@ window.addEventListener('resize', () => {
   Graph.height(graphEl.clientHeight);
 });
 
+initLearningRevealMotion();
+initLearningScrollMotion();
+initLearningTitleDecode();
 loadMajorsHome();
 showIdleGraph();
 </script>

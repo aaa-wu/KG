@@ -44,12 +44,12 @@ def _topological_sort(nodes: set[str], edges: list[tuple[str, str]]) -> list[lis
     return sorted_nodes
 
 
-def find_prerequisites(session, target_name: str) -> dict:
-    """给定目标知识点名，反向 BFS 查找所有前驱知识点并拓扑排序"""
-    # 获取所有前驱节点
+def find_prerequisites(session, target_name: str, max_depth: int = 2) -> dict:
+    """给定目标知识点名，反向 BFS 查找前驱知识点并拓扑排序"""
+    # 获取所有前驱节点，限制深度避免图过密时路径爆炸
     result = session.run(
         f"""
-        MATCH path = (prereq:{LABEL_KNOWLEDGE_POINT})-[:{REL_PREREQUISITE_OF}*1..10]->
+        MATCH path = (prereq:{LABEL_KNOWLEDGE_POINT})-[:{REL_PREREQUISITE_OF}*1..{max_depth}]->
                      (target:{LABEL_KNOWLEDGE_POINT} {{name: $name}})
         RETURN DISTINCT prereq.name AS name, prereq.difficulty AS difficulty,
                prereq.category AS category, length(path) AS distance
@@ -163,29 +163,193 @@ def recommend_next(session, known_kp_names: list[str]) -> dict:
     }
 
 
-def find_path_to_target(session, known_kp_names: list[str], target_name: str) -> dict:
-    """从已知知识点到目标知识点，返回完整待学习前驱集合。"""
-    prereq_plan = find_prerequisites(session, target_name)
-    if "error" in prereq_plan:
-        return prereq_plan
+def _find_shortest_path(session, known_names: list[str], target_name: str, max_depth: int = 5) -> list[str]:
+    """从已知节点到目标节点的最短前置路径（返回未掌握的节点序列，含目标）。
 
-    known_set = set(known_kp_names)
-    remaining_stages = []
-    need_to_learn = []
+    使用 BFS 反向搜索：从 target 出发，沿着 PREREQUISITE_OF 边反向走，
+    直到遇到任意已知节点。返回正向学习顺序（前置在前，目标在后）。
+    如果找不到路径，返回 [target_name]。
+    """
+    from collections import deque
 
-    for stage in prereq_plan.get("stages", []):
-        remaining_kps = [
-            kp for kp in stage.get("knowledge_points", [])
-            if kp not in known_set
-        ]
-        if not remaining_kps:
+    if not known_names:
+        # 没有已知基础时，找一条从任意根节点（入度为 0）到目标的最短路径
+        return _find_shortest_path_from_root(session, target_name, max_depth)
+
+    known_set = set(known_names)
+    if target_name in known_set:
+        return []
+
+    # BFS backwards from target
+    queue = deque([(target_name, [target_name])])
+    visited = {target_name}
+
+    while queue:
+        current, path = queue.popleft()
+        if len(path) > max_depth:
             continue
 
-        need_to_learn.extend(remaining_kps)
+        result = session.run(
+            f"""
+            MATCH (pre:{LABEL_KNOWLEDGE_POINT})-[:{REL_PREREQUISITE_OF}]->(current:{LABEL_KNOWLEDGE_POINT} {{name: $name}})
+            RETURN pre.name AS name
+            """,
+            name=current,
+        )
+        prereqs = [r["name"] for r in result if r["name"]]
+
+        for pr in prereqs:
+            if pr in known_set:
+                # Found a path; return in learning order
+                return list(reversed(path))
+            if pr not in visited:
+                visited.add(pr)
+                queue.append((pr, path + [pr]))
+
+    # No path found from known to target
+    return [target_name]
+
+
+def _find_shortest_path_from_root(session, target_name: str, max_depth: int = 5) -> list[str]:
+    """找到从某个入度为 0 的根节点到目标节点的最短路径。
+
+    返回正向学习顺序（根节点在前，目标在后）。
+    """
+    from collections import deque
+
+    queue = deque([(target_name, [target_name])])
+    visited = {target_name}
+
+    while queue:
+        current, path = queue.popleft()
+        if len(path) > max_depth:
+            continue
+
+        result = session.run(
+            f"""
+            MATCH (pre:{LABEL_KNOWLEDGE_POINT})-[:{REL_PREREQUISITE_OF}]->(current:{LABEL_KNOWLEDGE_POINT} {{name: $name}})
+            RETURN pre.name AS name
+            """,
+            name=current,
+        )
+        prereqs = [r["name"] for r in result if r["name"]]
+
+        # 当前置节点没有进一步前置时，它就是根节点，找到完整路径
+        for pr in prereqs:
+            in_degree_result = session.run(
+                f"""
+                MATCH (other:{LABEL_KNOWLEDGE_POINT})-[:{REL_PREREQUISITE_OF}]->(pre:{LABEL_KNOWLEDGE_POINT} {{name: $name}})
+                RETURN count(other) AS cnt
+                """,
+                name=pr,
+            )
+            in_degree = in_degree_result.single()["cnt"]
+
+            if in_degree == 0:
+                return list(reversed(path + [pr]))
+
+            if pr not in visited:
+                visited.add(pr)
+                queue.append((pr, path + [pr]))
+
+    # 找不到根节点路径，返回目标本身
+    return [target_name]
+
+
+def find_path_to_target(session, known_kp_names: list[str], target_name: str, use_shortest: bool = True) -> dict:
+    """从已知知识点到目标知识点，返回待学习路径。
+
+    当提供已知知识点且 use_shortest=True 时，返回从已知到目标的最短前置路径；
+    否则返回目标知识点的完整前驱集合（用于无已知基础时）。
+    """
+    if not known_kp_names and use_shortest:
+        # 无已知基础时，找一条从根节点到目标的最短路径，避免把所有直接前置都堆给用户
+        path_names = _find_shortest_path_from_root(session, target_name)
+
+        remaining_stages = []
+        for i, name in enumerate(path_names, 1):
+            course_result = session.run(
+                f"""
+                MATCH (c:{LABEL_COURSE})-[:{REL_COVERS}]->(k:{LABEL_KNOWLEDGE_POINT} {{name: $name}})
+                RETURN c.name AS course
+                """,
+                name=name,
+            )
+            courses = [r["course"] for r in course_result if r["course"]]
+            remaining_stages.append({
+                "stage": i,
+                "knowledge_points": [name],
+                "courses": list(set(courses)),
+            })
+
+        need_to_learn = [n for n in path_names if n != target_name]
+
+        return {
+            "known": known_kp_names,
+            "target": target_name,
+            "path": path_names,
+            "need_to_learn": need_to_learn,
+            "steps_from_current": len(need_to_learn),
+            "total_knowledge_points": len(path_names),
+            "depth": len(remaining_stages),
+            "stages": remaining_stages,
+        }
+
+    if not use_shortest:
+        prereq_plan = find_prerequisites(session, target_name, max_depth=2)
+        if "error" in prereq_plan:
+            return prereq_plan
+
+        known_set = set(known_kp_names)
+        remaining_stages = []
+        need_to_learn = []
+
+        for stage in prereq_plan.get("stages", []):
+            remaining_kps = [
+                kp for kp in stage.get("knowledge_points", [])
+                if kp not in known_set
+            ]
+            if not remaining_kps:
+                continue
+
+            need_to_learn.extend(remaining_kps)
+            remaining_stages.append({
+                "stage": len(remaining_stages) + 1,
+                "knowledge_points": remaining_kps,
+                "courses": stage.get("courses", []),
+            })
+
+        return {
+            "known": known_kp_names,
+            "target": target_name,
+            "path": need_to_learn,
+            "need_to_learn": need_to_learn,
+            "steps_from_current": len(need_to_learn),
+            "total_knowledge_points": len(need_to_learn),
+            "depth": len(remaining_stages),
+            "stages": remaining_stages,
+        }
+
+    # Shortest path mode
+    path_names = _find_shortest_path(session, known_kp_names, target_name)
+    need_to_learn = [n for n in path_names if n not in known_kp_names]
+
+    # Build stages: each node is its own stage for simplicity
+    remaining_stages = []
+    for i, name in enumerate(need_to_learn, 1):
+        # Find courses covering this node
+        course_result = session.run(
+            f"""
+            MATCH (c:{LABEL_COURSE})-[:{REL_COVERS}]->(k:{LABEL_KNOWLEDGE_POINT} {{name: $name}})
+            RETURN c.name AS course
+            """,
+            name=name,
+        )
+        courses = [r["course"] for r in course_result if r["course"]]
         remaining_stages.append({
-            "stage": len(remaining_stages) + 1,
-            "knowledge_points": remaining_kps,
-            "courses": stage.get("courses", []),
+            "stage": i,
+            "knowledge_points": [name],
+            "courses": list(set(courses)),
         })
 
     return {

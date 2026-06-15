@@ -1,0 +1,4616 @@
+[
+  {
+    "id": "C_20",
+    "name": "20世纪中国美学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_20_2",
+    "name": "20 世纪英国的小说与社会",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_20_4",
+    "name": "20世纪西方文论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_40_50",
+    "name": "40-50年代作家研究",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_A",
+    "name": "高等数学A",
+    "major_count": 2,
+    "university": ""
+  },
+  {
+    "id": "C_AI_2",
+    "name": "人工智能中的数学",
+    "major_count": 2,
+    "university": ""
+  },
+  {
+    "id": "C_AMERICAN_POLITICS",
+    "name": "美国政治",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_A_5",
+    "name": "物理实验A",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_A_8",
+    "name": "普通地质实习A",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_B",
+    "name": "物理实验B",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_B_2",
+    "name": "大学物理B",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_C",
+    "name": "高等数学C",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_CHAUCER_AND_HIS_LITERARY_BACKGROUND",
+    "name": "乔叟及其文学背景",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_CLIMATE_CHANGE_POLITICS_AND_POLICY",
+    "name": "气候变化：政治与政策",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_CNS",
+    "name": "中枢神经系统解剖",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_COMPARATIVE_POLITICS",
+    "name": "比较政治学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_COMPUTATION_AND_COMPLEXITY",
+    "name": "计算与复杂性",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_COMPUTATION_STRUCTURES",
+    "name": "计算结构",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_COMPUTER_SCIENCE_MATHEMATICS",
+    "name": "计算机科学数学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_CONFLICT_COOPERATION_AND_CHANGE_INTRODUCTION_TO_",
+    "name": "冲突、合作与变迁：国际关系导论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_D",
+    "name": "高等数学D",
+    "major_count": 4,
+    "university": ""
+  },
+  {
+    "id": "C_DATA_ANALYSIS_FOR_SOCIAL_SCIENTISTS",
+    "name": "社会科学家数据分析",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_DEMOCRACY_AND_AUTHORITARIANISM",
+    "name": "民主与威权主义",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_EXTREMISM_AND_POPULISM",
+    "name": "极端主义与民粹主义",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_F",
+    "name": "f 区元素化学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_FUNDAMENTALS_OF_COMPUTER_SYSTEMS",
+    "name": "计算机系统基础",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_II",
+    "name": "近现代物理导论II",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_INTELLIGENT_DATA_SYSTEMS",
+    "name": "智能数据系统",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_INTERNATIONAL_CONFLICT_AND_COOPERATION",
+    "name": "国际冲突与合作",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_I_2",
+    "name": "近现代物理导论I",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_I_4",
+    "name": "几何学I",
+    "major_count": 2,
+    "university": ""
+  },
+  {
+    "id": "C_I_5",
+    "name": "代数学I",
+    "major_count": 2,
+    "university": ""
+  },
+  {
+    "id": "C_JURISPRUDENCE",
+    "name": "法理学",
+    "major_count": 3,
+    "university": ""
+  },
+  {
+    "id": "C_MACROECONOMIC_THEORY_AND_POLICY",
+    "name": "宏观经济学理论与政策",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_MEMORY_AND_DECISION",
+    "name": "记忆与决策",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_PYTHON",
+    "name": "数据科学的Python基础",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_QUANTITATIVE_DATA_ANALYSIS",
+    "name": "定量数据分析",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R",
+    "name": "R语言与数据可视化",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_04F3D38353",
+    "name": "概率论——不确定性的科学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_054F5E7756",
+    "name": "质量管理",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_078A293216",
+    "name": "国际学术交流英语",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_1276D56A44",
+    "name": "技术创新管理",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_18590D9E42",
+    "name": "金融科技与量化分析——实战篇",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_1E2BF17E81",
+    "name": "管理会计学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_3243B25FF8",
+    "name": "融合新闻学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_39FA3C3532",
+    "name": "宏观经济体制与核算",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_3C0905548B",
+    "name": "数据库系统:管理与技术",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_4A56204309",
+    "name": "国民经济运行与统计",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_5E7BD5B42C",
+    "name": "国际金融学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_681C9DBD52",
+    "name": "股权融资相关法律知识",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_686D4CE093",
+    "name": "金融科技与量化分析",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_68EAD49C1D",
+    "name": "高级英语写作",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_699DBAE5F2",
+    "name": "知识产权法律及实务",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_69AFAEAF73",
+    "name": "华为成功之道:人力资源管理的最佳实践",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_71DFBC036F",
+    "name": "教育政策与法律",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_77AFC7D254",
+    "name": "现代管理学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_7CFC38AE8C",
+    "name": "中国大国崛起的经济、历史、国际研究分析",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_8C8022A232",
+    "name": "“案”说生活法律",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_980E2D8463",
+    "name": "儒释道哲学的人生智慧",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_988D6D4BBB",
+    "name": "新闻学基础:历史与理论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_A32C801CCB",
+    "name": "广播电视新闻采访与写作",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_A4A5F4584D",
+    "name": "昆虫.意象.哲学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_A567474CCB",
+    "name": "公司金融学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_ACCA_F2",
+    "name": "ACCA F2 管理会计",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_ADVANCED_6_A_INTERNSHIP",
+    "name": "高级6-A实习",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_ADVANCED_COMPUTER_SYSTEMS",
+    "name": "高级计算机系统",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_ADVANCED_INFORMATION_ASSURANCE",
+    "name": "高级信息保障",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_ALGORITHM_DESIGN_AND_ANALYSIS",
+    "name": "算法设计与分析",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_ARTIFICIAL_INTELLIGENCE",
+    "name": "人工智能",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_B0CC05F878",
+    "name": "互联网金融",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_B5440317AB",
+    "name": "游戏心理学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_BC47020BF7",
+    "name": "数据新闻与可视化",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_C7ABD5FBC4",
+    "name": "藏语言文字学概论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_COMPLEXITY_IN_COMPUTER_ALGEBRA",
+    "name": "计算机代数中的复杂性",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_COMPLEXITY_THEORY",
+    "name": "复杂性理论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_COMPUTABLE_GENERAL_EQUILIBRIUM_MODELING",
+    "name": "可计算一般均衡建模",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_COMPUTER_GAME_PROGRAMMING",
+    "name": "计算机游戏编程",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_COMPUTER_GRAPHICS",
+    "name": "计算机图形学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_COMPUTER_ORGANIZATION",
+    "name": "计算机组成",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_COMPUTER_SECURITY",
+    "name": "计算机安全",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_COMPUTER_SYSTEM_ENGINEERING",
+    "name": "计算机系统工程",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_COST_BENEFIT_ANALYSIS",
+    "name": "成本效益分析",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_DATABASE_SYSTEM_IMPLEMENTATION",
+    "name": "数据库系统实现",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_DATA_STRUCTURES_AND_ALGORITHMS",
+    "name": "数据结构与算法",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_DISTRIBUTED_COMPUTING",
+    "name": "分布式计算",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_DISTRIBUTED_DATABASE_SYSTEMS",
+    "name": "分布式数据库系统",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_E18E1C78C1",
+    "name": "创新的积极心理学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_E4F9CB99E4",
+    "name": "英语畅谈中国",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_E5ADB8FDC6",
+    "name": "冬奥英语",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_ECONOMIC_GROWTH",
+    "name": "经济增长",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_F6CFDB79EA",
+    "name": "营商的法律智慧:商法",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_FA336F679E",
+    "name": "金融科技与量化分析——进阶篇",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_FEAC2A68F6",
+    "name": "技术经济学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_FINANCE_AND_THE_MACROECONOMY",
+    "name": "金融与宏观经济",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_FINANCIAL_ECONOMETRICS_TIME_SERIES_ANALYSIS",
+    "name": "金融计量经济学（时间序列分析）",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_FINANCIAL_ECONOMICS",
+    "name": "金融经济学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_FORECASTING_IN_ORGANIZATIONS",
+    "name": "组织预测",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_GRADUATE_6_A_INTERNSHIP",
+    "name": "研究生6-A实习",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_INFORMATION_SECURITY",
+    "name": "信息安全",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_INTERMEDIATE_PROGRAMMING",
+    "name": "中级编程",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_INTERNATIONAL_FINANCE",
+    "name": "国际金融",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_INTRODUCTION_TO_ALGORITHMS",
+    "name": "算法导论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_LINKED_DATA_VENTURES",
+    "name": "关联数据风险投资",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_MACHINE_LEARNING",
+    "name": "机器学习",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_MACHINE_LEARNING_IN_STATISTICS",
+    "name": "统计学中的机器学习",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_MACHINE_VISION",
+    "name": "机器视觉",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_MACROECONOMETRICS_TIME_SERIES_ANALYSIS",
+    "name": "宏观计量经济学（时间序列分析）",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_MACROECONOMIC_FORECASTING_TIME_SERIES_ANALYSIS",
+    "name": "宏观经济预测（时间序列分析）",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_MACROECONOMIC_THEORY",
+    "name": "宏观经济学理论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_MICROECONOMIC_THEORY",
+    "name": "微观经济学理论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_MODELS_OF_COGNITIVE_PROCESSES",
+    "name": "认知过程模型",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_MONETARY_ECONOMICS",
+    "name": "货币经济学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_MULTIMEDIA_DATABASE_SYSTEMS",
+    "name": "多媒体数据库系统",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_NETWORK_SECURITY",
+    "name": "网络安全",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_OPERATING_SYSTEMS",
+    "name": "操作系统",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_PROGRAMMING_STUDIO",
+    "name": "编程实践",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_REAL_TIME_SYSTEMS",
+    "name": "实时系统",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_SIGNALS_AND_SYSTEMS",
+    "name": "信号与系统",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_SOFTWARE_ENGINEERING_I",
+    "name": "软件工程I",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_SOFTWARE_ENGINEERING_II_ACP",
+    "name": "软件工程II，高级计算机项目",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_SURVEY_RESEARCH_METHODS",
+    "name": "调查研究方法",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_R2_SYSTEM_PROGRAMMING",
+    "name": "系统编程",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_SECURITY",
+    "name": "安全",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_SHAKESPEARE",
+    "name": "莎士比亚",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_STATISTICAL_METHODS",
+    "name": "统计方法",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_VLSI",
+    "name": "超大规模集成电路设计导论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X",
+    "name": "多晶X射线衍射",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_00B725251B",
+    "name": "保险经济学导论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_0104197227",
+    "name": "计算机组成原理",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_03B1480EC2",
+    "name": "中国与国际法",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_03B289AAA6",
+    "name": "模式识别",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_0404158436",
+    "name": "音乐概论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_047EF7D842",
+    "name": "艺术与法律",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_0483461AF7",
+    "name": "中国社会福利",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_049F863054",
+    "name": "社会实践",
+    "major_count": 2,
+    "university": ""
+  },
+  {
+    "id": "C_X_05E7C97A3B",
+    "name": "电子学基础",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_060C04073E",
+    "name": "经济数学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_066FBAC9EC",
+    "name": "柏拉图的《理想国》",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_06DA6B376B",
+    "name": "电子学基础实验",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_0759AE455F",
+    "name": "冲突学概论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_081F19D5DD",
+    "name": "化学中的数学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_08FCF228AB",
+    "name": "动态优化理论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_09E7489091",
+    "name": "亲属法与继承法",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_0ABF99E8DE",
+    "name": "群论与化学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_0B24A65FA2",
+    "name": "现代通俗小说",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_0B5B3B8A99",
+    "name": "理论计算机科学基础",
+    "major_count": 2,
+    "university": ""
+  },
+  {
+    "id": "C_X_0BD42E52DB",
+    "name": "西方古典思想",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_0C72CFAD62",
+    "name": "组织经济学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_0DEAD72B10",
+    "name": "群与表示",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_0EA5069AD8",
+    "name": "运筹优化与最优决策",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_0ECC271347",
+    "name": "计算机辅助设计技术基础",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_0EF272522F",
+    "name": "虚拟现实技术",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_0F0022CFD0",
+    "name": "中国美学概论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_0F49749E91",
+    "name": "思想与社会研究方法",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_0F8F588BF6",
+    "name": "交叉中的化学科学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_1000B1AB39",
+    "name": "专业文献选读*",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_10651C3274",
+    "name": "拉丁语基础",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_1087F1A581",
+    "name": "口语",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_1214BFEE55",
+    "name": "并行与分布式计算导论",
+    "major_count": 3,
+    "university": ""
+  },
+  {
+    "id": "C_X_121DAA46BD",
+    "name": "汉语音韵学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_122CA83F4D",
+    "name": "高等数学",
+    "major_count": 5,
+    "university": ""
+  },
+  {
+    "id": "C_X_12A4BEA569",
+    "name": "刑事执行法",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_12D89340B1",
+    "name": "经济学思维训练",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_12E9B9322E",
+    "name": "当代世界经济与政治",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_1330DEC1A7",
+    "name": "随机实地实验方法",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_133756F6D6",
+    "name": "债权法",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_134E2C7479",
+    "name": "个案工作",
+    "major_count": 2,
+    "university": ""
+  },
+  {
+    "id": "C_X_1383C1D0F7",
+    "name": "军备控制与裁军",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_1408CD8F49",
+    "name": "中国国际法实践",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_150290B472",
+    "name": "文化产业导论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_1608ECA880",
+    "name": "软件开发方法",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_161AC4BC5F",
+    "name": "习近平法治思想概论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_1654C7E8E0",
+    "name": "化工新概念",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_16D2E986DE",
+    "name": "电影概论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_172FAAF0E8",
+    "name": "计算机系统结构",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_17809CE6F5",
+    "name": "认知建模基础*",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_17A2C9A6EE",
+    "name": "生物核磁共振波谱分析",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_180976F36A",
+    "name": "互联网时代营销新模式",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_186569A11A",
+    "name": "法律导论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_18718674F9",
+    "name": "书法美学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_189A42DD98",
+    "name": "生命化学基础",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_18DBB7A955",
+    "name": "小说的艺术",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_18F33A4B2A",
+    "name": "人类学方法",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_192D9FA149",
+    "name": "公关策划与危机管理",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_199B0B5634",
+    "name": "中国经济",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_1A82B6702D",
+    "name": "法律实证分析",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_1B4D3EF579",
+    "name": "二十世纪的中国民族问题",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_1CAFB68C43",
+    "name": "人类学导论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_1CB786E740",
+    "name": "政治经济导论",
+    "major_count": 2,
+    "university": ""
+  },
+  {
+    "id": "C_X_1CC5BEBD6E",
+    "name": "随机分析与应用",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_1CFB8AED8B",
+    "name": "犯罪学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_1D2F045468",
+    "name": "空间等离子体物理基础",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_1D5AD39FC6",
+    "name": "应用随机分析",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_1DD695F048",
+    "name": "会计法与审计法",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_1E840A5641",
+    "name": "飞行器设计与动力",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_1EA2AFEF8F",
+    "name": "西方思想经典",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_2070766E05",
+    "name": "国家安全学导论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_219FCDD23F",
+    "name": "民主理论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_22428DFB78",
+    "name": "广播电视编导",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_22A4FFC701",
+    "name": "数智社会",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_22D725D476",
+    "name": "话题的帕菲特",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_23262C3B9C",
+    "name": "信息论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_233D7EB27B",
+    "name": "国际新闻实践与案例",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_23A0EBB168",
+    "name": "《四书》精读",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_23B4F8C96B",
+    "name": "软件设计实践",
+    "major_count": 2,
+    "university": ""
+  },
+  {
+    "id": "C_X_23DAA14EDF",
+    "name": "儒学与中国社会",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_2438F3FE79",
+    "name": "人类学博物馆与文化展示",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_2491F42B70",
+    "name": "最优化方法",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_25604C50A0",
+    "name": "大学物理英",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_25BF0E2B76",
+    "name": "现代西方社会思想",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_26232CA48D",
+    "name": "文化研究的理论与实践",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_2631383D76",
+    "name": "宗教学导论",
+    "major_count": 4,
+    "university": ""
+  },
+  {
+    "id": "C_X_265A78360F",
+    "name": "微分流形",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_272A12A827",
+    "name": "英国政治、 经济与外交",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_2786FB48B1",
+    "name": "应用经济学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_27EEC019BA",
+    "name": "基本权利: 原理与案例",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_289B9E7400",
+    "name": "非营利组织与社会创新",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_29B9791F11",
+    "name": "东北亚政治经济与外交",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_29FC11EA04",
+    "name": "科学与宗教",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_2AD414CD41",
+    "name": "化学整合科学实验",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_2C333E6B51",
+    "name": "法律实训",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_2CA1E8D8B3",
+    "name": "沉积古生物综合地质实习",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_2CB9195D25",
+    "name": "《周易》讲读",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_2DEAA1464E",
+    "name": "军事理论*",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_2E026A36AC",
+    "name": "艺术人类学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_2E2004EFBB",
+    "name": "数据挖掘",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_2E6EAE2D9A",
+    "name": "数论基础",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_2F6010F235",
+    "name": "数字社会",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_2FFD836EC1",
+    "name": "中文工具书",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_2FFF729FAB",
+    "name": "创意文案",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_309FD6F26D",
+    "name": "西方古典文本研读",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_316BF88334",
+    "name": "影视前期实践",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_31C3A61B8F",
+    "name": "发展政治学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_31C5844B39",
+    "name": "纳米化学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_31C6C0AF38",
+    "name": "中国考古发现与探索",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_31EC2200CA",
+    "name": "计算政治学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_323B63A220",
+    "name": "集合论与图论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_32D3558428",
+    "name": "物权法",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_331AC5EAE1",
+    "name": "控辩审实务",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_3372637DD4",
+    "name": "宇航技术基础",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_33AC1048F1",
+    "name": "《庄子》精读",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_34E3479E81",
+    "name": "高级财务会计",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_35419C4782",
+    "name": "凝聚态光谱理论和应用",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_35659504C4",
+    "name": "色谱质谱分析",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_359639D537",
+    "name": "数据科学导引",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_35F55C5999",
+    "name": "大数据与资本市场研究",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_36158EF71E",
+    "name": "新政治学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_362145EF21",
+    "name": "空气动力学基础",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_36780A8C43",
+    "name": "认知与推理",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_368A5DBC11",
+    "name": "语法语义学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_37076D788B",
+    "name": "大众文化简介与批评",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_3763999842",
+    "name": "计算机在化学化工中的应用",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_37AEB207A0",
+    "name": "微分几何",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_3927279357",
+    "name": "欧洲联盟概论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_39FBB17050",
+    "name": "经济学讨论班",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_3A39C760B3",
+    "name": "俄罗斯政治与外交",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_3ACFF843E0",
+    "name": "区域和城市经济学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_3B2E65E8A1",
+    "name": "分子光谱与分子结构",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_3B5AC63749",
+    "name": "民族与社会",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_3D28D837A5",
+    "name": "商业银行管理",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_3D8C1D1C80",
+    "name": "视觉传达",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_3DCEEF760E",
+    "name": "选举制度",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_3E060FBC5A",
+    "name": "化工制图",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_3E4FFEF0E5",
+    "name": "多智能体系统",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_3ED3CCCEBB",
+    "name": "博雅理学讲堂",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_40469AE8A6",
+    "name": "校勘学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_426FCFABC3",
+    "name": "自杀社会问题研究",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_42B2EEB7D8",
+    "name": "经济地理学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_42FFA85FE5",
+    "name": "凸优化",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_434045A77B",
+    "name": "欧洲风土记",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_439B3FEDD6",
+    "name": "国际政治概论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_43CC30500A",
+    "name": "加拿大小说选读",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_44042C6F74",
+    "name": "改变世界的药物分子",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_445D9836ED",
+    "name": "系统功能语法",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_44B52CB8DD",
+    "name": "田野调查实践",
+    "major_count": 2,
+    "university": ""
+  },
+  {
+    "id": "C_X_45BF9C64F3",
+    "name": "版本学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_45E8E77B36",
+    "name": "社会科学定量方法",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_45EC3B3D28",
+    "name": "文艺美学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_463749F9B3",
+    "name": "计算机实习",
+    "major_count": 9,
+    "university": ""
+  },
+  {
+    "id": "C_X_466771A8C1",
+    "name": "影像与社会",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_46CB365EB2",
+    "name": "影视文化与批评",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_474BBD010A",
+    "name": "核磁共振波谱分析基础",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_475AE8B0B5",
+    "name": "中国边疆问题概论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_4794C350CA",
+    "name": "西方法理学研究",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_482B0FB166",
+    "name": "中国司法制度",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_48A3862762",
+    "name": "政党学概论",
+    "major_count": 2,
+    "university": ""
+  },
+  {
+    "id": "C_X_48B06E902D",
+    "name": "社会老年学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_4931CB6428",
+    "name": "材料物理",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_497AC3D30D",
+    "name": "古代小说名著导读",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_499D526BE1",
+    "name": "大国崛起",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_49A69B6E80",
+    "name": "公理集合论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_49B9586AF7",
+    "name": "学年论文",
+    "major_count": 4,
+    "university": ""
+  },
+  {
+    "id": "C_X_4A3B4F16E2",
+    "name": "生物大分子工程",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_4A3C152011",
+    "name": "行星物质科学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_4A60F280EE",
+    "name": "数据分析技术",
+    "major_count": 2,
+    "university": ""
+  },
+  {
+    "id": "C_X_4A9FE43DBD",
+    "name": "城市发展与政策",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_4BBFFF6100",
+    "name": "福利经济学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_4C121996E5",
+    "name": "训诂学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_4C76C58BAD",
+    "name": "政治经济学",
+    "major_count": 3,
+    "university": ""
+  },
+  {
+    "id": "C_X_4C87F218CC",
+    "name": "保险法",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_4CC9E4D17F",
+    "name": "综合商业计划书竞赛",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_4CD0E765E5",
+    "name": "支配与社会:马克斯·韦伯的《经济与社会》",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_4D18D9CD08",
+    "name": "世界难民问题与难民政策",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_4D8DACEA6B",
+    "name": "创业思维",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_4E3BE3294A",
+    "name": "应用随机过程",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_4E4D316112",
+    "name": "微计算机技术",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_4E65FC742D",
+    "name": "社会人类学与中国研究",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_4EF17527DF",
+    "name": "基督教和中国文化",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_4F75DF6857",
+    "name": "马克思主义新闻观",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_4F92F1D901",
+    "name": "从数据到模型*",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_501D246D33",
+    "name": "化工基础",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_5037CD3E82",
+    "name": "专业汉语*",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_503E2E1DA2",
+    "name": "代数结构与组合数学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_504708AD66",
+    "name": "化学生物学整合实验",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_50759E9589",
+    "name": "嵌入式系统",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_507A029A66",
+    "name": "高性能聚合物材料",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_50CB411DAE",
+    "name": "模拟法庭实训",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_511D576ABF",
+    "name": "文化理论与加拿大小说",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_51944AA537",
+    "name": "两岸关系与一国两制",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_5203BC71A0",
+    "name": "高等电化学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_5220FFAA0F",
+    "name": "罗尔斯《正义论》研究",
+    "major_count": 2,
+    "university": ""
+  },
+  {
+    "id": "C_X_52675F1CC4",
+    "name": "古代东方文明",
+    "major_count": 2,
+    "university": ""
+  },
+  {
+    "id": "C_X_52710F22D9",
+    "name": "中国社会",
+    "major_count": 3,
+    "university": ""
+  },
+  {
+    "id": "C_X_52A397BC13",
+    "name": "数理经济学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_558502F4BD",
+    "name": "明清白话长篇小说研究",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_5637CC6E30",
+    "name": "国际竞争法规与政策",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_572A16851F",
+    "name": "普通生物学*",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_57B9E615CE",
+    "name": "创新创业经济学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_57FC7A83AD",
+    "name": "国际组织与全球治理",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_587FDDA38E",
+    "name": "诊所式法律教育",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_588F5860FE",
+    "name": "毕业实习实践",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_59D1B7AE88",
+    "name": "马列经典著作选读",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_59F2C8805D",
+    "name": "民族国家概论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_5B198AA7AA",
+    "name": "创业与创新实践",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_5B3A404C4F",
+    "name": "环境化学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_5B4FBF8A05",
+    "name": "普通物理",
+    "major_count": 3,
+    "university": ""
+  },
+  {
+    "id": "C_X_5B7C6A2059",
+    "name": "随机过程论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_5C6D480C39",
+    "name": "《周易本义》精读",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_5C7924B34D",
+    "name": "英国散文名篇",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_5C8091DCCA",
+    "name": "新生教育实践课程 专业任选",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_5CB2C74CAF",
+    "name": "互联网数据挖掘",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_5CDF89AE03",
+    "name": "早期思想与古典语文",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_5DC3545822",
+    "name": "媒体计算",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_5E32AF2AD9",
+    "name": "图像与法律",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_5EBD4D5F02",
+    "name": "社会主义政治经济学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_5EE8D9C2B2",
+    "name": "社会博弈论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_5F7177F8F1",
+    "name": "票据法",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_601A75021B",
+    "name": "手性材料",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_6088129EE8",
+    "name": "公共经济学实证研究",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_60FAB73F22",
+    "name": "化学开发基础",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_6137FC91E5",
+    "name": "公务员制度",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_615C040D85",
+    "name": "政治博弈论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_61D665F0B9",
+    "name": "国际法英文原著选读",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_61F5674DD4",
+    "name": "比较法研究",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_627C9347AA",
+    "name": "财经素养教育",
+    "major_count": 2,
+    "university": ""
+  },
+  {
+    "id": "C_X_62925DB090",
+    "name": "经济学研究训练",
+    "major_count": 3,
+    "university": ""
+  },
+  {
+    "id": "C_X_62A8D929E6",
+    "name": "高性能计算导论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_63269391A6",
+    "name": "结构化学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_6337F50024",
+    "name": "近代物理",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_63F301D813",
+    "name": "财税法",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_63FC897D36",
+    "name": "非洲导论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_650B422F7E",
+    "name": "公共经济学",
+    "major_count": 3,
+    "university": ""
+  },
+  {
+    "id": "C_X_6520999AB5",
+    "name": "西方政治思想原著选读",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_65A788F4A8",
+    "name": "影视剪辑",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_6602D33AF6",
+    "name": "区块链理论与技术",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_66818710CB",
+    "name": "地方财政",
+    "major_count": 2,
+    "university": ""
+  },
+  {
+    "id": "C_X_66E476AC01",
+    "name": "药物化学导论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_68654373E2",
+    "name": "基础物理实验",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_68853C00ED",
+    "name": "高分子化学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_68BF73CB8B",
+    "name": "理论与计算化学导论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_6906AB986E",
+    "name": "英美女作家作品选读",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_699DC308F9",
+    "name": "现代信息检索导论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_69AA896A36",
+    "name": "《红楼梦》研究",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_6A1952E75A",
+    "name": "定量推理法",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_6A265E7143",
+    "name": "数字系统设计自动化",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_6AB9F76368",
+    "name": "经济学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_6B774FBF66",
+    "name": "文字学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_6BE4E3FA63",
+    "name": "中国地方政府与政治",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_6C4A4D3C4B",
+    "name": "自动控制理论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_6D076BD302",
+    "name": "创新管理",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_6D4E907212",
+    "name": "中国现代散文研究",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_6D4EB03384",
+    "name": "中国与媒体事务",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_6D58E30867",
+    "name": "社会科学方法论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_6D6B8D8321",
+    "name": "社会性别研究",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_6DB2D8A328",
+    "name": "民俗学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_6DCEE95E58",
+    "name": "公共财政与税收",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_6EF7D307CC",
+    "name": "会计学原理",
+    "major_count": 2,
+    "university": ""
+  },
+  {
+    "id": "C_X_6FED0BA838",
+    "name": "比较政治学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_6FF2E809B9",
+    "name": "台湾概论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_7001C7BC49",
+    "name": "英诗选读",
+    "major_count": 2,
+    "university": ""
+  },
+  {
+    "id": "C_X_705940FA32",
+    "name": "句法学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_7093BE6B7B",
+    "name": "《汉书》导读",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_7111514CF0",
+    "name": "东亚政治经济",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_712A66EFC2",
+    "name": "经济人类学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_71591171E3",
+    "name": "信息科学中的数学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_716605D1B2",
+    "name": "普通法概论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_71CCCBF654",
+    "name": "福利国家:起源与发展",
+    "major_count": 2,
+    "university": ""
+  },
+  {
+    "id": "C_X_71EA2183C1",
+    "name": "孔子与老子",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_727190AD73",
+    "name": "实习",
+    "major_count": 2,
+    "university": ""
+  },
+  {
+    "id": "C_X_7358FF197F",
+    "name": "中国经济改革与发展",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_74CE0809C9",
+    "name": "国际海洋法",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_74F2946819",
+    "name": "辐射化学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_752BB7E507",
+    "name": "报刊选读",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_752E25838A",
+    "name": "管理运筹学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_75ADA8C618",
+    "name": "正义理论研究",
+    "major_count": 2,
+    "university": ""
+  },
+  {
+    "id": "C_X_76406A94D3",
+    "name": "中国现代小说经典研读",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_7661D3A4A3",
+    "name": "证据法",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_778D76864D",
+    "name": "软件测试导论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_779805E611",
+    "name": "化学应用与实践",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_78653065D7",
+    "name": "专业实践",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_7948B29C9F",
+    "name": "国际经济法",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_79A49288A1",
+    "name": "中华人民共和国对外关系",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_79C299E165",
+    "name": "商法总论",
+    "major_count": 2,
+    "university": ""
+  },
+  {
+    "id": "C_X_79EBF89D06",
+    "name": "胶体化学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_7A05B26ADA",
+    "name": "政治人类学",
+    "major_count": 2,
+    "university": ""
+  },
+  {
+    "id": "C_X_7A25A537FB",
+    "name": "台湾小说十家",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_7A3180D42D",
+    "name": "世界宗教与国际社会",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_7A562D42C4",
+    "name": "海子诗歌研究",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_7B48454C9D",
+    "name": "《文心雕龙》研究",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_7C69F48E88",
+    "name": "社会研究:经典与方法",
+    "major_count": 2,
+    "university": ""
+  },
+  {
+    "id": "C_X_7CDF161A00",
+    "name": "化学实验室安全技术",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_7D222D7404",
+    "name": "材料化学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_7D8E6A0DE6",
+    "name": "社会调研与实践",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_7D9DD8E8E8",
+    "name": "语篇分析入门",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_7F03B1C7A2",
+    "name": "中国古籍资源与整理",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_7FA12073DE",
+    "name": "供应链管理",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_7FBFF0A6A5",
+    "name": "博物馆学概论",
+    "major_count": 2,
+    "university": ""
+  },
+  {
+    "id": "C_X_8022623F50",
+    "name": "弹性力学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_81FCB3CC11",
+    "name": "社会选择理论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_820F70CEA8",
+    "name": "媒体与中国社会",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_8214ECFE62",
+    "name": "组织与管理讨论班",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_8232689C53",
+    "name": "房地产经济与管理",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_8245AAA63E",
+    "name": "世界政治中的民族问题",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_8398416FD0",
+    "name": "社区工作",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_842E7A78FA",
+    "name": "西方思想与近代中国",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_845BBC8A06",
+    "name": "康德意识理论研究",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_84D8D91E2E",
+    "name": "计算机图形学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_853496FC89",
+    "name": "马克思早期思想研究",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_8580381B3C",
+    "name": "哥特小说",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_8613E5997F",
+    "name": "政治学研究方法",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_862BA79053",
+    "name": "数学实验",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_876DE7B18C",
+    "name": "媒介与社会变迁",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_8840BACA01",
+    "name": "汉语修辞学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_88B8A6168A",
+    "name": "海商法",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_88CD7A5F03",
+    "name": "比较政治学概论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_8912971037",
+    "name": "圣经释读",
+    "major_count": 2,
+    "university": ""
+  },
+  {
+    "id": "C_X_896F55329C",
+    "name": "服务业营销",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_89FC7A8A2D",
+    "name": "希腊罗马神话",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_8A088CCB6F",
+    "name": "日本中国学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_8A1469CEF0",
+    "name": "现代欧洲小说中的自我、危机与救赎",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_8A28C50708",
+    "name": "智能机器人系统导论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_8A4C163BA2",
+    "name": "文化遗产学概论",
+    "major_count": 2,
+    "university": ""
+  },
+  {
+    "id": "C_X_8A8E115C2C",
+    "name": "城市规划",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_8B1B942A87",
+    "name": "化学反应动力学及机理",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_8B4922B9D8",
+    "name": "中国古代官阶制度",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_8B8B9DFE7B",
+    "name": "世界社会主义概论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_8C2DF24A87",
+    "name": "国家安全导论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_8C4E8DB223",
+    "name": "影片精读",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_8C6547DA92",
+    "name": "软件科学基础",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_8C78D02948",
+    "name": "数字图像处理",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_8C7E528B3D",
+    "name": "信托法",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_8CDA0555D7",
+    "name": "组织与管理",
+    "major_count": 2,
+    "university": ""
+  },
+  {
+    "id": "C_X_8D76CEC579",
+    "name": "《理想国》讨论班",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_8E375C35AD",
+    "name": "存储技术基础",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_8EA8563A2A",
+    "name": "产业组织理论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_8EDC9F2486",
+    "name": "生化分析",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_8F44892B59",
+    "name": "机器人学概论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_8F6F7DA615",
+    "name": "西方外交思想概论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_9017ACCEC9",
+    "name": "教师指导下的独立研究",
+    "major_count": 4,
+    "university": ""
+  },
+  {
+    "id": "C_X_90969CC62C",
+    "name": "计算机科学与编程入门",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_90B9B89D73",
+    "name": "中国商务",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_919E8EA2B5",
+    "name": "律师实务",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_91A1EDA82B",
+    "name": "区域经济学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_91E9BBC9E2",
+    "name": "放射化学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_92B1EF26E8",
+    "name": "信息科学技术概论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_933C33E78E",
+    "name": "生理学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_93EE1D7650",
+    "name": "当代中国政府",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_948EFC24B7",
+    "name": "空间科学与技术基础",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_94B377A195",
+    "name": "初等数论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_95333BC085",
+    "name": "媒介经营管理",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_957E19E37F",
+    "name": "高性能计算前沿技术",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_958340CA10",
+    "name": "计算理论导论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_95FC00BF7A",
+    "name": "现代都市小说研究",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_960083ED42",
+    "name": "马克思主义基础原理",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_9758F3DB97",
+    "name": "中西修辞传统",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_978C92EB4C",
+    "name": "审计学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_97D1EE7256",
+    "name": "卫生经济学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_98F36FA2C1",
+    "name": "计算机图形学基础",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_993F9142FC",
+    "name": "世界现代化进程",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_994C40FC4C",
+    "name": "品牌管理",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_9968B11237",
+    "name": "英国合约法",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_998E29C263",
+    "name": "可持续创业",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_9A33EB553F",
+    "name": "互联网工程设计",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_9A47EEA5B3",
+    "name": "群体工作",
+    "major_count": 2,
+    "university": ""
+  },
+  {
+    "id": "C_X_9A6C11018F",
+    "name": "现代官僚制度比较研究",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_9AA9F1B831",
+    "name": "刑事诉讼案例研习",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_9B0FE6210E",
+    "name": "现代控制技术",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_9B48CEC2BA",
+    "name": "城市环境与可持续发展",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_9BB20B7AC5",
+    "name": "财务报表分析",
+    "major_count": 2,
+    "university": ""
+  },
+  {
+    "id": "C_X_9BD9599422",
+    "name": "计算理论导引",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_9BD9BBD0E5",
+    "name": "敦煌文献概要",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_9C3E5A77C3",
+    "name": "专书选读",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_9C909CFBE3",
+    "name": "古代典籍概要",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_9CAF8C27D9",
+    "name": "国际律师实务",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_9CD3952588",
+    "name": "数字政府概论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_9DFC18759A",
+    "name": "毕业实习",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_9E0182113B",
+    "name": "电路、信号与系统",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_9E5B4BB316",
+    "name": "政治学前沿",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_9F7AFAE141",
+    "name": "人文社科经典阅读",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_A07391F770",
+    "name": "中国古代政治文化",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_A0EDEE3DB4",
+    "name": "中国减贫与发展",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_A150A9C118",
+    "name": "中国社会与商业文化",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_A1A9C8D992",
+    "name": "非线编辑",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_A1E25B3D44",
+    "name": "汉英交传",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_A250BCC8A2",
+    "name": "思想政治实践",
+    "major_count": 2,
+    "university": ""
+  },
+  {
+    "id": "C_X_A25933DBF0",
+    "name": "弗洛伊德与精神分析",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_A2B6FEC9BA",
+    "name": "综合化学实验",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_A303075D2A",
+    "name": "黑格尔美学研究",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_A353DD47C1",
+    "name": "面向对象技术引论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_A3CBC04AAA",
+    "name": "鲁迅研究",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_A402340BCA",
+    "name": "政治学原理",
+    "major_count": 2,
+    "university": ""
+  },
+  {
+    "id": "C_X_A44F4F8D76",
+    "name": "科学思维与实践论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_A465FCEB50",
+    "name": "数值代数",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_A499F72C36",
+    "name": "科技与政治",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_A49F30450E",
+    "name": "美国与东亚关系",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_A4B67675AE",
+    "name": "城市经济学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_A52BCD6418",
+    "name": "密码学基础",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_A57DF32D18",
+    "name": "软件分析技术",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_A587CEF044",
+    "name": "教师指导下的小组研究",
+    "major_count": 5,
+    "university": ""
+  },
+  {
+    "id": "C_X_A61C901A42",
+    "name": "社会保障",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_A64D3EDD20",
+    "name": "西方政治思想",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_A689289A45",
+    "name": "信号与系统",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_A717C1A53C",
+    "name": "复变函数",
+    "major_count": 2,
+    "university": ""
+  },
+  {
+    "id": "C_X_A73CD933DB",
+    "name": "成本效益分析",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_A7A2F94DCA",
+    "name": "博弈论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_A823BDDE37",
+    "name": "策略与博弈",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_A8F838D9E3",
+    "name": "国家治理理论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_A953BB8C87",
+    "name": "马克思国家理论研究",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_A9574FEBC4",
+    "name": "全球治理的政治经济分析",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_A9A6CEEBC4",
+    "name": "市场数据分析",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_AA5414CC3E",
+    "name": "综合创新实验",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_AAB63E1906",
+    "name": "中国现代诗歌研究",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_AB42C6EF65",
+    "name": "拉丁美洲政治与外交",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_AC5F2C89BA",
+    "name": "计算机系统导论讨论班",
+    "major_count": 2,
+    "university": ""
+  },
+  {
+    "id": "C_X_AD2135FAE3",
+    "name": "形而上学",
+    "major_count": 2,
+    "university": ""
+  },
+  {
+    "id": "C_X_AE60D95CF8",
+    "name": "破产法",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_AE97906086",
+    "name": "第二语言习得",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_AEDBB03271",
+    "name": "界面化学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_AF2D719D08",
+    "name": "选举法比较研究",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_B015125BE7",
+    "name": "五四新文化研究",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_B09830DF2F",
+    "name": "经济增长理论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_B0E85A55ED",
+    "name": "中国古代思想世界",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_B10F39C13B",
+    "name": "信息检索",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_B133D20F27",
+    "name": "人口经济学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_B1C7338D3D",
+    "name": "数学串珠与分子几何",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_B1E4953DE6",
+    "name": "文化与领导力",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_B1F8550F07",
+    "name": "立体化学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_B2452C4DDB",
+    "name": "中美经贸关系",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_B28C3FC346",
+    "name": "多媒体技术基础及应用",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_B2F6881B13",
+    "name": "大语言模型基础与对齐",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_B308D255DF",
+    "name": "世代与青年",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_B37043606D",
+    "name": "物流与供应链管理",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_B45FAECF35",
+    "name": "新闻名篇选读",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_B488AC0474",
+    "name": "医学人类学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_B4A27AB504",
+    "name": "预算经济学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_B4C1814BAE",
+    "name": "信息经济学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_B4DA5BB0AA",
+    "name": "因果推断与商业应用",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_B5192ED755",
+    "name": "黑格尔《精神现象学》",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_B51BF67552",
+    "name": "目录学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_B58687DB4F",
+    "name": "现代密码学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_B5F97A0B5D",
+    "name": "劳动教育课",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_B647FA1107",
+    "name": "魏晋玄学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_B650E12CB5",
+    "name": "中亚各国政治与外交",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_B680E28D4E",
+    "name": "社会政策",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_B6FED8AC2C",
+    "name": "美国政治、 经济与外交",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_B78128E4F0",
+    "name": "英汉交传",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_B7D572E2EC",
+    "name": "视听语言",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_B7F0C8D9EC",
+    "name": "环境资源经济学",
+    "major_count": 2,
+    "university": ""
+  },
+  {
+    "id": "C_X_B8530600BA",
+    "name": "计算方法",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_B8BF329BB3",
+    "name": "社会科学学术研究导论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_B91698A703",
+    "name": "唐宋以来重要文献选读",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_B92010BE74",
+    "name": "先秦诸子讲说",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_B979F1AECD",
+    "name": "体育营销",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_B98034F92D",
+    "name": "人机交互理论与技术",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_BA0E7F60DE",
+    "name": "仿真模型与智慧决策",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_BA42F3E444",
+    "name": "现象学引论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_BA8350C5DF",
+    "name": "影像与中国社会",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_BB1CB47C3E",
+    "name": "英国现代主义小说",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_BB3E42B5DF",
+    "name": "三维成像前沿",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_BBEF39E195",
+    "name": "计算流体力学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_BC1800F794",
+    "name": "高频数据与高频交易",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_BC97CF7576",
+    "name": "伊斯兰世界的政治发展",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_BD2E43C4A7",
+    "name": "催化化学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_BD65613EC7",
+    "name": "系统仿真与虚拟现实",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_BE2F404F37",
+    "name": "随机过程引论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_BE43754B37",
+    "name": "量化营销模型",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_BEA2A8D00C",
+    "name": "固定收益证券",
+    "major_count": 2,
+    "university": ""
+  },
+  {
+    "id": "C_X_BEB6B0CAA2",
+    "name": "汉语方言学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_BEE8F99B6F",
+    "name": "民事诉讼案例研习",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_BF2C81A679",
+    "name": "同声传译",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_BF43ACD001",
+    "name": "国家安全与技术变迁",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_BF8B95A282",
+    "name": "计算机组织与体系结构",
+    "major_count": 2,
+    "university": ""
+  },
+  {
+    "id": "C_X_BF92989C4A",
+    "name": "罗马法",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_BFBCA0BF18",
+    "name": "货币银行学",
+    "major_count": 2,
+    "university": ""
+  },
+  {
+    "id": "C_X_C103AA612B",
+    "name": "化学信息检索",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_C16B55BE55",
+    "name": "理论力学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_C180E2D1A5",
+    "name": "西方宗教思想",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_C278A636C9",
+    "name": "基础代数几何",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_C27A5B7554",
+    "name": "中西新闻比较研究",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_C29EF3C047",
+    "name": "西方思想传统",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_C3AC7B84EE",
+    "name": "社会事业法",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_C3C1395569",
+    "name": "互联网认知",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_C431761A84",
+    "name": "语言与文化研究",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_C4CD0A0059",
+    "name": "市场调查",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_C4D80B947F",
+    "name": "材料力学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_C5DB52C786",
+    "name": "国际组织法",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_C6191B04E2",
+    "name": "东南亚政治经济与外交",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_C637B8E803",
+    "name": "城市应急管理",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_C79F9132DE",
+    "name": "经典著作的经典译本",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_C7EC58A9A8",
+    "name": "日本政治经济与外交",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_C83741A63D",
+    "name": "经济法学",
+    "major_count": 2,
+    "university": ""
+  },
+  {
+    "id": "C_X_C894C645DC",
+    "name": "化学生物学实验",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_C8B8CEED19",
+    "name": "中国社会研究",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_C8C4E16C76",
+    "name": "信号处理原理",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_C946A7325D",
+    "name": "唐诗研究概论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_C965CE1BB7",
+    "name": "计算机系统概论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_C98D1AFE38",
+    "name": "《资本论》选读",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_CAC65A12D3",
+    "name": "营销学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_CAE46A2975",
+    "name": "环境法",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_CAE694CE22",
+    "name": "社会治理前沿问题",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_CAF36E4F7A",
+    "name": "宗教经典与宗教信仰",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_CB43A274E8",
+    "name": "中华民族共同体概论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_CB64266FBE",
+    "name": "书院成长课程 专业任选",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_CB671073CA",
+    "name": "冷湖野外联合实习考察",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_CB98B36605",
+    "name": "计算机组织与体系结构实习",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_CBD85BB8A4",
+    "name": "神经建模基础*",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_CC227C233A",
+    "name": "比较法律前沿",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_CCE9520A34",
+    "name": "离散数学与结构",
+    "major_count": 2,
+    "university": ""
+  },
+  {
+    "id": "C_X_CD1BFA6628",
+    "name": "职场法治前沿探索",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_CD682A1307",
+    "name": "货币经济学",
+    "major_count": 3,
+    "university": ""
+  },
+  {
+    "id": "C_X_CD89824549",
+    "name": "日本经济",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_CDA7B4C7DD",
+    "name": "社会问题与社会政策",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_CE25B21B4C",
+    "name": "美学原理",
+    "major_count": 2,
+    "university": ""
+  },
+  {
+    "id": "C_X_CF6EA85D41",
+    "name": "现代爱尔兰经典作家",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_CFB5AE0D22",
+    "name": "世界文明中的科学技术",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_CFD1CAA91C",
+    "name": "唐代小说研究",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_D00E89F2B3",
+    "name": "国际发展政策",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_D0142FA897",
+    "name": "新闻编辑",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_D0A4227B45",
+    "name": "宗教人类学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_D0CBF2026F",
+    "name": "开发者测试技术与实践",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_D1392430F1",
+    "name": "政治行为导论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_D1A7CD210D",
+    "name": "智能机器人概论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_D1D5F797CA",
+    "name": "开源软件技术",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_D2111EECF6",
+    "name": "美国短篇小说",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_D21C5378B1",
+    "name": "十九世纪美国小说",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_D33AD79643",
+    "name": "思想道德与法治",
+    "major_count": 2,
+    "university": ""
+  },
+  {
+    "id": "C_X_D3669E33F7",
+    "name": "热学",
+    "major_count": 2,
+    "university": ""
+  },
+  {
+    "id": "C_X_D3684823A6",
+    "name": "世界宗教导论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_D41BA3BE29",
+    "name": "社会科学的经典与前沿",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_D43BB26636",
+    "name": "影视人类学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_D4B2E23DF4",
+    "name": "《理想国》",
+    "major_count": 2,
+    "university": ""
+  },
+  {
+    "id": "C_X_D4BF5199F3",
+    "name": "信息安全引论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_D518B15C0E",
+    "name": "中国社会: 结构与变迁",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_D577104385",
+    "name": "语言习得与认知发展",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_D63A9F6931",
+    "name": "理论计算机科学导论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_D63B450539",
+    "name": "西方政治制度",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_D6624B24AA",
+    "name": "《近思录》精读",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_D68AC219DD",
+    "name": "军事理论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_D6D14C4421",
+    "name": "法治政府概论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_D6DCCB30CA",
+    "name": "数据新闻",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_D71C8A2E9B",
+    "name": "文艺复兴经典名著选读",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_D855DC55CA",
+    "name": "贫困与发展",
+    "major_count": 2,
+    "university": ""
+  },
+  {
+    "id": "C_X_D865277E8C",
+    "name": "中国现代戏剧",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_D8DEDBC248",
+    "name": "通信原理概论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_D972B21E04",
+    "name": "中国神话研究",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_D9B7AA9F32",
+    "name": "内部控制与合规管理",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_D9C05FA81B",
+    "name": "公共选择理论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_D9DA91E401",
+    "name": "信息科学中的物理学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_DA0461853D",
+    "name": "宋明理学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_DA56966CEB",
+    "name": "考古学导论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_DA69D8523F",
+    "name": "短篇小说选读",
+    "major_count": 2,
+    "university": ""
+  },
+  {
+    "id": "C_X_DAF1F74262",
+    "name": "高级管理会计",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_DAFD219EC2",
+    "name": "碳中和与全球气候治理",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_DB1A05B733",
+    "name": "成本与管理会计",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_DD57ED087B",
+    "name": "电子系统基础训练",
+    "major_count": 2,
+    "university": ""
+  },
+  {
+    "id": "C_X_DD671AD028",
+    "name": "日本社会研究",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_DD861D53D5",
+    "name": "博物学导论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_DD8ADF5486",
+    "name": "今日化学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_DDAE6109A7",
+    "name": "计算经济学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_DDE4735976",
+    "name": "法律经济学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_DE365AA329",
+    "name": "数据仓库与数据挖掘方法",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_DE9EC993AA",
+    "name": "核能材料",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_E00E81742F",
+    "name": "泛函分析",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_E0F4A1161F",
+    "name": "搜索与推荐技术基础",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_E10491FFAE",
+    "name": "数字信号处理",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_E12C37D613",
+    "name": "创业管理",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_E19B714481",
+    "name": "政治学概论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_E1F69E824F",
+    "name": "光影中的百年中国",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_E212B18F10",
+    "name": "法律思维与法学方法",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_E275887AB3",
+    "name": "衍生品定价及应用",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_E2845B1545",
+    "name": "比较公共管理",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_E327D573FC",
+    "name": "世界经济与中国",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_E341AA77E2",
+    "name": "身份政治",
+    "major_count": 2,
+    "university": ""
+  },
+  {
+    "id": "C_X_E3DB498EFB",
+    "name": "欧盟经济",
+    "major_count": 2,
+    "university": ""
+  },
+  {
+    "id": "C_X_E405FF7B20",
+    "name": "胡风研究",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_E476543508",
+    "name": "国际公共管理前沿",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_E48B7FD46E",
+    "name": "古籍鉴定与保护",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_E52233AA60",
+    "name": "中东政治经济与外交",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_E54F0D3A1C",
+    "name": "几何学",
+    "major_count": 2,
+    "university": ""
+  },
+  {
+    "id": "C_X_E5D6D712B1",
+    "name": "当代西方政治思潮",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_E5DE55C0D0",
+    "name": "原子物理学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_E6666408A8",
+    "name": "化学生物学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_E697997DED",
+    "name": "新产品开发与管理",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_E6C8A39AC8",
+    "name": "民间叙事研究",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_E6D4276044",
+    "name": "仪器分析实验",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_E759CE394D",
+    "name": "当代认识论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_E75A7EC8CB",
+    "name": "艺术学原理",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_E85FB70EE1",
+    "name": "普通法精要",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_E88597FB27",
+    "name": "意识的理论",
+    "major_count": 2,
+    "university": ""
+  },
+  {
+    "id": "C_X_E9551C1C93",
+    "name": "社会人类学",
+    "major_count": 2,
+    "university": ""
+  },
+  {
+    "id": "C_X_EA049E820A",
+    "name": "飞行器结构力学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_EA1081AE92",
+    "name": "应用化学基础",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_EAC182CC61",
+    "name": "系统分析与控制",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_EAC7CE74E5",
+    "name": "非传统安全概论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_EB2AAF2C69",
+    "name": "行为经济学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_EB58EF571D",
+    "name": "微电子与电路基础",
+    "major_count": 2,
+    "university": ""
+  },
+  {
+    "id": "C_X_EB78755888",
+    "name": "模拟法庭基础",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_EB87AFB51F",
+    "name": "中国古代文化",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_EBD0181136",
+    "name": "企业法 公司法",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_EC411D910E",
+    "name": "非营利组织法",
+    "major_count": 2,
+    "university": ""
+  },
+  {
+    "id": "C_X_EC8C17D811",
+    "name": "社会影响力营销",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_ECA0CF5DFF",
+    "name": "英译汉",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_ECCF5D2467",
+    "name": "渠道管理",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_EE8BD6BDAB",
+    "name": "光华第一课",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_EEC0B4E9AA",
+    "name": "民俗研究",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_EF5CFC7F78",
+    "name": "知识产权法学",
+    "major_count": 2,
+    "university": ""
+  },
+  {
+    "id": "C_X_EF7F08299B",
+    "name": "测度论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_EFE4EAC1DA",
+    "name": "中国政治概论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_EFEF7903BE",
+    "name": "中级财务会计",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_F08E835EDE",
+    "name": "人类学理论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_F0A96C139B",
+    "name": "民族志研究方法",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_F0DE08D8ED",
+    "name": "美术概论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_F1582E0899",
+    "name": "地球介质力学基础",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_F2509146F1",
+    "name": "计算机系统",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_F26285C015",
+    "name": "语言、文化与交际",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_F32C7747D4",
+    "name": "连续介质力学基础",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_F41CFA27A3",
+    "name": "应用物理前沿实验",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_F4A7DAC291",
+    "name": "品牌研究",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_F6871D8576",
+    "name": "社会科学方法导论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_F711544088",
+    "name": "中国商业管理思想",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_F755234B7B",
+    "name": "保险学原理",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_F87D890840",
+    "name": "形式语言与自动机",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_F8EF3F7571",
+    "name": "地球与行星构造",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_F942C4BF72",
+    "name": "计算机软件前沿技术",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_F96DA32D45",
+    "name": "遥感概论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_F9E337D355",
+    "name": "城市交通与土地利用",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_FA6DEDBA11",
+    "name": "曲学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_FAF40DBBEB",
+    "name": "语义学",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_FC2062F5CF",
+    "name": "高分子物理",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_FC26E634EE",
+    "name": "复变函数引论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_FCA3C886BA",
+    "name": "仪器分析",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_FCD1D470D3",
+    "name": "社交媒体理论与应用",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_FD0E37F7CD",
+    "name": "当代诗歌选读",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_FD199F3C3A",
+    "name": "法律和社会科学",
+    "major_count": 2,
+    "university": ""
+  },
+  {
+    "id": "C_X_FDEBAB2F3B",
+    "name": "美国环境思想",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_FE32FF7FD2",
+    "name": "知识论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_FE495D9BD4",
+    "name": "认知机器人",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_FFA5F8A8DF",
+    "name": "民族研究导论",
+    "major_count": 1,
+    "university": ""
+  },
+  {
+    "id": "C_X_FFCDC66F4D",
+    "name": "消费者行为",
+    "major_count": 1,
+    "university": ""
+  }
+]

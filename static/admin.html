@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="data:,">
+<title>KG Studio — Validation Queue</title>
+<style>
+  :root {
+    --bg: #07090d;
+    --bg-deep: #030407;
+    --panel: rgba(18, 22, 30, 0.72);
+    --panel-solid: rgba(22, 27, 36, 0.92);
+    --line: rgba(221, 230, 236, 0.13);
+    --line-strong: rgba(230, 238, 244, 0.24);
+    --text: #eef3f4;
+    --text-muted: #8c98a4;
+    --text-faint: #59636f;
+    --teal: #52d1c7;
+    --cyan: #9be7ff;
+    --amber: #f6bf73;
+    --coral: #ff756f;
+    --accent: #00e5ff;
+    --font-ui: Inter, "SF Pro Display", "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-mono: "SF Mono", "JetBrains Mono", "Cascadia Code", Menlo, monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    min-height: 100dvh;
+    background: var(--bg-deep);
+    color: var(--text);
+    font-family: var(--font-ui);
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(120deg, rgba(82,209,199,0.09), transparent 34%),
+      linear-gradient(250deg, rgba(246,191,115,0.08), transparent 30%),
+      radial-gradient(circle at 52% 46%, rgba(155,231,255,0.10), transparent 26%),
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.022) 1px, transparent 1px);
+    background-size: 100% 100%, 100% 100%, 100% 100%, 44px 44px, 44px 44px;
+    mask-image: radial-gradient(circle at center, #000 0, #000 52%, transparent 82%);
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 32px 24px;
+  }
+
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 32px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  h1 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.02em;
+  }
+
+  h1 span {
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 600;
+    margin-left: 10px;
+    letter-spacing: 0.04em;
+  }
+
+  .stats-bar {
+    display: flex;
+    gap: 24px;
+    color: var(--text-muted);
+    font-size: 13px;
+    font-family: var(--font-mono);
+  }
+
+  .stats-bar strong {
+    color: var(--accent);
+  }
+
+  .toolbar {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+    align-items: center;
+  }
+
+  .toolbar input {
+    flex: 1;
+    max-width: 320px;
+    height: 40px;
+    padding: 0 14px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: rgba(255,255,255,0.045);
+    color: var(--text);
+    font-size: 13px;
+    font-family: var(--font-ui);
+    outline: none;
+  }
+
+  .toolbar input::placeholder { color: var(--text-faint); }
+  .toolbar input:focus { border-color: var(--accent); }
+
+  .toolbar button {
+    height: 40px;
+    padding: 0 18px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: rgba(255,255,255,0.055);
+    color: var(--text-muted);
+    font-size: 13px;
+    font-family: var(--font-ui);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .toolbar button:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(0,229,255,0.08);
+  }
+
+  .table-wrap {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--panel);
+    backdrop-filter: blur(18px) saturate(1.12);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+
+  thead {
+    background: rgba(255,255,255,0.035);
+  }
+
+  th {
+    padding: 14px 16px;
+    text-align: left;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    border-bottom: 1px solid var(--line);
+  }
+
+  td {
+    padding: 14px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    color: var(--text);
+    vertical-align: top;
+  }
+
+  tr:hover td {
+    background: rgba(255,255,255,0.025);
+  }
+
+  tr:last-child td { border-bottom: none; }
+
+  .cell-major { color: var(--amber); font-weight: 600; }
+  .cell-domain { color: var(--teal); font-family: var(--font-mono); font-size: 12px; }
+  .cell-topic { font-weight: 600; }
+
+  .subtopic-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .subtopic-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 8px;
+    border-radius: 4px;
+    border: 1px solid var(--line);
+    background: rgba(255,255,255,0.04);
+    color: var(--text-muted);
+    font-size: 11px;
+    font-family: var(--font-mono);
+  }
+
+  .course-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .course-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 8px;
+    border-radius: 4px;
+    border: 1px solid rgba(246,191,115,0.24);
+    background: rgba(246,191,115,0.06);
+    color: var(--amber);
+    font-size: 11px;
+  }
+
+  .actions {
+    display: flex;
+    gap: 8px;
+    white-space: nowrap;
+  }
+
+  .btn-approve {
+    padding: 6px 14px;
+    border: 1px solid rgba(82,209,199,0.35);
+    border-radius: 6px;
+    background: rgba(82,209,199,0.08);
+    color: var(--teal);
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-approve:hover {
+    background: rgba(82,209,199,0.18);
+    border-color: var(--teal);
+  }
+
+  .btn-reject {
+    padding: 6px 14px;
+    border: 1px solid rgba(255,117,111,0.35);
+    border-radius: 6px;
+    background: rgba(255,117,111,0.08);
+    color: var(--coral);
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-reject:hover {
+    background: rgba(255,117,111,0.18);
+    border-color: var(--coral);
+  }
+
+  .btn-approve:disabled,
+  .btn-reject:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-family: var(--font-mono);
+    font-weight: 600;
+  }
+
+  .status-pending {
+    border: 1px solid rgba(0,229,255,0.30);
+    background: rgba(0,229,255,0.08);
+    color: var(--accent);
+  }
+
+  .status-approved {
+    border: 1px solid rgba(82,209,199,0.30);
+    background: rgba(82,209,199,0.08);
+    color: var(--teal);
+  }
+
+  .status-rejected {
+    border: 1px solid rgba(255,117,111,0.30);
+    background: rgba(255,117,111,0.08);
+    color: var(--coral);
+  }
+
+  .empty-state {
+    padding: 64px 24px;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 14px;
+  }
+
+  .loading {
+    padding: 40px 24px;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 13px;
+    font-family: var(--font-mono);
+  }
+
+  .toast {
+    position: fixed;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    padding: 12px 24px;
+    border-radius: 8px;
+    border: 1px solid var(--line-strong);
+    background: var(--panel-solid);
+    color: var(--text);
+    font-size: 13px;
+    font-weight: 600;
+    display: none;
+    box-shadow: 0 18px 50px rgba(0,0,0,0.36);
+  }
+
+  .toast.show { display: block; }
+  .toast.success { border-color: rgba(82,209,199,0.40); color: var(--teal); }
+  .toast.error { border-color: rgba(255,117,111,0.40); color: var(--coral); }
+
+  @media (max-width: 900px) {
+    .container { padding: 20px 14px; }
+    header { flex-direction: column; align-items: flex-start; gap: 12px; }
+    .stats-bar { flex-wrap: wrap; gap: 12px; }
+    .toolbar { flex-wrap: wrap; }
+    .toolbar input { max-width: 100%; width: 100%; }
+    table { font-size: 12px; }
+    th, td { padding: 10px 12px; }
+    .actions { flex-direction: column; gap: 6px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>Validation Queue <span id="queue-count">0 pending</span></h1>
+    <div class="stats-bar">
+      <div>Pending: <strong id="stat-pending">0</strong></div>
+      <div>Approved: <strong id="stat-approved">0</strong></div>
+      <div>Rejected: <strong id="stat-rejected">0</strong></div>
+    </div>
+  </header>
+
+  <div class="toolbar">
+    <input type="search" id="filter-input" placeholder="Filter by major, domain, topic..." autocomplete="off">
+    <button id="btn-refresh" type="button">Refresh</button>
+  </div>
+
+  <div class="table-wrap">
+    <div class="loading" id="loading">Loading validation queue...</div>
+    <table id="queue-table" style="display:none;">
+      <thead>
+        <tr>
+          <th>Status</th>
+          <th>Major</th>
+          <th>Domain</th>
+          <th>Topic</th>
+          <th>Subtopics</th>
+          <th>Courses</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="queue-body"></tbody>
+    </table>
+    <div class="empty-state" id="empty-state" style="display:none;">No pending validations.</div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const API = window.location.protocol === 'file:' ? 'http://127.0.0.1:8000' : window.location.origin;
+
+let allItems = [];
+
+function escapeHtml(value) {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function showToast(message, type = 'success') {
+  const t = document.getElementById('toast');
+  t.textContent = message;
+  t.className = `toast show ${type}`;
+  setTimeout(() => { t.className = 'toast'; }, 2500);
+}
+
+function renderStats() {
+  const pending = allItems.filter(i => i.status === 'pending').length;
+  const approved = allItems.filter(i => i.status === 'approved').length;
+  const rejected = allItems.filter(i => i.status === 'rejected').length;
+  document.getElementById('stat-pending').textContent = pending;
+  document.getElementById('stat-approved').textContent = approved;
+  document.getElementById('stat-rejected').textContent = rejected;
+  document.getElementById('queue-count').textContent = `${pending} pending`;
+}
+
+function renderTable(items) {
+  const tbody = document.getElementById('queue-body');
+  const table = document.getElementById('queue-table');
+  const empty = document.getElementById('empty-state');
+  const loading = document.getElementById('loading');
+
+  loading.style.display = 'none';
+
+  if (!items.length) {
+    table.style.display = 'none';
+    empty.style.display = 'block';
+    return;
+  }
+
+  table.style.display = 'table';
+  empty.style.display = 'none';
+
+  tbody.innerHTML = items.map(item => {
+    const statusClass = item.status === 'pending' ? 'status-pending' :
+                        item.status === 'approved' ? 'status-approved' : 'status-rejected';
+    const statusLabel = item.status === 'pending' ? 'PENDING' :
+                        item.status === 'approved' ? 'APPROVED' : 'REJECTED';
+    const subtopics = item.subtopics || [];
+    const courses = item.courses || [];
+    const isPending = item.status === 'pending';
+
+    return `
+      <tr data-id="${escapeHtml(item.id)}">
+        <td><span class="status-badge ${statusClass}">${statusLabel}</span></td>
+        <td class="cell-major">${escapeHtml(item.major || '-')}</td>
+        <td class="cell-domain">${escapeHtml(item.domain || '-')}</td>
+        <td class="cell-topic">${escapeHtml(item.topic || '-')}</td>
+        <td>
+          <div class="subtopic-list">
+            ${subtopics.length ? subtopics.map(st => `<span class="subtopic-tag">${escapeHtml(st)}</span>`).join('') : '<span style="color:var(--text-faint)">—</span>'}
+          </div>
+        </td>
+        <td>
+          <div class="course-list">
+            ${courses.length ? courses.map(c => `<span class="course-tag">${escapeHtml(c)}</span>`).join('') : '<span style="color:var(--text-faint)">—</span>'}
+          </div>
+        </td>
+        <td>
+          <div class="actions">
+            <button class="btn-approve" type="button" onclick="handleAction('${escapeHtml(item.id)}', 'approve')" ${!isPending ? 'disabled' : ''}>Approve</button>
+            <button class="btn-reject" type="button" onclick="handleAction('${escapeHtml(item.id)}', 'reject')" ${!isPending ? 'disabled' : ''}>Reject</button>
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+async function loadQueue() {
+  document.getElementById('loading').style.display = 'block';
+  document.getElementById('queue-table').style.display = 'none';
+  document.getElementById('empty-state').style.display = 'none';
+
+  try {
+    const res = await fetch(`${API}/api/validation/pending`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    allItems = data.items || [];
+    renderStats();
+    applyFilter();
+  } catch (err) {
+    console.warn('loadQueue failed', err);
+    showToast('Failed to load validation queue', 'error');
+    document.getElementById('loading').textContent = 'Error loading queue. Check backend connection.';
+  }
+}
+
+function applyFilter() {
+  const q = document.getElementById('filter-input').value.trim().toLowerCase();
+  if (!q) {
+    renderTable(allItems);
+    return;
+  }
+  const filtered = allItems.filter(item => {
+    const haystack = [
+      item.major, item.domain, item.topic,
+      ...(item.subtopics || []), ...(item.courses || [])
+    ].filter(Boolean).join(' ').toLowerCase();
+    return haystack.includes(q);
+  });
+  renderTable(filtered);
+}
+
+async function handleAction(id, action) {
+  const btn = document.querySelector(`tr[data-id="${CSS.escape(id)}"] .btn-${action}`);
+  if (btn) btn.disabled = true;
+
+  try {
+    const res = await fetch(`${API}/api/validation/${action}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id, notes: '' })
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    showToast(`${action === 'approve' ? 'Approved' : 'Rejected'} successfully`);
+    // Update local state
+    const item = allItems.find(i => i.id === id);
+    if (item) item.status = action === 'approve' ? 'approved' : 'rejected';
+    renderStats();
+    applyFilter();
+  } catch (err) {
+    console.warn('handleAction failed', err);
+    showToast(`Failed to ${action}`, 'error');
+    if (btn) btn.disabled = false;
+  }
+}
+
+document.getElementById('btn-refresh').addEventListener('click', loadQueue);
+document.getElementById('filter-input').addEventListener('input', applyFilter);
+
+loadQueue();
+</script>
+</body>
+</html>

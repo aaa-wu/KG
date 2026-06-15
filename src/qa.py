@@ -349,10 +349,25 @@ def _personalized_path_answer(session, question: str, knowledge: dict, profile: 
     if "error" in path:
         return None
 
+    # 尝试使用双图 RL 推荐增强路径（P2）
+    rl_enhanced = None
+    try:
+        from src.rl.recommend import recommend_path
+        rl_enhanced = recommend_path(
+            known_concepts=known_names,
+            target_concept=knowledge["name"],
+            level=profile.get("level", "intermediate"),
+            weekly_hours=profile.get("weekly_hours"),
+            goal=profile.get("goal"),
+        )
+    except Exception:
+        rl_enhanced = None
+
     all_names = list(dict.fromkeys([
         *known_names,
         *path.get("need_to_learn", []),
         knowledge["name"],
+        *[item["concept"] for item in (rl_enhanced.path if rl_enhanced else [])],
     ]))
     node_result = session.run(
         f"""
@@ -388,6 +403,14 @@ def _personalized_path_answer(session, question: str, knowledge: dict, profile: 
         parts.append(f"还需要学习 {len(remaining)} 个知识点：{'、'.join(remaining[:18])}{' 等' if len(remaining) > 18 else ''}")
     else:
         parts.append("当前图谱中的前置知识已经被你的已掌握知识覆盖，可以直接进入目标内容")
+    if rl_enhanced and rl_enhanced.path:
+        rl_steps = [item["concept"] for item in rl_enhanced.path if item["type"] != "target"][:8]
+        if rl_steps:
+            parts.append(f"智能推荐引擎给出的关键学习步骤：{' → '.join(rl_steps)}")
+        if rl_enhanced.blocked_recovery:
+            bridges = [f"{b['concept']}（辅助理解 {b['reason'].split('缺失前置')[1].split('（')[0]}）" for b in rl_enhanced.blocked_recovery[:2] if '缺失前置' in b['reason']]
+            if bridges:
+                parts.append(f"若遇到前置阻塞，可借助相似知识突破：{'；'.join(bridges)}")
     if profile.get("level") == "beginner":
         parts.append("因为你是零基础/初学者，建议按阶段顺序推进，不要跳过第一阶段")
     elif profile.get("level") == "advanced":

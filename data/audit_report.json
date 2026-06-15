@@ -1,0 +1,68 @@
+{
+  "node_counts": {
+    "Major": 21,
+    "Course": 1689,
+    "KnowledgeConcept": 5758
+  },
+  "relation_counts": {
+    "CONCEPT_PREREQUISITE_FOR": 4016,
+    "COVERS_KNOWLEDGE": 9652,
+    "HAS_COURSE": 2016,
+    "PREREQUISITE_FOR": 45
+  },
+  "isolated_knowledge_points": [],
+  "knowledge_without_prereq_or_covered": [],
+  "courses_without_knowledge": [
+    "比较政治学",
+    "金融活动之初体验",
+    "算法设计与分析",
+    "计算机图形学",
+    "成本效益分析",
+    "数据结构与算法",
+    "金融经济学",
+    "国际金融",
+    "货币经济学",
+    "信号与系统",
+    "宏观经济学与金融专题",
+    "现象学专题",
+    "编译原理专题训练",
+    "认知建模基础*",
+    "英国政治、 经济与外交",
+    "中国美学专题",
+    "审美文化专题",
+    "俄罗斯政治转型专题",
+    "普通生物学*",
+    "经典著作研究专题*",
+    "产业经济学专题",
+    "中国古代诗歌理论专题",
+    "人类学专题讲座",
+    "自由意志专题",
+    "专题片及纪录片创作",
+    "知识论专题",
+    "中世纪形而上学专题",
+    "民事诉讼法学专题",
+    "中国的民族与边疆问题专题研究",
+    "美国政治、 经济与外交",
+    "监察与监督专题",
+    "静园学术讲座",
+    "高性能计算专题训练",
+    "中国社会思想研究专题",
+    "西方马克思主义专题*",
+    "莎士比亚戏剧专题"
+  ],
+  "majors_without_courses": [],
+  "missing_descriptions": {
+    "Course": {
+      "total": 1689,
+      "missing": 1689
+    },
+    "KnowledgeConcept": {
+      "total": 2520,
+      "missing": 2520
+    },
+    "Major": {
+      "total": 21,
+      "missing": 21
+    }
+  }
+}
