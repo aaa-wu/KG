@@ -315,27 +315,4 @@ GET  /api/prereq/predicted            预测前置边列表
 POST /api/recommend                   双图 RL 个性化推荐
 ```
 
-## 常见问题
 
-**Q: 在别人电脑上运行步骤一样吗？**
-
-基础流程一样，但需要注意：
-1. 必须自己创建 `.env` 并填入 Neo4j 密码和 DeepSeek API Key
-2. 数据文件已包含在仓库中，无需重新生成
-3. 依赖版本可能因安装时间不同而有差异，如遇问题可提供 `pip freeze` 输出排查
-4. Neo4j 在各操作系统上的安装方式不同
-
-**Q: 没有 DeepSeek API Key 能运行吗？**
-
-基础的数据查询、图谱可视化、路径推荐可以运行，但 `chat`、Topic 抽取、前置关系 LLM 补全等增强功能无法使用。
-
-**Q: 导入数据后节点数为 0？**
-
-请检查：
-1. Neo4j 是否已正常启动
-2. `.env` 中的 `NEO4J_PASSWORD` 是否正确
-3. 是否已执行 `python3 -m src.cli init`
-
-## 当前范围
-
-`path --target` 当前面向知识点名称。课程或专业级路径规划可先通过 `chat` 模式探索，后续可以扩展成显式 CLI 子命令。
