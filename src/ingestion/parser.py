@@ -108,6 +108,7 @@ def parse_data_dir(data_dir: str) -> dict:
         "entities": entity_path,
         "relations": relation_path,
         "knowledge_concept_audit": os.path.join(data_dir, "knowledge_concept_audit.csv"),
+        "course_prereq_from_modules": os.path.join(data_dir, "course_prereq_from_modules.csv"),
     }
     if graph_paths["entities"]:
         result = {
@@ -119,6 +120,12 @@ def parse_data_dir(data_dir: str) -> dict:
             result["relations"] = _clean_relations(_read_csv(graph_paths["relations"]))
         if os.path.exists(graph_paths["knowledge_concept_audit"]):
             result["knowledge_concept_audit"] = _read_csv(graph_paths["knowledge_concept_audit"])
+
+        # 合并模块依赖推导的课程前置关系（如果存在）
+        if os.path.exists(graph_paths["course_prereq_from_modules"]):
+            module_rels = _clean_relations(_read_csv(graph_paths["course_prereq_from_modules"]))
+            result["relations"].extend(module_rels)
+
         return result
 
     result = {}
